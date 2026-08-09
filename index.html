@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Quodam, una biblioteca digital donde las historias encuentran a sus lectores."
+  >
+
+  <title>Quodam — Descubre una historia</title>
+
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+
+  <main class="app">
+
+    <!-- =========================
+         BIENVENIDA
+    ========================== -->
+
+    <section
+      id="welcome"
+      class="scene scene--active"
+      aria-labelledby="welcome-title"
+    >
+
+      <div class="welcome__content">
+
+        <p class="welcome__eyebrow">
+          Una biblioteca diferente
+        </p>
+
+        <h1 id="welcome-title" class="brand">
+          Quodam
+        </h1>
+
+        <p class="welcome__phrase">
+          Las historias no se buscan.
+          <span>Ellas te encuentran.</span>
+        </p>
+
+        <button
+          id="discover-button"
+          class="button button--primary"
+          type="button"
+        >
+          Descubrir una historia
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         LIBRO / SELECCIÓN
+    ========================== -->
+
+    <section
+      id="discovery"
+      class="scene"
+      aria-labelledby="discovery-title"
+    >
+
+      <h2 id="discovery-title" class="sr-only">
+        Buscando una historia
+      </h2>
+
+      <div class="book">
+
+        <div class="book__page">
+
+          <div
+            id="ritual"
+            class="book__ritual"
+          >
+            <p>
+              Toda historia espera
+              al lector correcto.
+            </p>
+          </div>
+
+
+          <div
+            id="story-preview"
+            class="story-preview"
+            hidden
+          >
+
+            <div class="story-preview__image-wrapper">
+
+              <img
+                id="preview-image"
+                class="story-preview__image"
+                src=""
+                alt=""
+              >
+
+            </div>
+
+            <p
+              id="preview-title"
+              class="story-preview__title"
+            ></p>
+
+          </div>
+
+
+          <!-- Resultado -->
+
+          <article
+            id="story-result"
+            class="story-result"
+            hidden
+          >
+
+            <p class="story-result__eyebrow">
+              Historia encontrada
+            </p>
+
+            <img
+              id="result-image"
+              class="story-result__cover"
+              src=""
+              alt=""
+            >
+
+            <h2
+              id="result-title"
+              class="story-result__title"
+            ></h2>
+
+            <p
+              id="result-description"
+              class="story-result__description"
+            ></p>
+
+            <div class="story-result__actions">
+
+              <button
+                id="read-button"
+                class="button button--primary"
+                type="button"
+              >
+                Comenzar a leer
+              </button>
+
+              <button
+                id="again-button"
+                class="button button--secondary"
+                type="button"
+              >
+                Buscar otra historia
+              </button>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- Mensajes accesibles -->
+
+    <div
+      id="live-region"
+      class="sr-only"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+
+  </main>
+
+
+  <script
+    type="module"
+    src="./js/main.js"
+  ></script>
+
+</body>
+</html>
