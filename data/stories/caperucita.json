@@ -1,0 +1,22 @@
+{
+  "id": "caperucita-roja",
+  "title": "Caperucita Roja",
+  "description": "Una niña emprende un viaje a través del bosque para visitar a su abuela.",
+  "category": "Clásicos",
+  "recommendedAge": {
+    "min": 6,
+    "max": 9
+  },
+  "estimatedReadingTime": 8,
+  "thumbnail": "./assets/images/stories/caperucita-roja/thumbnail.webp",
+  "cover": "./assets/images/stories/caperucita-roja/cover.webp",
+  "values": [
+    "Prudencia",
+    "Responsabilidad"
+  ],
+  "content": [
+    "Había una vez una niña que vivía cerca de un gran bosque.",
+    "Todos la conocían como Caperucita Roja."
+  ],
+  "active": true
+}
