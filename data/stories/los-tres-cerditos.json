@@ -1,0 +1,21 @@
+{
+  "id": "los-tres-cerditos",
+  "title": "Los tres cerditos",
+  "description": "Tres hermanos descubrirán que construir con paciencia y esfuerzo puede marcar la diferencia.",
+  "category": "Fábulas",
+  "recommendedAge": {
+    "min": 5,
+    "max": 8
+  },
+  "estimatedReadingTime": 6,
+  "thumbnail": "./assets/images/stories/los-tres-cerditos/thumbnail.webp",
+  "cover": "./assets/images/stories/los-tres-cerditos/cover.webp",
+  "values": [
+    "Esfuerzo",
+    "Responsabilidad"
+  ],
+  "content": [
+    "Había una vez tres cerditos que decidieron construir sus propias casas."
+  ],
+  "active": true
+}
