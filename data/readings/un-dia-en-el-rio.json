@@ -1,0 +1,19 @@
+{
+  "id": "un-dia-en-el-rio",
+  "title": "Un día en el río",
+  "category": "Naturaleza",
+  "level": 1,
+  "estimatedReadingTime": 1,
+  "thumbnail": "./assets/images/readings/un-dia-en-el-rio/thumbnail.webp",
+  "illustration": "./assets/images/readings/un-dia-en-el-rio/illustration.webp",
+  "lines": [
+    "Hace mucho calor hoy.",
+    "Los niños caminan hacia el río.",
+    "El agua se ve clara y fresca.",
+    "¿Entramos al agua?",
+    "Poco a poco se mojan los pies.",
+    "Luego nadan con cuidado.",
+    "¡Qué bien se sienten!"
+  ],
+  "active": true
+}
