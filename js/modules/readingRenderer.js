@@ -1,33 +1,14 @@
-export function renderPreview(
-  story,
-  elements
-) {
-
-  elements.previewImage.src =
-    story.thumbnail;
-
-  elements.previewImage.alt =
-    `Ilustración de ${story.title}`;
-
-  elements.previewTitle.textContent =
-    story.title;
+export function renderPreview(reading, elements) {
+  elements.previewImage.src = reading.thumbnail;
+  elements.previewImage.alt = `Ilustración de ${reading.title}`;
+  elements.previewTitle.textContent = reading.title;
 }
 
-
-export function renderResult(
-  story,
-  elements
-) {
-
-  elements.resultImage.src =
-    story.cover;
-
-  elements.resultImage.alt =
-    `Portada de ${story.title}`;
-
-  elements.resultTitle.textContent =
-    story.title;
+export function renderResult(reading, elements) {
+  elements.resultImage.src = reading.illustration;
+  elements.resultImage.alt = `Ilustración de ${reading.title}`;
+  elements.resultTitle.textContent = reading.title;
 
   elements.resultDescription.textContent =
-    story.description;
+    `${reading.category} · Nivel ${reading.level}`;
 }
