@@ -411,3 +411,16 @@
       var(--color-parchment-300)
     );
 }
+.story-preview__image,
+.story-result__cover {
+  opacity: 0;
+
+  transition:
+    opacity 250ms ease;
+}
+
+
+.story-preview__image.is-loaded,
+.story-result__cover.is-loaded {
+  opacity: 1;
+}
