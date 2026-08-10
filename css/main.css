@@ -6,7 +6,7 @@
 @import url("./components/book.css");
 
 @import url("./pages/home.css");
-
+@import url("./pages/reader.css");
 
 body {
   font-family: var(--font-body);
