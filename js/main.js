@@ -165,7 +165,7 @@ elements.discoverButton.disabled =
 
 elements.discoverButton.textContent =
   "Descubrir una lectura";
-  
+
     elements.discoverButton.addEventListener(
       "click",
       startDiscovery
@@ -206,6 +206,13 @@ elements.discoverButton.textContent =
 
 
 async function startDiscovery() {
+
+elements.discoverButton.disabled =
+  true;
+
+elements.againButton.disabled =
+  true;
+
   if (state.isSelecting) {
     return;
   }
@@ -304,7 +311,13 @@ async function startDiscovery() {
       "Ocurrió un problema al buscar una lectura.";
 
   } finally {
-    state.isSelecting = false;
+   state.isSelecting = false;
+
+  elements.discoverButton.disabled =
+    false;
+
+  elements.againButton.disabled =
+    false;
   }
 }
 
