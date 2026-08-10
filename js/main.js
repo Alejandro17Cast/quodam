@@ -1,6 +1,4 @@
-import {
-  CONFIG
-} from "./config.js";
+import { CONFIG } from "./config.js";
 
 import {
   wait,
@@ -9,119 +7,86 @@ import {
 } from "./utils/helpers.js";
 
 import {
-  loadStories,
-  selectRandomStory
-} from "./modules/storySelector.js";
+  loadReadings,
+  selectRandomReading
+} from "./modules/readingSelector.js";
 
 import {
   renderPreview,
   renderResult
-} from "./modules/storyRenderer.js";
+} from "./modules/readingRenderer.js";
 
 
 const state = {
-  stories: [],
-  selectedStory: null,
-  previousStoryId: null,
+  readings: [],
+  selectedReading: null,
+  previousReadingId: null,
   isSelecting: false
 };
 
 
 const elements = {
-  welcome:
-    document.querySelector("#welcome"),
+  welcome: document.querySelector("#welcome"),
+  discovery: document.querySelector("#discovery"),
 
-  discovery:
-    document.querySelector("#discovery"),
+  discoverButton: document.querySelector("#discover-button"),
 
-  discoverButton:
-    document.querySelector("#discover-button"),
+  ritual: document.querySelector("#ritual"),
 
-  ritual:
-    document.querySelector("#ritual"),
+  preview: document.querySelector("#story-preview"),
+  previewImage: document.querySelector("#preview-image"),
+  previewTitle: document.querySelector("#preview-title"),
 
-  preview:
-    document.querySelector("#story-preview"),
+  result: document.querySelector("#story-result"),
+  resultImage: document.querySelector("#result-image"),
+  resultTitle: document.querySelector("#result-title"),
+  resultDescription: document.querySelector("#result-description"),
 
-  previewImage:
-    document.querySelector("#preview-image"),
+  readButton: document.querySelector("#read-button"),
+  againButton: document.querySelector("#again-button"),
 
-  previewTitle:
-    document.querySelector("#preview-title"),
-
-  result:
-    document.querySelector("#story-result"),
-
-  resultImage:
-    document.querySelector("#result-image"),
-
-  resultTitle:
-    document.querySelector("#result-title"),
-
-  resultDescription:
-    document.querySelector(
-      "#result-description"
-    ),
-
-  readButton:
-    document.querySelector("#read-button"),
-
-  againButton:
-    document.querySelector("#again-button"),
-
-  liveRegion:
-    document.querySelector("#live-region")
+  liveRegion: document.querySelector("#live-region")
 };
 
 
 async function initialize() {
   try {
-
-    state.stories =
-      await loadStories(
-        CONFIG.storiesIndexPath
-      );
-
+    state.readings = await loadReadings(
+      CONFIG.readingsIndexPath
+    );
 
     elements.discoverButton.addEventListener(
       "click",
       startDiscovery
     );
 
-
     elements.againButton.addEventListener(
       "click",
       startDiscovery
     );
 
-
     elements.readButton.addEventListener(
       "click",
-      openSelectedStory
+      openSelectedReading
     );
 
   } catch (error) {
-
     console.error(error);
 
     elements.discoverButton.disabled = true;
 
     elements.discoverButton.textContent =
-      "No fue posible cargar las historias";
-
+      "No fue posible cargar las lecturas";
   }
 }
 
 
 async function startDiscovery() {
-
   if (state.isSelecting) {
     return;
   }
 
-
   state.isSelecting = true;
-
 
   elements.welcome.classList.remove(
     "scene--active"
@@ -131,109 +96,91 @@ async function startDiscovery() {
     "scene--active"
   );
 
-
   hideElement(elements.preview);
   hideElement(elements.result);
 
   showElement(elements.ritual);
 
-
   elements.liveRegion.textContent =
-    "Quodam está buscando una historia para ti.";
-
+    "Quodam está buscando una lectura para ti.";
 
   await wait(
     CONFIG.ritualDuration
   );
 
-
   hideElement(elements.ritual);
   showElement(elements.preview);
 
-
   await runSelectionAnimation();
-
 
   state.isSelecting = false;
 }
 
 
 async function runSelectionAnimation() {
-
   let delay =
     CONFIG.selection.initialDelay;
-
 
   for (
     let round = 0;
     round < CONFIG.selection.totalRounds;
     round++
   ) {
-
-    const previewStory =
-      selectRandomStory(
-        state.stories
+    const previewReading =
+      selectRandomReading(
+        state.readings
       );
 
-
     renderPreview(
-      previewStory,
+      previewReading,
       elements
     );
 
-
     await wait(delay);
-
 
     delay +=
       CONFIG.selection.delayIncrement;
   }
 
-
-  const selected =
-    selectRandomStory(
-      state.stories,
-      state.previousStoryId
+  const selectedReading =
+    selectRandomReading(
+      state.readings,
+      state.previousReadingId
     );
 
+  state.selectedReading =
+    selectedReading;
 
-  state.selectedStory = selected;
+  state.previousReadingId =
+    selectedReading.id;
 
-  state.previousStoryId =
-    selected.id;
-
-
-  showSelectedStory();
+  showSelectedReading();
 }
 
 
-function showSelectedStory() {
-
+function showSelectedReading() {
   hideElement(elements.preview);
 
   renderResult(
-    state.selectedStory,
+    state.selectedReading,
     elements
   );
 
   showElement(elements.result);
 
-
   elements.liveRegion.textContent =
-    `Historia encontrada: ${state.selectedStory.title}`;
+    `Lectura encontrada: ${state.selectedReading.title}`;
 }
 
 
-function openSelectedStory() {
-
-  if (!state.selectedStory) {
+function openSelectedReading() {
+  if (!state.selectedReading) {
     return;
   }
 
-
   window.location.href =
     `./pages/lectura.html?id=${encodeURIComponent(
-      state.selectedStory.id
+      state.selectedReading.id
     )}`;
 }
 
