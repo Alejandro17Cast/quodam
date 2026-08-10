@@ -33,9 +33,11 @@ export function renderResult(
   elements.resultImage.alt =
     `Ilustración de ${reading.title}`;
 
+
   elements.resultTitle.textContent =
     reading.title;
 
+
   elements.resultDescription.textContent =
-    `${reading.category} · Nivel ${reading.level}`;
+    `${reading.category} · Nivel ${reading.level} · ${reading.estimatedReadingTime} min`;
 }
