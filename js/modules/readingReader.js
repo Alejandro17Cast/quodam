@@ -88,6 +88,15 @@ function getIllustrationPath(reading) {
 
 
 function renderReading(reading) {
+  if (!elements.container) {
+    console.error(
+      "No se encontró el contenedor de lectura."
+    );
+
+    return;
+  }
+
+
   document.title =
     `${reading.title} — Quodam`;
 
@@ -116,6 +125,10 @@ function renderReading(reading) {
   elements.container.innerHTML = `
     <article class="reading-text">
 
+      <!-- =========================
+           ENCABEZADO
+      ========================== -->
+
       <header
         class="reading-text__header"
       >
@@ -133,7 +146,7 @@ function renderReading(reading) {
           class="reading-text__title"
         >
           ${escapeHTML(
-            reading.title
+            reading.title ?? "Lectura"
           )}
         </h1>
 
@@ -157,6 +170,10 @@ function renderReading(reading) {
       </header>
 
 
+      <!-- =========================
+           ILUSTRACIÓN
+      ========================== -->
+
       ${
         illustrationPath
           ? `
@@ -177,14 +194,20 @@ function renderReading(reading) {
       }
 
 
+      <!-- =========================
+           TEXTO
+      ========================== -->
+
       <div
         class="reading-text__body"
       >
-
         ${linesHTML}
-
       </div>
 
+
+      <!-- =========================
+           FINAL
+      ========================== -->
 
       <footer
         class="reading-text__footer"
@@ -207,12 +230,26 @@ function renderReading(reading) {
         </div>
 
 
-        <a
-          href="../index.html"
-          class="button button--primary"
+        <div
+          class="reading-text__actions"
         >
-          Descubrir otra lectura
-        </a>
+
+          <a
+            href="../index.html"
+            class="button button--primary"
+          >
+            Descubrir otra lectura
+          </a>
+
+
+          <a
+            href="../index.html"
+            class="button button--reader-secondary"
+          >
+            Volver al inicio
+          </a>
+
+        </div>
 
       </footer>
 
@@ -243,7 +280,9 @@ function escapeHTML(value) {
 
 
   element.textContent =
-    String(value ?? "");
+    String(
+      value ?? ""
+    );
 
 
   return element.innerHTML;
