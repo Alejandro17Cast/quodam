@@ -8,7 +8,8 @@ import {
 
 import {
   loadReadings,
-  selectRandomReading
+  selectRandomReading,
+  selectDifferentReading
 } from "./modules/readingSelector.js";
 
 import {
@@ -26,7 +27,9 @@ const state = {
   readings: [],
   selectedReading: null,
   previousReadingId: null,
-  isSelecting: false
+  previewReadingId: null,
+  isSelecting: false,
+  hasOpenedBook: false
 };
 
 
@@ -110,42 +113,43 @@ async function startDiscovery() {
   hideElement(elements.preview);
   hideElement(elements.result);
 
-  showElement(elements.ritual);
-
   elements.liveRegion.textContent =
     "Quodam está buscando una lectura para ti.";
 
 
   /*
-   * El libro se abre antes de mostrar
-   * la frase ritual.
+   * Solo abrimos el libro la primera vez.
    */
-  await openBook(
-    elements.book
-  );
+  if (!state.hasOpenedBook) {
+    showElement(elements.ritual);
+
+    await openBook(
+      elements.book
+    );
+
+    state.hasOpenedBook = true;
+
+    await wait(
+      CONFIG.ritualDuration
+    );
+
+    await turnPage(
+      elements.pageTurn
+    );
+
+    hideElement(elements.ritual);
+  } else {
+    /*
+     * Si el libro ya estaba abierto,
+     * simplemente pasamos una página.
+     */
+    await turnPage(
+      elements.pageTurn
+    );
+  }
 
 
-  /*
-   * Dejamos visible la frase el tiempo
-   * configurado.
-   */
-  await wait(
-    CONFIG.ritualDuration
-  );
-
-
-  /*
-   * Pasamos la hoja antes de comenzar
-   * la selección.
-   */
-  await turnPage(
-    elements.pageTurn
-  );
-
-
-  hideElement(elements.ritual);
   showElement(elements.preview);
-
 
   await runSelectionAnimation();
 
@@ -154,8 +158,8 @@ async function startDiscovery() {
 
 
 async function runSelectionAnimation() {
-  let delay =
-    CONFIG.selection.initialDelay;
+  let currentReadingId =
+    state.previewReadingId;
 
 
   for (
@@ -165,9 +169,17 @@ async function runSelectionAnimation() {
   ) {
 
     const previewReading =
-      selectRandomReading(
-        state.readings
+      selectDifferentReading(
+        state.readings,
+        currentReadingId
       );
+
+
+    currentReadingId =
+      previewReading.id;
+
+    state.previewReadingId =
+      previewReading.id;
 
 
     renderPreview(
@@ -176,11 +188,13 @@ async function runSelectionAnimation() {
     );
 
 
+    const delay =
+      calculateSelectionDelay(
+        round
+      );
+
+
     await wait(delay);
-
-
-    delay +=
-      CONFIG.selection.delayIncrement;
   }
 
 
@@ -196,6 +210,24 @@ async function runSelectionAnimation() {
 
   state.previousReadingId =
     selectedReading.id;
+
+
+  /*
+   * Mostramos brevemente la lectura
+   * definitiva antes de revelar
+   * el resultado.
+   */
+  renderPreview(
+    selectedReading,
+    elements
+  );
+
+  await wait(600);
+
+
+  await turnPage(
+    elements.pageTurn
+  );
 
 
   showSelectedReading();
@@ -232,5 +264,43 @@ function openSelectedReading() {
     )}`;
 }
 
+function calculateSelectionDelay(round) {
+  const {
+    initialDelay,
+    maximumDelay,
+    slowdownStart,
+    totalRounds
+  } = CONFIG.selection;
+
+
+  if (round < slowdownStart) {
+    return initialDelay;
+  }
+
+
+  const progress =
+    (
+      round - slowdownStart
+    ) /
+    (
+      totalRounds -
+      slowdownStart -
+      1
+    );
+
+
+  const easedProgress =
+    progress * progress;
+
+
+  return Math.round(
+    initialDelay +
+    (
+      maximumDelay -
+      initialDelay
+    ) *
+    easedProgress
+  );
+}
 
 initialize();
