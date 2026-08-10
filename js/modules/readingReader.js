@@ -121,6 +121,10 @@ function renderReading(reading) {
       )
       .join("");
 
+const rediscoverURL =
+  `../index.html?discover=true&previous=${encodeURIComponent(
+    reading.id
+  )}`;
 
   elements.container.innerHTML = `
     <article class="reading-text">
@@ -235,7 +239,7 @@ function renderReading(reading) {
         >
 
           <a
-  href="../index.html?discover=true"
+  href="${rediscoverURL}"
   class="button button--primary"
 >
   Descubrir otra lectura
