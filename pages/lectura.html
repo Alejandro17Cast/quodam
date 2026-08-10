@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -9,34 +11,51 @@
 
   <meta
     name="description"
-    content="Lectura interactiva en Quodam."
+    content="Lectura breve e interactiva en Quodam."
   >
 
   <title>Quodam — Lectura</title>
 
-  <link rel="stylesheet" href="../css/main.css">
+  <link
+    rel="stylesheet"
+    href="../css/main.css"
+  >
 </head>
+
 
 <body>
 
   <main class="reader">
+
+    <!-- =========================
+         CABECERA
+    ========================== -->
 
     <header class="reader__header">
 
       <a
         href="../index.html"
         class="reader__back"
-        aria-label="Volver al inicio"
+        aria-label="Volver a Quodam"
       >
         ← Volver
       </a>
 
-      <span class="reader__brand">
+
+      <a
+        href="../index.html"
+        class="reader__brand"
+        aria-label="Ir al inicio de Quodam"
+      >
         Quodam
-      </span>
+      </a>
 
     </header>
 
+
+    <!-- =========================
+         LECTURA
+    ========================== -->
 
     <section
       id="reading-container"
@@ -44,12 +63,27 @@
       aria-live="polite"
     >
 
-      <p class="reader__status">
-        Preparando tu lectura...
-      </p>
+      <div class="reader__loading">
+
+        <span
+          class="reader__loading-icon"
+          aria-hidden="true"
+        >
+          ✦
+        </span>
+
+        <p>
+          Preparando tu lectura...
+        </p>
+
+      </div>
 
     </section>
 
+
+    <!-- =========================
+         ERROR
+    ========================== -->
 
     <section
       id="reading-error"
@@ -57,12 +91,20 @@
       hidden
     >
 
+      <span
+        class="reader__error-icon"
+        aria-hidden="true"
+      >
+        ✦
+      </span>
+
       <h1>
-        No pudimos encontrar esta lectura
+        Esta lectura se escondió
       </h1>
 
       <p>
-        Puede que la lectura ya no esté disponible.
+        No pudimos encontrarla.
+        Puedes regresar y descubrir otra.
       </p>
 
       <a
@@ -83,4 +125,5 @@
   ></script>
 
 </body>
+
 </html>
