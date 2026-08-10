@@ -22,6 +22,10 @@ import {
   turnPage
 } from "./modules/bookAnimation.js";
 
+import {
+  resetReveal,
+  revealReading
+} from "./modules/revealAnimation.js";
 
 const state = {
   readings: [],
@@ -34,29 +38,41 @@ const state = {
 
 
 const elements = {
-  welcome: document.querySelector("#welcome"),
-  discovery: document.querySelector("#discovery"),
+  result:
+  document.querySelector(
+    "#story-result"
+  ),
 
-  discoverButton: document.querySelector("#discover-button"),
+resultEyebrow:
+  document.querySelector(
+    "#result-eyebrow"
+  ),
 
-  book: document.querySelector("#book"),
-  pageTurn: document.querySelector("#page-turn"),
+resultCoverWrapper:
+  document.querySelector(
+    "#result-cover-wrapper"
+  ),
 
-  ritual: document.querySelector("#ritual"),
+resultImage:
+  document.querySelector(
+    "#result-image"
+  ),
 
-  preview: document.querySelector("#story-preview"),
-  previewImage: document.querySelector("#preview-image"),
-  previewTitle: document.querySelector("#preview-title"),
+resultTitle:
+  document.querySelector(
+    "#result-title"
+  ),
 
-  result: document.querySelector("#story-result"),
-  resultImage: document.querySelector("#result-image"),
-  resultTitle: document.querySelector("#result-title"),
-  resultDescription: document.querySelector("#result-description"),
+resultDescription:
+  document.querySelector(
+    "#result-description"
+  ),
 
-  readButton: document.querySelector("#read-button"),
-  againButton: document.querySelector("#again-button"),
-
-  liveRegion: document.querySelector("#live-region")
+resultActions:
+  document.querySelector(
+    "#result-actions"
+  ),
+  
 };
 
 
@@ -230,12 +246,19 @@ async function runSelectionAnimation() {
   );
 
 
-  showSelectedReading();
+  await showSelectedReading();
 }
 
 
-function showSelectedReading() {
-  hideElement(elements.preview);
+async function showSelectedReading() {
+  hideElement(
+    elements.preview
+  );
+
+
+  resetReveal(
+    elements
+  );
 
 
   renderResult(
@@ -244,11 +267,18 @@ function showSelectedReading() {
   );
 
 
-  showElement(elements.result);
+  showElement(
+    elements.result
+  );
 
 
   elements.liveRegion.textContent =
     `Lectura encontrada: ${state.selectedReading.title}`;
+
+
+  await revealReading(
+    elements
+  );
 }
 
 
