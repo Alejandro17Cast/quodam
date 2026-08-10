@@ -5,7 +5,7 @@
   "level": 1,
   "estimatedReadingTime": 1,
   "thumbnail": "./assets/images/readings/ana-y-luis/thumbnail.webp",
-  "illustration": "./assets/images/readings/ana-y-luis/illustration.webp",
+"image": "ana-y-luis",
   "lines": [
     "Ana y Luis van al parque.",
     "Llevan una pelota roja.",

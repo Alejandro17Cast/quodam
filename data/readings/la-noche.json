@@ -5,7 +5,7 @@
   "level": 1,
   "estimatedReadingTime": 1,
   "thumbnail": "./assets/images/readings/la-noche/thumbnail.webp",
-  "illustration": "./assets/images/readings/la-noche/illustration.webp",
+"image": "la-noche",
   "lines": [
     "La noche llega en silencio.",
     "El cielo se ve oscuro.",

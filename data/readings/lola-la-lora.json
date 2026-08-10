@@ -5,7 +5,7 @@
   "level": 1,
   "estimatedReadingTime": 1,
   "thumbnail": "./assets/images/readings/lola-la-lora/thumbnail.webp",
-  "illustration": "./assets/images/readings/lola-la-lora/illustration.webp",
+  "image": "lola-la-lora",
   "lines": [
     "Lola la lora vuela en el cielo.",
     "Va despacio sobre el lago azul.",

@@ -5,7 +5,7 @@
   "level": 1,
   "estimatedReadingTime": 1,
   "thumbnail": "./assets/images/readings/mama-y-tom/thumbnail.webp",
-  "illustration": "./assets/images/readings/mama-y-tom/illustration.webp",
+ "image": "mama-y-tom",
   "lines": [
     "Mamá entra a la cocina.",
     "Ve algo sobre la mesa.",

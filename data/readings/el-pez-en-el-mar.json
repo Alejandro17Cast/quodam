@@ -5,7 +5,7 @@
   "level": 1,
   "estimatedReadingTime": 1,
   "thumbnail": "./assets/images/readings/el-pez-en-el-mar/thumbnail.webp",
-  "illustration": "./assets/images/readings/el-pez-en-el-mar/illustration.webp",
+"image": "el-pez-en-el-mar",
   "lines": [
     "Un pez nada en el mar.",
     "Se mueve entre las rocas.",

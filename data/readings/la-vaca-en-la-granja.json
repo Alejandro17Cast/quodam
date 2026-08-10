@@ -5,7 +5,7 @@
   "level": 1,
   "estimatedReadingTime": 1,
   "thumbnail": "./assets/images/readings/la-vaca-en-la-granja/thumbnail.webp",
-  "illustration": "./assets/images/readings/la-vaca-en-la-granja/illustration.webp",
+"image": "la-vaca-en-la-granja",
   "lines": [
     "En la granja hay una vaca.",
     "Camina lento por el campo.",

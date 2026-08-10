@@ -5,7 +5,7 @@
   "level": 1,
   "estimatedReadingTime": 1,
   "thumbnail": "./assets/images/readings/sofi-canta/thumbnail.webp",
-  "illustration": "./assets/images/readings/sofi-canta/illustration.webp",
+"image": "sofi-canta",
   "lines": [
     "Sofi está en el salón.",
     "Se pone de pie frente a todos.",

@@ -5,7 +5,7 @@
   "level": 1,
   "estimatedReadingTime": 1,
   "thumbnail": "./assets/images/readings/el-perro-en-el-patio/thumbnail.webp",
-  "illustration": "./assets/images/readings/el-perro-en-el-patio/illustration.webp",
+"image": "el-perro-en-el-patio",
   "lines": [
     "El perro está en el patio.",
     "Corre de un lado a otro.",
