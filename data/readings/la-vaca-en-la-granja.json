@@ -1,0 +1,19 @@
+{
+  "id": "la-vaca-en-la-granja",
+  "title": "La vaca en la granja",
+  "category": "Animales",
+  "level": 1,
+  "estimatedReadingTime": 1,
+  "thumbnail": "./assets/images/readings/la-vaca-en-la-granja/thumbnail.webp",
+  "illustration": "./assets/images/readings/la-vaca-en-la-granja/illustration.webp",
+  "lines": [
+    "En la granja hay una vaca.",
+    "Camina lento por el campo.",
+    "Come pasto verde.",
+    "¿Le gusta su comida?",
+    "El granjero la observa.",
+    "La vaca sigue tranquila.",
+    "¡Es un animal muy noble!"
+  ],
+  "active": true
+}
