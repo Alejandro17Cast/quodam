@@ -4,9 +4,11 @@ export const CONFIG = {
   ritualDuration: 1600,
 
   selection: {
-    totalRounds: 16,
-    initialDelay: 80,
-    delayIncrement: 24
+    totalRounds: 18,
+    initialDelay: 70,
+    minimumDelay: 70,
+    maximumDelay: 520,
+    slowdownStart: 9
   },
 
   avoidImmediateRepeat: true
