@@ -8,30 +8,32 @@ export function renderPreview(
 
   void elements.preview.offsetWidth;
 
-  elements.previewImage.src =
-    reading.thumbnail;
 
-  elements.previewImage.alt =
-    `Ilustración de ${reading.title}`;
+  prepareImage(
+    elements.previewImage,
+    reading.thumbnail,
+    `Ilustración de ${reading.title}`
+  );
+
 
   elements.previewTitle.textContent =
     reading.title;
+
 
   elements.preview.classList.add(
     "story-preview--changing"
   );
 }
 
-
 export function renderResult(
   reading,
   elements
 ) {
-  elements.resultImage.src =
-    reading.illustration;
-
-  elements.resultImage.alt =
-    `Ilustración de ${reading.title}`;
+  prepareImage(
+    elements.resultImage,
+    reading.illustration,
+    `Ilustración de ${reading.title}`
+  );
 
 
   elements.resultTitle.textContent =
@@ -40,4 +42,36 @@ export function renderResult(
 
   elements.resultDescription.textContent =
     `${reading.category} · Nivel ${reading.level} · ${reading.estimatedReadingTime} min`;
+}
+
+function prepareImage(
+  imageElement,
+  source,
+  alternativeText
+) {
+  imageElement.alt =
+    alternativeText;
+
+
+  imageElement.onerror = () => {
+    imageElement.removeAttribute(
+      "src"
+    );
+
+    imageElement.alt =
+      "Ilustración pendiente";
+  };
+
+
+  if (!source) {
+    imageElement.removeAttribute(
+      "src"
+    );
+
+    return;
+  }
+
+
+  imageElement.src =
+    source;
 }
