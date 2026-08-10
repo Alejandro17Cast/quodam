@@ -1,71 +1,46 @@
-import {
-  randomItem
-} from "../utils/random.js";
+import { randomItem } from "../utils/random.js";
 
-
-export async function loadStories(indexPath) {
-  const indexResponse =
-    await fetch(indexPath);
+export async function loadReadings(indexPath) {
+  const indexResponse = await fetch(indexPath);
 
   if (!indexResponse.ok) {
-    throw new Error(
-      "No se pudo cargar el índice de cuentos."
-    );
+    throw new Error("No se pudo cargar el índice de lecturas.");
   }
 
-  const storyPaths =
-    await indexResponse.json();
+  const readingPaths = await indexResponse.json();
 
+  const readings = await Promise.all(
+    readingPaths.map(async (path) => {
+      const response = await fetch(path);
 
-  const stories =
-    await Promise.all(
-      storyPaths.map(async (path) => {
+      if (!response.ok) {
+        throw new Error(`No se pudo cargar ${path}`);
+      }
 
-        const response =
-          await fetch(path);
-
-        if (!response.ok) {
-          throw new Error(
-            `No se pudo cargar ${path}`
-          );
-        }
-
-        return response.json();
-      })
-    );
-
-
-  return stories.filter(
-    (story) => story.active
+      return response.json();
+    })
   );
+
+  return readings.filter((reading) => reading.active);
 }
 
-
-export function selectRandomStory(
-  stories,
-  previousStoryId = null
+export function selectRandomReading(
+  readings,
+  previousReadingId = null
 ) {
-
-  if (!stories.length) {
-    throw new Error(
-      "No existen cuentos disponibles."
-    );
+  if (!readings.length) {
+    throw new Error("No existen lecturas disponibles.");
   }
 
-
-  if (stories.length === 1) {
-    return stories[0];
+  if (readings.length === 1) {
+    return readings[0];
   }
 
-
-  const candidates =
-    previousStoryId
-      ? stories.filter(
-          (story) =>
-            story.id !== previousStoryId
-        )
-      : stories;
-
+  const candidates = previousReadingId
+    ? readings.filter(
+        (reading) => reading.id !== previousReadingId
+      )
+    : readings;
 
   return randomItem(candidates);
 }
