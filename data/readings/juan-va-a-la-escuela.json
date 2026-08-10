@@ -1,0 +1,19 @@
+{
+  "id": "juan-va-a-la-escuela",
+  "title": "Juan va a la escuela",
+  "category": "Escuela",
+  "level": 1,
+  "estimatedReadingTime": 1,
+  "thumbnail": "./assets/images/readings/juan-va-a-la-escuela/thumbnail.webp",
+  "illustration": "./assets/images/readings/juan-va-a-la-escuela/illustration.webp",
+  "lines": [
+    "Juan se levanta temprano.",
+    "Mira el reloj con atención.",
+    "¿Es hora de ir a la escuela?",
+    "Toma su mochila y sale.",
+    "Camina rápido por la calle.",
+    "Llega antes de que suene la campana.",
+    "¡Buen trabajo, Juan!"
+  ],
+  "active": true
+}
