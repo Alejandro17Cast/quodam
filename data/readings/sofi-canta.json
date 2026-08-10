@@ -1,0 +1,19 @@
+{
+  "id": "sofi-canta",
+  "title": "Sofi canta",
+  "category": "Escuela",
+  "level": 1,
+  "estimatedReadingTime": 1,
+  "thumbnail": "./assets/images/readings/sofi-canta/thumbnail.webp",
+  "illustration": "./assets/images/readings/sofi-canta/illustration.webp",
+  "lines": [
+    "Sofi está en el salón.",
+    "Se pone de pie frente a todos.",
+    "¿Va a cantar ahora?",
+    "Respira y empieza suave.",
+    "Su voz se escucha clara.",
+    "Los niños la miran atentos.",
+    "¡Todos aplauden al final!"
+  ],
+  "active": true
+}
