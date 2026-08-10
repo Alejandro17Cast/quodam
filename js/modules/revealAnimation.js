@@ -10,8 +10,11 @@ export function resetReveal(elements) {
     elements.resultActions
   ];
 
-
   revealElements.forEach((element) => {
+    if (!element) {
+      return;
+    }
+
     element.classList.remove(
       "is-visible"
     );
@@ -19,41 +22,38 @@ export function resetReveal(elements) {
 }
 
 
-export async function revealReading(
-  elements
-) {
-
+export async function revealReading(elements) {
   await wait(180);
 
-  elements.resultEyebrow.classList.add(
+  elements.resultEyebrow?.classList.add(
     "is-visible"
   );
 
 
   await wait(260);
 
-  elements.resultCoverWrapper.classList.add(
+  elements.resultCoverWrapper?.classList.add(
     "is-visible"
   );
 
 
   await wait(420);
 
-  elements.resultTitle.classList.add(
+  elements.resultTitle?.classList.add(
     "is-visible"
   );
 
 
   await wait(220);
 
-  elements.resultDescription.classList.add(
+  elements.resultDescription?.classList.add(
     "is-visible"
   );
 
 
   await wait(250);
 
-  elements.resultActions.classList.add(
+  elements.resultActions?.classList.add(
     "is-visible"
   );
 }
