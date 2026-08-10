@@ -439,3 +439,40 @@
 
   text-transform: uppercase;
 }
+
+@media (max-width: 700px) {
+  .book {
+    width: 96vw;
+  }
+
+  .book__page {
+    min-height: 480px;
+
+    padding:
+      var(--space-lg)
+      var(--space-md);
+
+    border-width: 6px;
+
+    border-radius:
+      10px 20px 20px 10px;
+  }
+
+  .book__ritual {
+    min-height: 360px;
+  }
+
+  .story-preview {
+    min-height: 360px;
+  }
+
+  .story-result__actions {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .story-result__actions .button {
+    width: 100%;
+  }
+}
