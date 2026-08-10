@@ -254,3 +254,45 @@
       rgb(0 0 0 / 48%) 100%
     );
 }
+
+.welcome__eyebrow {
+  animation:
+    welcome-rise
+    700ms
+    100ms
+    ease
+    both;
+}
+
+.brand {
+  animation:
+    welcome-rise
+    800ms
+    250ms
+    ease
+    both,
+    brand-glow
+    4s
+    1s
+    ease-in-out
+    infinite;
+}
+
+.welcome__phrase {
+  animation:
+    welcome-rise
+    800ms
+    400ms
+    ease
+    both;
+}
+
+.welcome__content
+.button {
+  animation:
+    welcome-rise
+    800ms
+    550ms
+    ease
+    both;
+}
