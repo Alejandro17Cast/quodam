@@ -1,0 +1,58 @@
+.button {
+  min-height: 48px;
+
+  padding:
+    0.85rem
+    1.6rem;
+
+  border-radius: var(--radius-pill);
+
+  cursor: pointer;
+
+  font-weight: 700;
+
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--color-gold-300);
+  outline-offset: 4px;
+}
+
+
+.button--primary {
+  color: var(--color-night-950);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-gold-300),
+      var(--color-gold-500)
+    );
+
+  box-shadow:
+    0 8px 25px rgb(212 175 55 / 30%);
+}
+
+
+.button--secondary {
+  color: var(--color-parchment-100);
+
+  border:
+    1px solid
+    rgb(255 255 255 / 25%);
+
+  background:
+    rgb(255 255 255 / 8%);
+}

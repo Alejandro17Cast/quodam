@@ -1,0 +1,21 @@
+{
+  "id": "pinocho",
+  "title": "Pinocho",
+  "description": "Una marioneta de madera comienza una aventura llena de decisiones y aprendizajes.",
+  "category": "Clásicos",
+  "recommendedAge": {
+    "min": 6,
+    "max": 10
+  },
+  "estimatedReadingTime": 10,
+  "thumbnail": "./assets/images/stories/pinocho/thumbnail.webp",
+  "cover": "./assets/images/stories/pinocho/cover.webp",
+  "values": [
+    "Honestidad",
+    "Responsabilidad"
+  ],
+  "content": [
+    "En un pequeño taller vivía un carpintero llamado Geppetto."
+  ],
+  "active": true
+}
