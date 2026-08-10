@@ -163,3 +163,28 @@
       var(--color-night-950)
     );
 }
+
+@media (max-width: 600px) {
+  .scene {
+    padding:
+      var(--space-lg)
+      var(--space-md);
+  }
+
+  .welcome__content {
+    width: 100%;
+  }
+
+  .welcome__eyebrow {
+    font-size: 0.7rem;
+  }
+
+  .welcome__phrase {
+    max-width: 320px;
+  }
+
+  .welcome__phrase span {
+    margin-top:
+      var(--space-xs);
+  }
+}
