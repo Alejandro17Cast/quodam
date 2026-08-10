@@ -1,5 +1,12 @@
 [
-  "./data/stories/caperucita.json",
-  "./data/stories/los-tres-cerditos.json",
-  "./data/stories/pinocho.json"
+  "./data/readings/lola-la-lora.json",
+  "./data/readings/mama-y-tom.json",
+  "./data/readings/ana-y-luis.json",
+  "./data/readings/el-perro-en-el-patio.json",
+  "./data/readings/un-dia-en-el-rio.json",
+  "./data/readings/la-noche.json",
+  "./data/readings/juan-va-a-la-escuela.json",
+  "./data/readings/la-vaca-en-la-granja.json",
+  "./data/readings/sofi-canta.json",
+  "./data/readings/el-pez-en-el-mar.json"
 ]
