@@ -5,16 +5,19 @@ import {
 
 const elements = {
   container:
-    document.querySelector("#reading-container"),
+    document.querySelector(
+      "#reading-container"
+    ),
 
   error:
-    document.querySelector("#reading-error")
+    document.querySelector(
+      "#reading-error"
+    )
 };
 
 
 async function initializeReader() {
   try {
-
     const readingId =
       getReadingIdFromURL();
 
@@ -46,10 +49,11 @@ async function initializeReader() {
     }
 
 
-    renderReading(reading);
+    renderReading(
+      reading
+    );
 
   } catch (error) {
-
     console.error(
       "Error al abrir la lectura:",
       error
@@ -66,21 +70,42 @@ function getReadingIdFromURL() {
       window.location.search
     );
 
-  return params.get("id");
+
+  return params.get(
+    "id"
+  );
+}
+
+
+function getIllustrationPath(reading) {
+  if (!reading?.image) {
+    return null;
+  }
+
+
+  return `../assets/images/readings/${reading.image}/illustration.png`;
 }
 
 
 function renderReading(reading) {
-
   document.title =
     `${reading.title} — Quodam`;
+
+
+  const illustrationPath =
+    getIllustrationPath(
+      reading
+    );
 
 
   const linesHTML =
     reading.lines
       .map(
-        (line) => `
-          <p class="reading-text__line">
+        (line, index) => `
+          <p
+            class="reading-text__line"
+            data-line="${index + 1}"
+          >
             ${escapeHTML(line)}
           </p>
         `
@@ -91,55 +116,96 @@ function renderReading(reading) {
   elements.container.innerHTML = `
     <article class="reading-text">
 
-      <header class="reading-text__header">
+      <header
+        class="reading-text__header"
+      >
 
-        <p class="reading-text__category">
-          ${escapeHTML(reading.category)}
+        <p
+          class="reading-text__category"
+        >
+          ${escapeHTML(
+            reading.category ?? "Lectura"
+          )}
         </p>
 
-        <h1 class="reading-text__title">
-          ${escapeHTML(reading.title)}
+
+        <h1
+          class="reading-text__title"
+        >
+          ${escapeHTML(
+            reading.title
+          )}
         </h1>
 
-        <p class="reading-text__meta">
-          Nivel ${reading.level}
-          ·
-          ${reading.estimatedReadingTime} min
+
+        <p
+          class="reading-text__meta"
+        >
+          Nivel ${
+            reading.level ?? 1
+          }
+
+          <span aria-hidden="true">
+            ·
+          </span>
+
+          ${
+            reading.estimatedReadingTime ?? 1
+          } min
         </p>
 
       </header>
 
 
       ${
-        reading.illustration
+        illustrationPath
           ? `
-            <div class="reading-text__illustration">
+            <figure
+              class="reading-text__illustration"
+            >
 
               <img
-                src=".${reading.illustration}"
+                src="${illustrationPath}"
                 alt="Ilustración de ${escapeHTML(
                   reading.title
                 )}"
               >
 
-            </div>
+            </figure>
           `
           : ""
       }
 
 
-      <div class="reading-text__body">
+      <div
+        class="reading-text__body"
+      >
 
         ${linesHTML}
 
       </div>
 
 
-      <footer class="reading-text__footer">
+      <footer
+        class="reading-text__footer"
+      >
 
-        <p>
-          Fin
-        </p>
+        <div
+          class="reading-text__ending"
+        >
+
+          <span
+            aria-hidden="true"
+          >
+            ✦
+          </span>
+
+          <p>
+            Fin
+          </p>
+
+        </div>
+
 
         <a
           href="../index.html"
@@ -156,20 +222,29 @@ function renderReading(reading) {
 
 
 function showError() {
+  if (elements.container) {
+    elements.container.hidden =
+      true;
+  }
 
-  elements.container.hidden = true;
 
-  elements.error.hidden = false;
+  if (elements.error) {
+    elements.error.hidden =
+      false;
+  }
 }
 
 
 function escapeHTML(value) {
-
   const element =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   element.textContent =
-    String(value);
+    String(value ?? "");
+
 
   return element.innerHTML;
 }
