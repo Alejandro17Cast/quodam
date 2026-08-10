@@ -149,8 +149,19 @@ function handleInitialNavigation() {
       window.location.search
     );
 
+
   const shouldDiscover =
     params.get("discover") === "true";
+
+
+  const previousReadingId =
+    params.get("previous");
+
+
+  if (previousReadingId) {
+    state.previousReadingId =
+      previousReadingId;
+  }
 
 
   if (!shouldDiscover) {
@@ -158,11 +169,6 @@ function handleInitialNavigation() {
   }
 
 
-  /*
-   * Quitamos ?discover=true para que
-   * recargar la página posteriormente
-   * no vuelva a iniciar automáticamente.
-   */
   window.history.replaceState(
     {},
     "",
