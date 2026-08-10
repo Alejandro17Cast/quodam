@@ -2,15 +2,38 @@ import { randomItem } from "../utils/random.js";
 
 
 export async function loadReadings(indexPath) {
-  const indexResponse = await fetch(indexPath);
+  /*
+   * Convertimos la ruta recibida en una URL absoluta.
+   *
+   * Ejemplo desde index.html:
+   * ./data/readings-index.json
+   *
+   * se convierte en:
+   * http://localhost:5500/data/readings-index.json
+   *
+   * Desde lectura.html:
+   * ../data/readings-index.json
+   *
+   * termina apuntando exactamente al mismo archivo.
+   */
+  const indexURL = new URL(
+    indexPath,
+    window.location.href
+  );
+
+
+  const indexResponse = await fetch(indexURL);
 
   if (!indexResponse.ok) {
     throw new Error(
-      `No se pudo cargar el índice de lecturas: ${indexPath}`
+      `No se pudo cargar el índice de lecturas: ${indexURL}`
     );
   }
 
-  const readingPaths = await indexResponse.json();
+
+  const readingPaths =
+    await indexResponse.json();
+
 
   if (!Array.isArray(readingPaths)) {
     throw new Error(
@@ -19,31 +42,64 @@ export async function loadReadings(indexPath) {
   }
 
 
-  const results = await Promise.allSettled(
-    readingPaths.map((path) =>
-      loadReading(path)
-    )
-  );
+  /*
+   * Cada ruta del JSON se resuelve tomando como
+   * referencia readings-index.json.
+   *
+   * Así no importa si estamos en:
+   *
+   * /index.html
+   *
+   * o
+   *
+   * /pages/lectura.html
+   */
+  const readingURLs =
+    readingPaths.map(
+      (path) =>
+        new URL(path, indexURL)
+    );
+
+
+  const results =
+    await Promise.allSettled(
+      readingURLs.map(
+        (url) => loadReading(url)
+      )
+    );
 
 
   const readings = [];
 
-  results.forEach((result, index) => {
-    if (result.status === "fulfilled") {
-      readings.push(result.value);
-      return;
+
+  results.forEach(
+    (result, index) => {
+
+      if (
+        result.status === "fulfilled"
+      ) {
+        readings.push(
+          result.value
+        );
+
+        return;
+      }
+
+
+      console.warn(
+        "Quodam ignoró una lectura que no pudo cargarse:",
+        readingURLs[index].href,
+        result.reason
+      );
     }
-
-    console.warn(
-      `Quodam ignoró una lectura que no pudo cargarse: ${readingPaths[index]}`,
-      result.reason
-    );
-  });
-
-
-  const activeReadings = readings.filter(
-    (reading) => reading.active
   );
+
+
+  const activeReadings =
+    readings.filter(
+      (reading) =>
+        reading.active
+    );
 
 
   if (!activeReadings.length) {
@@ -52,32 +108,48 @@ export async function loadReadings(indexPath) {
     );
   }
 
+
   return activeReadings;
 }
 
 
-async function loadReading(path) {
-  const response = await fetch(path);
+async function loadReading(url) {
+  const response =
+    await fetch(url);
+
 
   if (!response.ok) {
     throw new Error(
-      `No se encontró el archivo (${response.status}).`
+      `No se encontró la lectura (${response.status}).`
     );
   }
 
 
-  const reading = await response.json();
+  const reading =
+    await response.json();
 
-  validateReading(reading, path);
+
+  validateReading(
+    reading,
+    url.href
+  );
+
 
   return reading;
 }
 
 
-function validateReading(reading, path) {
-  if (!reading || typeof reading !== "object") {
+function validateReading(
+  reading,
+  source
+) {
+
+  if (
+    !reading ||
+    typeof reading !== "object"
+  ) {
     throw new Error(
-      `${path} no contiene una lectura válida.`
+      `${source} no contiene una lectura válida.`
     );
   }
 
@@ -89,25 +161,34 @@ function validateReading(reading, path) {
   ];
 
 
-  for (const field of requiredFields) {
+  for (
+    const field of requiredFields
+  ) {
+
     if (!reading[field]) {
       throw new Error(
-        `${path} no contiene el campo obligatorio "${field}".`
+        `${source} no contiene el campo obligatorio "${field}".`
       );
     }
   }
 
 
-  if (!Array.isArray(reading.lines)) {
+  if (
+    !Array.isArray(
+      reading.lines
+    )
+  ) {
     throw new Error(
-      `${path}: "lines" debe ser un arreglo.`
+      `${source}: "lines" debe ser un arreglo.`
     );
   }
 
 
-  if (!reading.lines.length) {
+  if (
+    reading.lines.length === 0
+  ) {
     throw new Error(
-      `${path} no contiene líneas de lectura.`
+      `${source} no contiene líneas de lectura.`
     );
   }
 }
@@ -117,6 +198,7 @@ export function selectRandomReading(
   readings,
   previousReadingId = null
 ) {
+
   if (!readings.length) {
     throw new Error(
       "No existen lecturas disponibles."
@@ -129,12 +211,14 @@ export function selectRandomReading(
   }
 
 
-  const candidates = previousReadingId
-    ? readings.filter(
-        (reading) =>
-          reading.id !== previousReadingId
-      )
-    : readings;
+  const candidates =
+    previousReadingId
+      ? readings.filter(
+          (reading) =>
+            reading.id !==
+            previousReadingId
+        )
+      : readings;
 
 
   return randomItem(candidates);
