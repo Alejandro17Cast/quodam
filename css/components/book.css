@@ -528,3 +528,40 @@
     width: 100%;
   }
 }
+
+.story-result__star {
+  display: block;
+
+  margin-bottom:
+    var(--space-sm);
+
+  color:
+    var(--color-gold-500);
+
+  font-size:
+    2.2rem;
+
+  opacity: 0;
+
+  transform:
+    scale(0.5)
+    rotate(-30deg);
+}
+
+.story-result__star.is-visible {
+  opacity: 1;
+
+  transform:
+    scale(1)
+    rotate(0deg);
+
+  transition:
+    opacity 500ms ease,
+    transform 600ms
+      cubic-bezier(
+        0.34,
+        1.56,
+        0.64,
+        1
+      );
+}
