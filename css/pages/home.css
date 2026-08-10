@@ -66,18 +66,19 @@
 
 
 .brand {
-  font-family: var(--font-display);
+  font-family: var(--font-logo);
 
   font-size:
     clamp(4rem, 14vw, 8rem);
 
-  font-weight: 500;
+  font-weight: 600;
 
   line-height: 1;
 
-  letter-spacing: -0.03em;
-}
+  letter-spacing: 0.08em;
 
+  text-transform: uppercase;
+}
 
 .welcome__phrase {
   margin:
