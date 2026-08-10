@@ -4,6 +4,10 @@ console.log("main.js cargado correctamente");
 import { CONFIG } from "./config.js";
 
 import {
+  preloadReadingImages
+} from "./modules/imagePreloader.js";
+
+import {
   wait,
   showElement,
   hideElement
@@ -152,6 +156,9 @@ async function initialize() {
         CONFIG.readingsIndexPath
       );
 
+      await preloadReadingImages(
+  state.readings
+);
 
     elements.discoverButton.addEventListener(
       "click",
