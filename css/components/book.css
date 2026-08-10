@@ -274,3 +274,18 @@
     cubic-bezier(0.45, 0, 0.55, 1)
     forwards;
 }
+
+.story-preview--changing {
+  animation:
+    preview-change
+    180ms
+    ease
+    both;
+}
+.story-result {
+  transform-origin: center;
+}
+
+.story-result[hidden] {
+  display: none;
+}
