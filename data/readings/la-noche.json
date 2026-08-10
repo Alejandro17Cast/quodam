@@ -1,0 +1,19 @@
+{
+  "id": "la-noche",
+  "title": "La noche",
+  "category": "Naturaleza",
+  "level": 1,
+  "estimatedReadingTime": 1,
+  "thumbnail": "./assets/images/readings/la-noche/thumbnail.webp",
+  "illustration": "./assets/images/readings/la-noche/illustration.webp",
+  "lines": [
+    "La noche llega en silencio.",
+    "El cielo se ve oscuro.",
+    "La luna aparece poco a poco.",
+    "¿La ves allá arriba?",
+    "Las estrellas brillan alrededor.",
+    "Todo está tranquilo.",
+    "¡Qué bonita noche!"
+  ],
+  "active": true
+}
