@@ -129,6 +129,10 @@ async function startDiscovery() {
   hideElement(elements.preview);
   hideElement(elements.result);
 
+  resetReveal(
+  elements
+);
+
   elements.liveRegion.textContent =
     "Quodam está buscando una lectura para ti.";
 
