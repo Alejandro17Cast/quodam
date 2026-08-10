@@ -1,0 +1,19 @@
+{
+  "id": "lola-la-lora",
+  "title": "Lola la lora",
+  "category": "Animales",
+  "level": 1,
+  "estimatedReadingTime": 1,
+  "thumbnail": "./assets/images/readings/lola-la-lora/thumbnail.webp",
+  "illustration": "./assets/images/readings/lola-la-lora/illustration.webp",
+  "lines": [
+    "Lola la lora vuela en el cielo.",
+    "Va despacio sobre el lago azul.",
+    "¿A dónde irá Lola hoy?",
+    "El pato Pepe la mira desde el agua.",
+    "Lola canta suave: la, la, la.",
+    "El sol brilla en la mañana.",
+    "¡Qué día tan bonito!"
+  ],
+  "active": true
+}
