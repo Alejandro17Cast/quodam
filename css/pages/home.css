@@ -188,3 +188,69 @@
       var(--space-xs);
   }
 }
+
+#welcome {
+  position: relative;
+  overflow: hidden;
+
+  color: var(--color-parchment-100);
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgb(70 92 128 / 70%),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 20% 80%,
+      rgb(212 175 55 / 8%),
+      transparent 30%
+    ),
+    linear-gradient(
+      160deg,
+      #101827,
+      #17223b 45%,
+      #0b1220
+    );
+}
+
+#welcome::before {
+  content: "";
+
+  position: absolute;
+  inset: -50%;
+
+  pointer-events: none;
+
+  opacity: 0.25;
+
+  background-image:
+    radial-gradient(
+      circle,
+      rgb(255 255 255 / 45%) 1px,
+      transparent 1.5px
+    );
+
+  background-size:
+    45px 45px;
+
+  animation:
+    ambient-stars
+    35s linear infinite;
+}
+
+#welcome::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 30%,
+      rgb(0 0 0 / 48%) 100%
+    );
+}

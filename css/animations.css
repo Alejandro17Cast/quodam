@@ -139,3 +139,18 @@
     cubic-bezier(0.22, 1, 0.36, 1)
     both;
 }
+@keyframes ambient-stars {
+  from {
+    transform:
+      translate3d(0, 0, 0);
+  }
+
+  to {
+    transform:
+      translate3d(
+        45px,
+        45px,
+        0
+      );
+  }
+}
