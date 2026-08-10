@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
 
@@ -15,8 +16,12 @@
 
   <title>Quodam — Descubre una lectura</title>
 
-  <link rel="stylesheet" href="./css/main.css">
+  <link
+    rel="stylesheet"
+    href="./css/main.css"
+  >
 </head>
+
 
 <body>
 
@@ -38,6 +43,7 @@
           Una biblioteca diferente
         </p>
 
+
         <h1
           id="welcome-title"
           class="brand"
@@ -45,10 +51,14 @@
           Quodam
         </h1>
 
+
         <p class="welcome__phrase">
           Las historias no se buscan,
-          <span>ellas te encuentran.</span>
+          <span>
+            ellas te encuentran.
+          </span>
         </p>
+
 
         <button
           id="discover-button"
@@ -61,6 +71,7 @@
       </div>
 
     </section>
+
 
 
     <!-- =========================
@@ -93,7 +104,9 @@
         <div class="book__page">
 
 
-          <!-- Hoja animada -->
+          <!-- =========================
+               HOJA ANIMADA
+          ========================== -->
 
           <div
             id="page-turn"
@@ -102,8 +115,9 @@
           ></div>
 
 
+
           <!-- =========================
-               FRASE INICIAL
+               FRASE RITUAL
           ========================== -->
 
           <div
@@ -117,6 +131,7 @@
             </p>
 
           </div>
+
 
 
           <!-- =========================
@@ -151,68 +166,84 @@
           </div>
 
 
+
           <!-- =========================
                RESULTADO
           ========================== -->
-<article
-  id="story-result"
-  class="story-result"
-  hidden
->
 
-  <p
-    id="result-eyebrow"
-    class="story-result__eyebrow"
-  >
-    Lectura encontrada
-  </p>
+          <article
+            id="story-result"
+            class="story-result"
+            hidden
+          >
 
-  <div
-    id="result-cover-wrapper"
-    class="story-result__cover-wrapper"
-  >
-    <img
-      id="result-image"
-      class="story-result__cover"
-      src=""
-      alt=""
-    >
-  </div>
+            <p
+              id="result-eyebrow"
+              class="story-result__eyebrow"
+            >
+              Lectura encontrada
+            </p>
 
-  <h2
-    id="result-title"
-    class="story-result__title"
-  ></h2>
 
-  <p
-    id="result-description"
-    class="story-result__description"
-  ></p>
+            <div
+              id="result-cover-wrapper"
+              class="story-result__cover-wrapper"
+            >
 
-  <div
-    id="result-actions"
-    class="story-result__actions"
-  >
+              <img
+                id="result-image"
+                class="story-result__cover"
+                src=""
+                alt=""
+              >
 
-    <button
-      id="read-button"
-      class="button button--primary"
-      type="button"
-    >
-      Comenzar a leer
-    </button>
+            </div>
 
-    <button
-      id="again-button"
-      class="button button--secondary"
-      type="button"
-    >
-      Descubrir otra lectura
-    </button>
 
-  </div>
+            <h2
+              id="result-title"
+              class="story-result__title"
+            ></h2>
 
-</article>
+
+            <p
+              id="result-description"
+              class="story-result__description"
+            ></p>
+
+
+            <div
+              id="result-actions"
+              class="story-result__actions"
+            >
+
+              <button
+                id="read-button"
+                class="button button--primary"
+                type="button"
+              >
+                Comenzar a leer
+              </button>
+
+
+              <button
+                id="again-button"
+                class="button button--secondary"
+                type="button"
+              >
+                Descubrir otra lectura
+              </button>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
 
 
     <!-- =========================
@@ -229,10 +260,15 @@
   </main>
 
 
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
+
   <script
     type="module"
     src="./js/main.js"
   ></script>
 
 </body>
+
 </html>
