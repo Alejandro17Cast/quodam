@@ -1,0 +1,19 @@
+{
+  "id": "ana-y-luis",
+  "title": "Ana y Luis",
+  "category": "Diversión",
+  "level": 1,
+  "estimatedReadingTime": 1,
+  "thumbnail": "./assets/images/readings/ana-y-luis/thumbnail.webp",
+  "illustration": "./assets/images/readings/ana-y-luis/illustration.webp",
+  "lines": [
+    "Ana y Luis van al parque.",
+    "Llevan una pelota roja.",
+    "Corren por el pasto verde.",
+    "¿Quién lanza primero?",
+    "Ana patea la pelota.",
+    "Luis la atrapa con alegría.",
+    "¡Les gusta mucho jugar!"
+  ],
+  "active": true
+}
