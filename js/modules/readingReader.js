@@ -107,19 +107,32 @@ function renderReading(reading) {
     );
 
 
-  const linesHTML =
-    reading.lines
-      .map(
-        (line, index) => `
+ const linesHTML =
+  reading.lines
+    .map(
+      (line, index) => {
+        const isQuestion =
+          line.includes("?") ||
+          line.includes("¿");
+
+
+        const lineClass =
+          isQuestion
+            ? "reading-text__line reading-text__line--question"
+            : "reading-text__line";
+
+
+        return `
           <p
-            class="reading-text__line"
+            class="${lineClass}"
             data-line="${index + 1}"
           >
             ${escapeHTML(line)}
           </p>
-        `
-      )
-      .join("");
+        `;
+      }
+    )
+    .join("");
 
 const rediscoverURL =
   `../index.html?discover=true&previous=${encodeURIComponent(
