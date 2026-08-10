@@ -17,108 +17,191 @@
 }
 
 
+/* =========================
+   CABECERA
+========================= */
+
 .reader__header {
   display: flex;
 
   align-items: center;
   justify-content: space-between;
 
-  width: min(100%, 900px);
+  width:
+    min(100%, 900px);
 
-  margin-inline: auto;
-  margin-bottom: var(--space-2xl);
+  margin:
+    0 auto
+    var(--space-xl);
 }
 
 
-.reader__back {
-  color: var(--color-night-800);
-
-  font-weight: 700;
+.reader__back,
+.reader__brand {
+  color:
+    var(--color-night-800);
 
   text-decoration: none;
 }
 
 
-.reader__back:hover {
-  text-decoration: underline;
+.reader__back {
+  font-weight: 700;
 }
 
 
 .reader__brand {
-  color: var(--color-brown-700);
+  font-family:
+    var(--font-logo);
 
-  font-family: var(--font-display);
+  font-size: 1.35rem;
 
-  font-size: 1.5rem;
+  font-weight: 600;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
 }
 
 
+.reader__back:hover,
+.reader__brand:hover {
+  color:
+    var(--color-brown-700);
+}
+
+
+/* =========================
+   CONTENIDO
+========================= */
+
 .reader__content {
-  width: min(100%, 760px);
+  width:
+    min(100%, 760px);
 
   margin-inline: auto;
 }
 
 
-.reader__status {
-  text-align: center;
+.reader__loading {
+  display: grid;
 
-  color: var(--color-brown-700);
+  min-height: 50vh;
+
+  place-items: center;
+
+  align-content: center;
+
+  gap: var(--space-md);
+
+  color:
+    var(--color-brown-700);
+
+  text-align: center;
 }
+
+
+.reader__loading-icon {
+  color:
+    var(--color-gold-500);
+
+  font-size: 2rem;
+}
+
+
+/* =========================
+   TARJETA
+========================= */
 
 .reading-text {
   padding:
-    clamp(1.5rem, 5vw, 4rem);
+    clamp(
+      1.5rem,
+      5vw,
+      4rem
+    );
 
-  border-radius: var(--radius-lg);
+  border:
+    1px solid
+    rgb(111 78 55 / 10%);
 
-  background: var(--color-parchment-100);
+  border-radius:
+    var(--radius-lg);
 
-  box-shadow: var(--shadow-soft);
+  background:
+    var(--color-parchment-100);
+
+  box-shadow:
+    var(--shadow-soft);
 }
 
 
+/* =========================
+   CABECERA DE LECTURA
+========================= */
+
 .reading-text__header {
-  margin-bottom: var(--space-xl);
+  margin-bottom:
+    var(--space-xl);
 
   text-align: center;
 }
 
 
 .reading-text__category {
-  margin-bottom: var(--space-sm);
+  margin-bottom:
+    var(--space-sm);
 
-  color: var(--color-brown-700);
+  color:
+    var(--color-brown-700);
 
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+
   font-weight: 800;
 
-  letter-spacing: 0.15em;
+  letter-spacing: 0.16em;
 
   text-transform: uppercase;
 }
 
 
 .reading-text__title {
-  font-family: var(--font-display);
+  color:
+    var(--color-night-900);
+
+  font-family:
+    var(--font-display);
 
   font-size:
-    clamp(2.4rem, 7vw, 4rem);
+    clamp(
+      2.4rem,
+      7vw,
+      4rem
+    );
 
-  line-height: 1.1;
+  font-weight: 600;
+
+  line-height: 1.05;
 }
 
 
 .reading-text__meta {
-  margin-top: var(--space-sm);
+  margin-top:
+    var(--space-sm);
 
   color: #75695d;
 
   font-size: 0.9rem;
 }
 
+
+/* =========================
+   ILUSTRACIÓN
+========================= */
+
 .reading-text__illustration {
-  width: min(100%, 480px);
+  width:
+    min(100%, 520px);
 
   margin:
     0 auto
@@ -126,73 +209,172 @@
 
   overflow: hidden;
 
-  border-radius: var(--radius-md);
+  border-radius:
+    var(--radius-md);
 
-  box-shadow: var(--shadow-soft);
+  background:
+    var(--color-parchment-200);
+
+  box-shadow:
+    var(--shadow-soft);
 }
 
 
 .reading-text__illustration img {
   width: 100%;
-  height: auto;
+
+  aspect-ratio:
+    3 / 4;
+
+  object-fit: cover;
 }
 
+
+/* =========================
+   TEXTO
+========================= */
 
 .reading-text__body {
   display: grid;
 
-  gap: var(--space-md);
+  gap:
+    clamp(
+      0.75rem,
+      2vw,
+      1.1rem
+    );
 
-  max-width: 620px;
+  max-width: 580px;
 
   margin-inline: auto;
 }
 
 
 .reading-text__line {
-  color: var(--color-night-950);
+  color:
+    var(--color-night-950);
 
-  font-family: var(--font-display);
+  font-family:
+    var(--font-body);
 
   font-size:
-    clamp(1.35rem, 3vw, 1.75rem);
+    clamp(
+      1.25rem,
+      3vw,
+      1.6rem
+    );
 
-  line-height: 1.75;
+  font-weight: 500;
 
-  text-wrap: pretty;
+  line-height: 1.7;
+
+  letter-spacing:
+    0.01em;
 }
 
+
+/* Preguntas */
+
+.reading-text__line:has(
+  + .reading-text__line
+) {
+  transition:
+    background-color
+    var(--transition-fast);
+}
+
+
+/* =========================
+   FINAL
+========================= */
 
 .reading-text__footer {
   display: grid;
 
   justify-items: center;
 
-  gap: var(--space-lg);
+  gap:
+    var(--space-xl);
 
-  margin-top: var(--space-2xl);
+  margin-top:
+    var(--space-2xl);
+
+  padding-top:
+    var(--space-xl);
+
+  border-top:
+    1px solid
+    rgb(111 78 55 / 12%);
 
   text-align: center;
 }
 
 
-.reading-text__footer p {
-  color: var(--color-brown-700);
+.reading-text__ending {
+  display: grid;
 
-  font-family: var(--font-display);
+  justify-items: center;
 
-  font-size: 1.8rem;
+  gap: var(--space-xs);
+
+  color:
+    var(--color-brown-700);
 }
 
+
+.reading-text__ending span {
+  color:
+    var(--color-gold-500);
+}
+
+
+.reading-text__ending p {
+  font-family:
+    var(--font-display);
+
+  font-size: 2rem;
+}
+
+
+/* =========================
+   ERROR
+========================= */
 
 .reader__error {
-  width: min(100%, 600px);
+  width:
+    min(100%, 560px);
 
-  margin-inline: auto;
-
-  padding: var(--space-2xl);
+  margin:
+    var(--space-3xl)
+    auto;
 
   text-align: center;
+}
+
+
+.reader__error-icon {
+  display: block;
+
+  margin-bottom:
+    var(--space-md);
+
+  color:
+    var(--color-gold-500);
+
+  font-size: 2rem;
+}
+
+
+.reader__error h1 {
+  font-family:
+    var(--font-display);
+
+  font-size:
+    clamp(
+      2rem,
+      6vw,
+      3rem
+    );
 }
 
 
@@ -201,4 +383,38 @@
     var(--space-md)
     0
     var(--space-xl);
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (
+  max-width: 600px
+) {
+  .reader {
+    padding:
+      var(--space-md)
+      var(--space-sm)
+      var(--space-xl);
+  }
+
+
+  .reader__header {
+    margin-bottom:
+      var(--space-lg);
+  }
+
+
+  .reading-text {
+    padding:
+      var(--space-lg)
+      var(--space-md);
+  }
+
+
+  .reading-text__line {
+    line-height: 1.65;
+  }
 }
