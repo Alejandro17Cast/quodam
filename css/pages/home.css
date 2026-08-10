@@ -32,15 +32,66 @@
 ========================= */
 
 #welcome {
+  position: relative;
+
+  overflow: hidden;
+
   color: var(--color-parchment-100);
 
   background:
     radial-gradient(
       circle at 50% 25%,
-      #334d75,
-      var(--color-night-900) 45%,
+      rgb(71 96 133 / 85%),
+      rgb(23 34 59 / 95%) 45%,
       var(--color-night-950)
     );
+}
+
+#welcome::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.18;
+
+  background-image:
+    radial-gradient(
+      circle,
+      rgb(255 255 255 / 60%) 1px,
+      transparent 1px
+    );
+
+  background-size: 32px 32px;
+}
+
+
+#welcome::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent 55%,
+      rgb(0 0 0 / 30%)
+    );
+}
+
+
+.welcome__content {
+  position: relative;
+  z-index: 1;
+
+  width: min(100%, 720px);
+
+  text-align: center;
 }
 
 
