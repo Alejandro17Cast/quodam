@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Lectura interactiva en Quodam."
+  >
+
+  <title>Quodam — Lectura</title>
+
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+
+<body>
+
+  <main class="reader">
+
+    <header class="reader__header">
+
+      <a
+        href="../index.html"
+        class="reader__back"
+        aria-label="Volver al inicio"
+      >
+        ← Volver
+      </a>
+
+      <span class="reader__brand">
+        Quodam
+      </span>
+
+    </header>
+
+
+    <section
+      id="reading-container"
+      class="reader__content"
+      aria-live="polite"
+    >
+
+      <p class="reader__status">
+        Preparando tu lectura...
+      </p>
+
+    </section>
+
+
+    <section
+      id="reading-error"
+      class="reader__error"
+      hidden
+    >
+
+      <h1>
+        No pudimos encontrar esta lectura
+      </h1>
+
+      <p>
+        Puede que la lectura ya no esté disponible.
+      </p>
+
+      <a
+        href="../index.html"
+        class="button button--primary"
+      >
+        Descubrir otra lectura
+      </a>
+
+    </section>
+
+  </main>
+
+
+  <script
+    type="module"
+    src="../js/modules/readingReader.js"
+  ></script>
+
+</body>
+</html>
