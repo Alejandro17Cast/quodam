@@ -235,11 +235,11 @@ function renderReading(reading) {
         >
 
           <a
-            href="../index.html"
-            class="button button--primary"
-          >
-            Descubrir otra lectura
-          </a>
+  href="../index.html?discover=true"
+  class="button button--primary"
+>
+  Descubrir otra lectura
+</a>
 
 
           <a
