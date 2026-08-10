@@ -446,18 +446,70 @@
   }
 
   .book__page {
-    min-height: 480px;
+  position: relative;
 
-    padding:
-      var(--space-lg)
-      var(--space-md);
+  min-height: 520px;
 
-    border-width: 6px;
+  padding:
+    clamp(
+      1.5rem,
+      5vw,
+      4rem
+    );
 
-    border-radius:
-      10px 20px 20px 10px;
-  }
+  overflow: hidden;
 
+  border:
+    8px solid
+    #513725;
+
+  border-radius:
+    10px 30px 30px 10px;
+
+  color:
+    var(--color-night-950);
+
+  background:
+    linear-gradient(
+      90deg,
+      #d5bd92 0%,
+      #efe2c6 4%,
+      #faf5e8 10%,
+      #faf5e8 90%,
+      #e4d1aa 97%,
+      #cbb084 100%
+    );
+
+  box-shadow:
+    0 35px 80px
+      rgb(0 0 0 / 45%),
+    inset 12px 0 20px
+      rgb(80 50 25 / 12%),
+    inset -6px 0 16px
+      rgb(80 50 25 / 10%);
+}
+.book__page::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 50%;
+
+  width: 2px;
+
+  pointer-events: none;
+
+  opacity: 0.2;
+
+  background:
+    linear-gradient(
+      transparent,
+      var(--color-brown-700),
+      transparent
+    );
+} 
   .book__ritual {
     min-height: 360px;
   }
