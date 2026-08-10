@@ -424,3 +424,18 @@
 .story-result__cover.is-loaded {
   opacity: 1;
 }
+.story-preview__status {
+  margin-bottom:
+    var(--space-md);
+
+  color:
+    var(--color-brown-700);
+
+  font-size: 0.8rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
