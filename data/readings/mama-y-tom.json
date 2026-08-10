@@ -1,0 +1,19 @@
+{
+  "id": "mama-y-tom",
+  "title": "Mamá y Tom",
+  "category": "Vida cotidiana",
+  "level": 1,
+  "estimatedReadingTime": 1,
+  "thumbnail": "./assets/images/readings/mama-y-tom/thumbnail.webp",
+  "illustration": "./assets/images/readings/mama-y-tom/illustration.webp",
+  "lines": [
+    "Mamá entra a la cocina.",
+    "Ve algo sobre la mesa.",
+    "¿Quién está ahí?",
+    "Es el gato Tom, muy callado.",
+    "Tom mira el pan y luego a mamá.",
+    "—Miau —dice despacio.",
+    "¡Qué gato tan curioso!"
+  ],
+  "active": true
+}
