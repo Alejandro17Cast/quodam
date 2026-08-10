@@ -1,3 +1,8 @@
+
+import {
+  getReadingImagePath
+} from "../utils/helpers.js";
+
 export function renderPreview(
   reading,
   elements
@@ -8,17 +13,14 @@ export function renderPreview(
 
   void elements.preview.offsetWidth;
 
-
   prepareImage(
     elements.previewImage,
-    reading.thumbnail,
+    getReadingImagePath(reading),
     `Ilustración de ${reading.title}`
   );
 
-
   elements.previewTitle.textContent =
     reading.title;
-
 
   elements.preview.classList.add(
     "story-preview--changing"
@@ -31,14 +33,12 @@ export function renderResult(
 ) {
   prepareImage(
     elements.resultImage,
-    reading.illustration,
+    getReadingImagePath(reading),
     `Ilustración de ${reading.title}`
   );
 
-
   elements.resultTitle.textContent =
     reading.title;
-
 
   elements.resultDescription.textContent =
     `${reading.category} · Nivel ${reading.level} · ${reading.estimatedReadingTime} min`;
