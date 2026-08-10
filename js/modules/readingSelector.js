@@ -223,3 +223,20 @@ export function selectRandomReading(
 
   return randomItem(candidates);
 }
+export function selectDifferentReading(
+  readings,
+  currentReadingId = null
+) {
+  if (readings.length <= 1) {
+    return readings[0];
+  }
+
+  const candidates = currentReadingId
+    ? readings.filter(
+        (reading) =>
+          reading.id !== currentReadingId
+      )
+    : readings;
+
+  return randomItem(candidates);
+}
