@@ -71,12 +71,15 @@ async function initialize() {
     );
 
   } catch (error) {
-    console.error(error);
+    console.error(
+    "Error al inicializar Quodam:",
+    error
+  );
 
-    elements.discoverButton.disabled = true;
+  elements.discoverButton.disabled = true;
 
-    elements.discoverButton.textContent =
-      "No fue posible cargar las lecturas";
+  elements.discoverButton.textContent =
+    "No fue posible cargar las lecturas";
   }
 }
 
