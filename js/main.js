@@ -160,6 +160,12 @@ async function initialize() {
   state.readings
 );
 
+elements.discoverButton.disabled =
+  false;
+
+elements.discoverButton.textContent =
+  "Descubrir una lectura";
+  
     elements.discoverButton.addEventListener(
       "click",
       startDiscovery
