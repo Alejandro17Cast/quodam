@@ -44,6 +44,7 @@
 }
 
 
+
 /* Respeta a personas sensibles al movimiento */
 
 @media (prefers-reduced-motion: reduce) {
@@ -56,5 +57,49 @@
     animation-iteration-count: 1 !important;
 
     transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes open-book {
+  0% {
+    opacity: 0;
+    transform:
+      translateY(40px)
+      rotateY(-25deg)
+      scale(0.9);
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translateY(0)
+      rotateY(0deg)
+      scale(1);
+  }
+}
+
+@keyframes turn-page {
+  0% {
+    opacity: 0;
+    transform:
+      rotateY(0deg);
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      rotateY(-165deg);
   }
 }
