@@ -1,0 +1,19 @@
+{
+  "id": "el-pez-en-el-mar",
+  "title": "El pez en el mar",
+  "category": "Animales",
+  "level": 1,
+  "estimatedReadingTime": 1,
+  "thumbnail": "./assets/images/readings/el-pez-en-el-mar/thumbnail.webp",
+  "illustration": "./assets/images/readings/el-pez-en-el-mar/illustration.webp",
+  "lines": [
+    "Un pez nada en el mar.",
+    "Se mueve entre las rocas.",
+    "El agua es azul y tranquila.",
+    "¿Tiene amigos cerca?",
+    "Otros peces nadan con él.",
+    "Juegan sin hacer ruido.",
+    "¡Viven felices en el mar!"
+  ],
+  "active": true
+}
