@@ -27,6 +27,7 @@ import {
   revealReading
 } from "./modules/revealAnimation.js";
 
+
 const state = {
   readings: [],
   selectedReading: null,
@@ -38,41 +39,62 @@ const state = {
 
 
 const elements = {
+  welcome:
+    document.querySelector("#welcome"),
+
+  discovery:
+    document.querySelector("#discovery"),
+
+  discoverButton:
+    document.querySelector("#discover-button"),
+
+  book:
+    document.querySelector("#book"),
+
+  pageTurn:
+    document.querySelector("#page-turn"),
+
+  ritual:
+    document.querySelector("#ritual"),
+
+  preview:
+    document.querySelector("#story-preview"),
+
+  previewImage:
+    document.querySelector("#preview-image"),
+
+  previewTitle:
+    document.querySelector("#preview-title"),
+
   result:
-  document.querySelector(
-    "#story-result"
-  ),
+    document.querySelector("#story-result"),
 
-resultEyebrow:
-  document.querySelector(
-    "#result-eyebrow"
-  ),
+  resultEyebrow:
+    document.querySelector("#result-eyebrow"),
 
-resultCoverWrapper:
-  document.querySelector(
-    "#result-cover-wrapper"
-  ),
+  resultCoverWrapper:
+    document.querySelector("#result-cover-wrapper"),
 
-resultImage:
-  document.querySelector(
-    "#result-image"
-  ),
+  resultImage:
+    document.querySelector("#result-image"),
 
-resultTitle:
-  document.querySelector(
-    "#result-title"
-  ),
+  resultTitle:
+    document.querySelector("#result-title"),
 
-resultDescription:
-  document.querySelector(
-    "#result-description"
-  ),
+  resultDescription:
+    document.querySelector("#result-description"),
 
-resultActions:
-  document.querySelector(
-    "#result-actions"
-  ),
-  
+  resultActions:
+    document.querySelector("#result-actions"),
+
+  readButton:
+    document.querySelector("#read-button"),
+
+  againButton:
+    document.querySelector("#again-button"),
+
+  liveRegion:
+    document.querySelector("#live-region")
 };
 
 
@@ -97,16 +119,22 @@ async function initialize() {
       openSelectedReading
     );
 
+    console.info(
+      `Quodam iniciado con ${state.readings.length} lecturas.`
+    );
+
   } catch (error) {
     console.error(
       "Error al inicializar Quodam:",
       error
     );
 
-    elements.discoverButton.disabled = true;
+    if (elements.discoverButton) {
+      elements.discoverButton.disabled = true;
 
-    elements.discoverButton.textContent =
-      "No fue posible cargar las lecturas";
+      elements.discoverButton.textContent =
+        "No fue posible cargar las lecturas";
+    }
   }
 }
 
@@ -129,17 +157,12 @@ async function startDiscovery() {
   hideElement(elements.preview);
   hideElement(elements.result);
 
-  resetReveal(
-  elements
-);
+  resetReveal(elements);
 
   elements.liveRegion.textContent =
     "Quodam está buscando una lectura para ti.";
 
 
-  /*
-   * Solo abrimos el libro la primera vez.
-   */
   if (!state.hasOpenedBook) {
     showElement(elements.ritual);
 
@@ -158,11 +181,8 @@ async function startDiscovery() {
     );
 
     hideElement(elements.ritual);
+
   } else {
-    /*
-     * Si el libro ya estaba abierto,
-     * simplemente pasamos una página.
-     */
     await turnPage(
       elements.pageTurn
     );
@@ -187,7 +207,6 @@ async function runSelectionAnimation() {
     round < CONFIG.selection.totalRounds;
     round++
   ) {
-
     const previewReading =
       selectDifferentReading(
         state.readings,
@@ -232,15 +251,11 @@ async function runSelectionAnimation() {
     selectedReading.id;
 
 
-  /*
-   * Mostramos brevemente la lectura
-   * definitiva antes de revelar
-   * el resultado.
-   */
   renderPreview(
     selectedReading,
     elements
   );
+
 
   await wait(600);
 
@@ -298,6 +313,7 @@ function openSelectedReading() {
     )}`;
 }
 
+
 function calculateSelectionDelay(round) {
   const {
     initialDelay,
@@ -336,5 +352,6 @@ function calculateSelectionDelay(round) {
     easedProgress
   );
 }
+
 
 initialize();
