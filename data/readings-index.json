@@ -1,12 +1,12 @@
 [
-  "./data/readings/lola-la-lora.json",
-  "./data/readings/mama-y-tom.json",
-  "./data/readings/ana-y-luis.json",
-  "./data/readings/el-perro-en-el-patio.json",
-  "./data/readings/un-dia-en-el-rio.json",
-  "./data/readings/la-noche.json",
-  "./data/readings/juan-va-a-la-escuela.json",
-  "./data/readings/la-vaca-en-la-granja.json",
-  "./data/readings/sofi-canta.json",
-  "./data/readings/el-pez-en-el-mar.json"
+  "./readings/lola-la-lora.json",
+  "./readings/mama-y-tom.json",
+  "./readings/ana-y-luis.json",
+  "./readings/el-perro-en-el-patio.json",
+  "./readings/un-dia-en-el-rio.json",
+  "./readings/la-noche.json",
+  "./readings/juan-va-a-la-escuela.json",
+  "./readings/la-vaca-en-la-granja.json",
+  "./readings/sofi-canta.json",
+  "./readings/el-pez-en-el-mar.json"
 ]
