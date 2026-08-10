@@ -143,6 +143,35 @@ function validateRequiredElements() {
   }
 }
 
+function handleInitialNavigation() {
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const shouldDiscover =
+    params.get("discover") === "true";
+
+
+  if (!shouldDiscover) {
+    return;
+  }
+
+
+  /*
+   * Quitamos ?discover=true para que
+   * recargar la página posteriormente
+   * no vuelva a iniciar automáticamente.
+   */
+  window.history.replaceState(
+    {},
+    "",
+    window.location.pathname
+  );
+
+
+  startDiscovery();
+}
 
 async function initialize() {
   console.log("initialize ejecutado");
@@ -165,6 +194,8 @@ elements.discoverButton.disabled =
 
 elements.discoverButton.textContent =
   "Descubrir una lectura";
+
+  handleInitialNavigation();
 
     elements.discoverButton.addEventListener(
       "click",
