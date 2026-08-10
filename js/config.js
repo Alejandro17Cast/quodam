@@ -1,12 +1,12 @@
 export const CONFIG = {
-  storiesIndexPath: "./data/stories-index.json",
+  readingsIndexPath: "./data/readings-index.json",
 
-  ritualDuration: 1800,
+  ritualDuration: 1600,
 
   selection: {
-    totalRounds: 18, //cambiar si se quiere que dure más o menos la sesión
-    initialDelay: 90,
-    delayIncrement: 22
+    totalRounds: 16,
+    initialDelay: 80,
+    delayIncrement: 24
   },
 
   avoidImmediateRepeat: true
