@@ -1,0 +1,19 @@
+{
+  "id": "el-perro-en-el-patio",
+  "title": "El perro en el patio",
+  "category": "Animales",
+  "level": 1,
+  "estimatedReadingTime": 1,
+  "thumbnail": "./assets/images/readings/el-perro-en-el-patio/thumbnail.webp",
+  "illustration": "./assets/images/readings/el-perro-en-el-patio/illustration.webp",
+  "lines": [
+    "El perro está en el patio.",
+    "Corre de un lado a otro.",
+    "Luis lo observa desde la puerta.",
+    "¿Quieres jugar? —le dice.",
+    "El perro mueve la cola.",
+    "Luis lanza la pelota.",
+    "¡Empieza el juego!"
+  ],
+  "active": true
+}
