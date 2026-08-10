@@ -13,3 +13,9 @@ export function showElement(element) {
 export function hideElement(element) {
   element.hidden = true;
 }
+
+export function getReadingImagePath(
+  reading
+) {
+  return `./assets/images/readings/${reading.image}/illustration.png`;
+}
