@@ -71,3 +71,45 @@
 .button:disabled:hover {
   transform: none;
 }
+
+.button--primary {
+  position: relative;
+
+  overflow: hidden;
+
+  isolation: isolate;
+}
+
+.button--primary::before {
+  content: "";
+
+  position: absolute;
+
+  top: -50%;
+  left: -80%;
+
+  z-index: -1;
+
+  width: 50%;
+  height: 200%;
+
+  transform:
+    rotate(20deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 30%),
+      transparent
+    );
+
+  transition:
+    left
+    700ms
+    ease;
+}
+
+.button--primary:hover::before {
+  left: 130%;
+}
