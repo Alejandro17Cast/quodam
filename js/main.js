@@ -46,6 +46,12 @@ const state = {
 
 
 const elements = {
+
+    resultStar:
+  document.querySelector(
+    "#result-star"
+  ),
+  
   welcome:
     document.querySelector("#welcome"),
 
