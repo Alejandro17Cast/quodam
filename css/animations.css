@@ -222,3 +222,60 @@
     ease
     both;
 }
+
+@keyframes real-page-turn {
+  0% {
+    transform:
+      rotateY(0deg);
+
+    filter:
+      brightness(1);
+  }
+
+  30% {
+    filter:
+      brightness(0.94);
+
+    box-shadow:
+      -10px 8px 25px
+      rgb(0 0 0 / 12%);
+  }
+
+  55% {
+    transform:
+      rotateY(-90deg);
+
+    filter:
+      brightness(0.88);
+  }
+
+  75% {
+    filter:
+      brightness(0.94);
+  }
+
+  100% {
+    transform:
+      rotateY(-180deg);
+
+    filter:
+      brightness(1);
+  }
+}
+
+@keyframes page-lift {
+  0% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(-4px);
+  }
+
+  100% {
+    transform:
+      translateY(0);
+  }
+}
