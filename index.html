@@ -14,7 +14,12 @@
     content="Quodam, una biblioteca digital de lecturas cortas donde cada texto encuentra a su lector."
   >
 
-  <title>Quodam — Descubre una lectura</title>
+  <meta
+    name="theme-color"
+    content="#111827"
+  >
+
+  <title>Quodam — Lecturas que te encuentran</title>
 
   <link
     rel="stylesheet"
@@ -25,11 +30,11 @@
 
 <body>
 
-  <main class="app">
+  <main id="app" class="app">
 
-    <!-- =========================
+    <!-- ========================================
          BIENVENIDA
-    ========================== -->
+    ========================================= -->
 
     <section
       id="welcome"
@@ -60,14 +65,14 @@
         </p>
 
 
-       <button
-  id="discover-button"
-  class="button button--primary"
-  type="button"
-  disabled
->
-  Preparando Quodam...
-</button>
+        <button
+          id="discover-button"
+          class="button button--primary"
+          type="button"
+          disabled
+        >
+          Preparando Quodam...
+        </button>
 
       </div>
 
@@ -75,9 +80,9 @@
 
 
 
-    <!-- =========================
-         LIBRO / DESCUBRIMIENTO
-    ========================== -->
+    <!-- ========================================
+         DESCUBRIMIENTO
+    ========================================= -->
 
     <section
       id="discovery"
@@ -89,128 +94,372 @@
         id="discovery-title"
         class="sr-only"
       >
-        Buscando una lectura
+        Descubriendo una lectura
       </h2>
 
 
-      <!-- =========================
+      <!-- ======================================
            LIBRO
-      ========================== -->
+      ======================================= -->
 
       <div
-  id="book"
-  class="book book--closed"
->
+        id="book"
+        class="book book--closed"
+      >
 
-  <div class="book__shadow"></div>
-
-  <div class="book__cover book__cover--back"></div>
-
-  <div class="book__sheets">
-
-    <section
-      class="book__page book__page--left"
-      aria-label="Página izquierda"
-    >
-
-      <div class="book__page-inner">
+        <!-- Sombra del libro -->
 
         <div
-          id="left-page-content"
-          class="book__page-content"
-        >
-          <p class="book__ritual-text">
-            Toda lectura espera
-            al lector correcto.
-          </p>
+          class="book__shadow"
+          aria-hidden="true"
+        ></div>
+
+
+        <!-- Cubierta inferior -->
+
+        <div
+          class="book__cover book__cover--back"
+          aria-hidden="true"
+        ></div>
+
+
+
+        <!-- ====================================
+             CONJUNTO DE PÁGINAS
+        ===================================== -->
+
+        <div class="book__sheets">
+
+
+          <!-- ==================================
+               PÁGINA IZQUIERDA
+          =================================== -->
+
+          <section
+            class="book__page book__page--left"
+            aria-label="Página izquierda"
+          >
+
+            <div class="book__page-inner">
+
+
+              <!-- Ritual inicial -->
+
+              <div
+                id="ritual"
+                class="book__ritual"
+              >
+
+                <span
+                  class="book__ritual-symbol"
+                  aria-hidden="true"
+                >
+                  ✦
+                </span>
+
+
+                <p class="book__ritual-text">
+                  Toda lectura espera
+                  al lector correcto.
+                </p>
+
+              </div>
+
+
+              <!--
+                Contenido dinámico.
+
+                En la siguiente fase esta página
+                mostrará parte de la lectura
+                mientras las hojas avanzan.
+              -->
+
+              <div
+                id="left-page-content"
+                class="book__page-content"
+                hidden
+              ></div>
+
+
+              <span
+                id="left-page-number"
+                class="book__page-number"
+                aria-hidden="true"
+              >
+                12
+              </span>
+
+            </div>
+
+          </section>
+
+
+
+          <!-- ==================================
+               PÁGINA DERECHA
+          =================================== -->
+
+          <section
+            class="book__page book__page--right"
+            aria-label="Página derecha"
+          >
+
+            <div class="book__page-inner">
+
+
+              <!-- ==============================
+                   PREVISUALIZACIÓN
+
+                   Se conserva para mantener
+                   compatibilidad con main.js.
+              =============================== -->
+
+              <div
+                id="story-preview"
+                class="story-preview"
+                hidden
+              >
+
+                <p class="story-preview__status">
+                  Buscando entre las páginas...
+                </p>
+
+
+                <div
+                  class="story-preview__image-wrapper"
+                >
+
+                  <img
+                    id="preview-image"
+                    class="story-preview__image"
+                    src=""
+                    alt=""
+                  >
+
+                </div>
+
+
+                <p
+                  id="preview-title"
+                  class="story-preview__title"
+                ></p>
+
+              </div>
+
+
+
+              <!-- ==============================
+                   RESULTADO
+
+                   La lectura ganadora permanece
+                   dentro del libro.
+              =============================== -->
+
+              <article
+                id="story-result"
+                class="story-result"
+                hidden
+              >
+
+                <span
+                  id="result-star"
+                  class="story-result__star"
+                  aria-hidden="true"
+                >
+                  ✦
+                </span>
+
+
+                <p
+                  id="result-eyebrow"
+                  class="story-result__eyebrow"
+                >
+                  La lectura te encontró
+                </p>
+
+
+                <div
+                  id="result-cover-wrapper"
+                  class="story-result__cover-wrapper"
+                >
+
+                  <img
+                    id="result-image"
+                    class="story-result__cover"
+                    src=""
+                    alt=""
+                  >
+
+                </div>
+
+
+                <h2
+                  id="result-title"
+                  class="story-result__title"
+                ></h2>
+
+
+                <p
+                  id="result-description"
+                  class="story-result__description"
+                ></p>
+
+
+                <div
+                  id="result-actions"
+                  class="story-result__actions"
+                >
+
+                  <button
+                    id="read-button"
+                    class="button button--primary"
+                    type="button"
+                  >
+                    Comenzar a leer
+                  </button>
+
+
+                  <button
+                    id="again-button"
+                    class="button button--secondary"
+                    type="button"
+                  >
+                    Descubrir otra lectura
+                  </button>
+
+                </div>
+
+              </article>
+
+
+
+              <!--
+                Página dinámica derecha.
+
+                Se utilizará cuando eliminemos
+                definitivamente story-preview.
+              -->
+
+              <div
+                id="right-page-content"
+                class="book__page-content"
+                hidden
+              ></div>
+
+
+              <span
+                id="right-page-number"
+                class="book__page-number"
+                aria-hidden="true"
+              >
+                13
+              </span>
+
+            </div>
+
+          </section>
+
+
+
+          <!-- ==================================
+               HOJA REAL QUE GIRARÁ
+
+               Esta será la pieza principal de
+               la nueva animación.
+          =================================== -->
+
+          <div
+            id="turning-page"
+            class="book__turning-page"
+            aria-hidden="true"
+          >
+
+            <!-- Cara frontal -->
+
+            <div
+              class="
+                book__turning-face
+                book__turning-face--front
+              "
+            >
+
+              <div
+                id="turning-front-content"
+                class="book__page-content"
+              ></div>
+
+            </div>
+
+
+            <!-- Cara posterior -->
+
+            <div
+              class="
+                book__turning-face
+                book__turning-face--back
+              "
+            >
+
+              <div
+                id="turning-back-content"
+                class="book__page-content"
+              ></div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- ==================================
+               COMPATIBILIDAD TEMPORAL
+
+               main.js y bookAnimation.js todavía
+               utilizan #page-turn.
+
+               Lo eliminaremos cuando migremos
+               completamente a #turning-page.
+          =================================== -->
+
+          <div
+            id="page-turn"
+            class="book__page-turn"
+            aria-hidden="true"
+          ></div>
+
         </div>
 
-        <span
-          class="book__page-number"
+
+
+        <!-- ====================================
+             LOMO
+        ===================================== -->
+
+        <div
+          class="book__spine"
           aria-hidden="true"
-        >
-          12
-        </span>
-
-      </div>
-
-    </section>
-
-
-    <section
-      class="book__page book__page--right"
-      aria-label="Página derecha"
-    >
-
-      <div class="book__page-inner">
-
-        <div
-          id="right-page-content"
-          class="book__page-content"
         ></div>
 
-        <span
-          class="book__page-number"
+
+        <!-- Cubierta decorativa -->
+
+        <div
+          class="book__cover book__cover--front"
           aria-hidden="true"
-        >
-          13
-        </span>
+        ></div>
 
       </div>
 
     </section>
 
 
-    <div
-      id="turning-page"
-      class="book__turning-page"
-      aria-hidden="true"
-    >
 
-      <div
-        class="book__turning-face book__turning-face--front"
-      >
-        <div
-          id="turning-front-content"
-          class="book__page-content"
-        ></div>
-      </div>
+    <!-- ========================================
+         REGIÓN ACCESIBLE
 
-
-      <div
-        class="book__turning-face book__turning-face--back"
-      >
-        <div
-          id="turning-back-content"
-          class="book__page-content"
-        ></div>
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div
-    class="book__spine"
-    aria-hidden="true"
-  ></div>
-
-
-  <div
-    class="book__cover book__cover--front"
-    aria-hidden="true"
-  ></div>
-
-</div>
-
-    </section>
-
-
-
-    <!-- =========================
-         MENSAJES ACCESIBLES
-    ========================== -->
+         Comunica los cambios sin añadir
+         elementos visuales innecesarios.
+    ========================================= -->
 
     <div
       id="live-region"
@@ -222,9 +471,10 @@
   </main>
 
 
-  <!-- =========================
+
+  <!-- ========================================
        JAVASCRIPT
-  ========================== -->
+  ========================================= -->
 
   <script
     type="module"
