@@ -181,3 +181,79 @@ function prepareImage(
   imageElement.src =
     source;
 }
+
+export function renderReadingPage(
+  reading,
+  container
+) {
+  if (
+    !reading ||
+    !container
+  ) {
+    return;
+  }
+
+
+  const imagePath =
+    getReadingImagePath(
+      reading
+    );
+
+
+  const firstLines =
+    reading.lines
+      ?.slice(0, 2)
+      .map(
+        (line) =>
+          `<p>${escapeHTML(line)}</p>`
+      )
+      .join("") ?? "";
+
+
+  container.innerHTML = `
+    <div class="book-reading">
+
+      ${
+        imagePath
+          ? `
+            <img
+              class="book-reading__image"
+              src="${imagePath}"
+              alt=""
+            >
+          `
+          : ""
+      }
+
+      <h3
+        class="book-reading__title"
+      >
+        ${escapeHTML(
+          reading.title
+        )}
+      </h3>
+
+      <div
+        class="book-reading__excerpt"
+      >
+        ${firstLines}
+      </div>
+
+    </div>
+  `;
+}
+
+
+function escapeHTML(value) {
+  const element =
+    document.createElement(
+      "div"
+    );
+
+  element.textContent =
+    String(
+      value ?? ""
+    );
+
+  return element.innerHTML;
+}
