@@ -98,159 +98,111 @@
       ========================== -->
 
       <div
-        id="book"
-        class="book book--closed"
-      >
-
-        <div class="book__page">
-
-
-          <!-- =========================
-               HOJA ANIMADA
-          ========================== -->
-
-          <div
-            id="page-turn"
-            class="book__page-turn"
-            aria-hidden="true"
-          ></div>
-
-
-
-          <!-- =========================
-               FRASE RITUAL
-          ========================== -->
-
-          <div
-            id="ritual"
-            class="book__ritual"
-          >
-
-            <p>
-              Toda lectura espera
-              al lector correcto.
-            </p>
-
-          </div>
-
-
-
-          <!-- =========================
-               SELECCIÓN RÁPIDA
-          ========================== -->
-
-          <div
-            id="story-preview"
-            class="story-preview"
-            hidden
-          >
-
-            <div
-              class="story-preview__image-wrapper"
-            >
-            <p class="story-preview__status">
-  Buscando entre las páginas...
-</p>
-
-              <img
-                id="preview-image"
-                class="story-preview__image"
-                src=""
-                alt=""
-              >
-
-            </div>
-
-
-            <p
-              id="preview-title"
-              class="story-preview__title"
-            ></p>
-
-          </div>
-
-
-
-          <!-- =========================
-               RESULTADO
-          ========================== -->
-
-          <article
-            id="story-result"
-            class="story-result"
-            hidden
-          >
-<span
-  id="result-star"
-  class="story-result__star"
-  aria-hidden="true"
+  id="book"
+  class="book book--closed"
 >
-  ✦
-</span>
-            <p
-              id="result-eyebrow"
-              class="story-result__eyebrow"
-            >
-              Lectura encontrada
-            </p>
 
+  <div class="book__shadow"></div>
 
-            <div
-              id="result-cover-wrapper"
-              class="story-result__cover-wrapper"
-            >
+  <div class="book__cover book__cover--back"></div>
 
-              <img
-                id="result-image"
-                class="story-result__cover"
-                src=""
-                alt=""
-              >
+  <div class="book__sheets">
 
-            </div>
+    <section
+      class="book__page book__page--left"
+      aria-label="Página izquierda"
+    >
 
+      <div class="book__page-inner">
 
-            <h2
-              id="result-title"
-              class="story-result__title"
-            ></h2>
-
-
-            <p
-              id="result-description"
-              class="story-result__description"
-            ></p>
-
-
-            <div
-              id="result-actions"
-              class="story-result__actions"
-            >
-
-              <button
-                id="read-button"
-                class="button button--primary"
-                type="button"
-              >
-                Comenzar a leer
-              </button>
-
-
-              <button
-                id="again-button"
-                class="button button--secondary"
-                type="button"
-              >
-                Descubrir otra lectura
-              </button>
-
-            </div>
-
-          </article>
-
+        <div
+          id="left-page-content"
+          class="book__page-content"
+        >
+          <p class="book__ritual-text">
+            Toda lectura espera
+            al lector correcto.
+          </p>
         </div>
 
+        <span
+          class="book__page-number"
+          aria-hidden="true"
+        >
+          12
+        </span>
+
       </div>
+
+    </section>
+
+
+    <section
+      class="book__page book__page--right"
+      aria-label="Página derecha"
+    >
+
+      <div class="book__page-inner">
+
+        <div
+          id="right-page-content"
+          class="book__page-content"
+        ></div>
+
+        <span
+          class="book__page-number"
+          aria-hidden="true"
+        >
+          13
+        </span>
+
+      </div>
+
+    </section>
+
+
+    <div
+      id="turning-page"
+      class="book__turning-page"
+      aria-hidden="true"
+    >
+
+      <div
+        class="book__turning-face book__turning-face--front"
+      >
+        <div
+          id="turning-front-content"
+          class="book__page-content"
+        ></div>
+      </div>
+
+
+      <div
+        class="book__turning-face book__turning-face--back"
+      >
+        <div
+          id="turning-back-content"
+          class="book__page-content"
+        ></div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="book__spine"
+    aria-hidden="true"
+  ></div>
+
+
+  <div
+    class="book__cover book__cover--front"
+    aria-hidden="true"
+  ></div>
+
+</div>
 
     </section>
 
