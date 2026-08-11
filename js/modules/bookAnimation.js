@@ -1,7 +1,20 @@
-import { wait } from "../utils/helpers.js";
+import {
+  wait
+} from "../utils/helpers.js";
 
 
-export async function openBook(bookElement) {
+export async function openBook(
+  bookElement
+) {
+  if (!bookElement) {
+    console.warn(
+      "No se encontró el libro para abrirlo."
+    );
+
+    return;
+  }
+
+
   bookElement.classList.remove(
     "book--closed"
   );
@@ -10,7 +23,9 @@ export async function openBook(bookElement) {
     "book--opening"
   );
 
-  await wait(1100);
+
+  await wait(900);
+
 
   bookElement.classList.remove(
     "book--opening"
@@ -22,20 +37,64 @@ export async function openBook(bookElement) {
 }
 
 
-export async function turnPage(pageTurnElement) {
-  pageTurnElement.classList.remove(
-    "book__page-turn--active"
+export async function turnRealPage(
+  turningPageElement,
+  duration = 850
+) {
+  if (!turningPageElement) {
+    console.warn(
+      "No se encontró la página que debe girar."
+    );
+
+    return;
+  }
+
+
+  turningPageElement.classList.remove(
+    "is-turning"
   );
 
-  void pageTurnElement.offsetWidth;
 
-  pageTurnElement.classList.add(
-    "book__page-turn--active"
+  /*
+   * Reinicia la animación CSS.
+   */
+  void turningPageElement.offsetWidth;
+
+
+  turningPageElement.style.animationDuration =
+    `${duration}ms`;
+
+
+  turningPageElement.classList.add(
+    "is-turning"
   );
 
-  await wait(700);
 
-  pageTurnElement.classList.remove(
-    "book__page-turn--active"
+  await wait(duration);
+
+
+  turningPageElement.classList.remove(
+    "is-turning"
+  );
+
+
+  turningPageElement.style.animationDuration =
+    "";
+}
+
+
+/*
+ * Compatibilidad temporal.
+ *
+ * main.js todavía puede llamar turnPage().
+ * Ahora internamente utilizaremos la página real.
+ */
+export async function turnPage(
+  pageElement,
+  duration = 850
+) {
+  await turnRealPage(
+    pageElement,
+    duration
   );
 }
