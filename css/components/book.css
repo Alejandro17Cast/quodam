@@ -431,3 +431,41 @@
     )
     forwards;
 }
+@media (max-width: 700px) {
+  .book {
+    width: 96vw;
+
+    aspect-ratio:
+      10 / 12;
+  }
+
+
+  .book__sheets {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .book__page--left {
+    display: none;
+  }
+
+
+  .book__page--right {
+    border-radius:
+      12px;
+  }
+
+
+  .book__turning-page {
+    width: 100%;
+
+    transform-origin:
+      left center;
+  }
+
+
+  .book__spine {
+    display: none;
+  }
+}
