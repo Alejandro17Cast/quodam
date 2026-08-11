@@ -3,6 +3,10 @@ import {
 } from "../utils/helpers.js";
 
 
+/* =========================================================
+   PREVIEW ANTIGUO
+   ========================================================= */
+
 export function renderPreview(
   reading,
   elements
@@ -14,8 +18,11 @@ export function renderPreview(
     !elements?.previewTitle
   ) {
     console.warn(
-      "No se pudo renderizar la vista previa:",
-      { reading, elements }
+      "No se pudo renderizar la vista previa.",
+      {
+        reading,
+        elements
+      }
     );
 
     return;
@@ -28,8 +35,9 @@ export function renderPreview(
 
 
   /*
-   * Fuerza al navegador a reiniciar
-   * la animación CSS.
+   * Fuerza al navegador a recalcular
+   * el elemento para reiniciar
+   * correctamente la animación CSS.
    */
   void elements.preview.offsetWidth;
 
@@ -37,12 +45,12 @@ export function renderPreview(
   prepareImage(
     elements.previewImage,
     getReadingImagePath(reading),
-    `Ilustración de ${reading.title ?? "la lectura"}`
+    `Ilustración de ${getSafeTitle(reading)}`
   );
 
 
   elements.previewTitle.textContent =
-    reading.title ?? "Lectura sin título";
+    getSafeTitle(reading);
 
 
   elements.preview.classList.add(
@@ -50,6 +58,10 @@ export function renderPreview(
   );
 }
 
+
+/* =========================================================
+   RESULTADO FINAL
+   ========================================================= */
 
 export function renderResult(
   reading,
@@ -62,8 +74,11 @@ export function renderResult(
     !elements?.resultDescription
   ) {
     console.warn(
-      "No se pudo renderizar el resultado:",
-      { reading, elements }
+      "No se pudo renderizar el resultado.",
+      {
+        reading,
+        elements
+      }
     );
 
     return;
@@ -73,28 +88,154 @@ export function renderResult(
   prepareImage(
     elements.resultImage,
     getReadingImagePath(reading),
-    `Ilustración de ${reading.title ?? "la lectura"}`
+    `Ilustración de ${getSafeTitle(reading)}`
   );
 
 
   elements.resultTitle.textContent =
-    reading.title ?? "Lectura sin título";
-
-
-  const category =
-    reading.category ?? "Lectura";
-
-  const level =
-    reading.level ?? 1;
-
-  const readingTime =
-    reading.estimatedReadingTime ?? 1;
+    getSafeTitle(reading);
 
 
   elements.resultDescription.textContent =
-    `${category} · Nivel ${level} · ${readingTime} min`;
+    createReadingMetadata(
+      reading
+    );
 }
 
+
+/* =========================================================
+   LECTURA DENTRO DE UNA PÁGINA DEL LIBRO
+   ========================================================= */
+
+export function renderReadingPage(
+  reading,
+  container
+) {
+  if (
+    !reading ||
+    !container
+  ) {
+    console.warn(
+      "No se pudo renderizar la lectura dentro del libro.",
+      {
+        reading,
+        container
+      }
+    );
+
+    return;
+  }
+
+
+  const title =
+    getSafeTitle(
+      reading
+    );
+
+
+  const imagePath =
+    getReadingImagePath(
+      reading
+    );
+
+
+  const excerpt =
+    getReadingExcerpt(
+      reading,
+      2
+    );
+
+
+  container.innerHTML = `
+    <article class="book-reading">
+
+      ${
+        imagePath
+          ? `
+            <div
+              class="book-reading__image-wrapper"
+            >
+
+              <img
+                class="book-reading__image"
+                src="${escapeHTML(imagePath)}"
+                alt="Ilustración de ${escapeHTML(title)}"
+              >
+
+            </div>
+          `
+          : `
+            <div
+              class="book-reading__image-placeholder"
+              aria-hidden="true"
+            >
+              ✦
+            </div>
+          `
+      }
+
+
+      <p
+        class="book-reading__category"
+      >
+        ${escapeHTML(
+          reading.category ?? "Lectura"
+        )}
+      </p>
+
+
+      <h3
+        class="book-reading__title"
+      >
+        ${escapeHTML(title)}
+      </h3>
+
+
+      ${
+        excerpt.length
+          ? `
+            <div
+              class="book-reading__excerpt"
+            >
+
+              ${excerpt
+                .map(
+                  (line) => `
+                    <p>
+                      ${escapeHTML(line)}
+                    </p>
+                  `
+                )
+                .join("")}
+
+            </div>
+          `
+          : ""
+      }
+
+    </article>
+  `;
+
+
+  const imageElement =
+    container.querySelector(
+      ".book-reading__image"
+    );
+
+
+  if (imageElement) {
+    prepareExistingPageImage(
+      imageElement,
+      imagePath,
+      title
+    );
+  }
+}
+
+
+/* =========================================================
+   IMÁGENES
+   ========================================================= */
 
 function prepareImage(
   imageElement,
@@ -110,22 +251,15 @@ function prepareImage(
   }
 
 
-  /*
-   * Limpiamos handlers anteriores por si
-   * el mismo <img> se reutiliza muchas veces.
-   */
-  imageElement.onload = null;
-  imageElement.onerror = null;
+  resetImageState(
+    imageElement
+  );
 
 
   imageElement.alt =
     alternativeText;
 
 
-  /*
-   * Si no existe una ruta, simplemente
-   * dejamos la imagen vacía.
-   */
   if (!source) {
     imageElement.removeAttribute(
       "src"
@@ -146,31 +280,86 @@ function prepareImage(
 
 
   imageElement.onerror = () => {
-    console.warn(
-      `No se pudo cargar la imagen: ${source}`
+    handleImageError(
+      imageElement,
+      source
     );
+  };
 
 
-    imageElement.classList.remove(
+  imageElement.src =
+    source;
+}
+
+
+/* =========================================================
+   IMÁGENES GENERADAS DENTRO DE innerHTML
+   ========================================================= */
+
+function prepareExistingPageImage(
+  imageElement,
+  source,
+  title
+) {
+  if (
+    !imageElement ||
+    !source
+  ) {
+    return;
+  }
+
+
+  resetImageState(
+    imageElement
+  );
+
+
+  imageElement.alt =
+    `Ilustración de ${title}`;
+
+
+  imageElement.onload = () => {
+    imageElement.classList.add(
       "is-loaded"
     );
-
-
-    /*
-     * Quitamos onerror antes de eliminar
-     * src para evitar posibles bucles.
-     */
-    imageElement.onerror = null;
-
-
-    imageElement.removeAttribute(
-      "src"
-    );
-
-
-    imageElement.alt =
-      "Ilustración no disponible";
   };
+
+
+  imageElement.onerror = () => {
+    handleImageError(
+      imageElement,
+      source
+    );
+  };
+
+
+  /*
+   * Si la imagen ya estaba en caché,
+   * onload puede haber ocurrido antes
+   * de asignar el handler.
+   */
+  if (
+    imageElement.complete &&
+    imageElement.naturalWidth > 0
+  ) {
+    imageElement.classList.add(
+      "is-loaded"
+    );
+  }
+}
+
+
+/* =========================================================
+   ERROR DE IMAGEN
+   ========================================================= */
+
+function handleImageError(
+  imageElement,
+  source
+) {
+  console.warn(
+    `No se pudo cargar la imagen: ${source}`
+  );
 
 
   imageElement.classList.remove(
@@ -178,82 +367,131 @@ function prepareImage(
   );
 
 
-  imageElement.src =
-    source;
+  /*
+   * Evita ciclos de error.
+   */
+  imageElement.onerror =
+    null;
+
+
+  imageElement.removeAttribute(
+    "src"
+  );
+
+
+  imageElement.alt =
+    "Ilustración no disponible";
 }
 
-export function renderReadingPage(
+
+/* =========================================================
+   LIMPIAR ESTADO DE IMAGEN
+   ========================================================= */
+
+function resetImageState(
+  imageElement
+) {
+  imageElement.onload =
+    null;
+
+  imageElement.onerror =
+    null;
+
+
+  imageElement.classList.remove(
+    "is-loaded"
+  );
+}
+
+
+/* =========================================================
+   METADATOS
+   ========================================================= */
+
+function createReadingMetadata(
+  reading
+) {
+  const category =
+    reading.category ??
+    "Lectura";
+
+
+  const level =
+    reading.level ??
+    1;
+
+
+  const readingTime =
+    reading.estimatedReadingTime ??
+    1;
+
+
+  return `${category} · Nivel ${level} · ${readingTime} min`;
+}
+
+
+/* =========================================================
+   EXTRACTO
+   ========================================================= */
+
+function getReadingExcerpt(
   reading,
-  container
+  maximumLines = 2
 ) {
   if (
-    !reading ||
-    !container
+    !Array.isArray(
+      reading?.lines
+    )
   ) {
-    return;
+    return [];
   }
 
 
-  const imagePath =
-    getReadingImagePath(
-      reading
+  return reading.lines
+    .filter(
+      (line) =>
+        typeof line === "string" &&
+        line.trim().length > 0
+    )
+    .slice(
+      0,
+      maximumLines
     );
-
-
-  const firstLines =
-    reading.lines
-      ?.slice(0, 2)
-      .map(
-        (line) =>
-          `<p>${escapeHTML(line)}</p>`
-      )
-      .join("") ?? "";
-
-
-  container.innerHTML = `
-    <div class="book-reading">
-
-      ${
-        imagePath
-          ? `
-            <img
-              class="book-reading__image"
-              src="${imagePath}"
-              alt=""
-            >
-          `
-          : ""
-      }
-
-      <h3
-        class="book-reading__title"
-      >
-        ${escapeHTML(
-          reading.title
-        )}
-      </h3>
-
-      <div
-        class="book-reading__excerpt"
-      >
-        ${firstLines}
-      </div>
-
-    </div>
-  `;
 }
 
 
-function escapeHTML(value) {
+/* =========================================================
+   TÍTULO SEGURO
+   ========================================================= */
+
+function getSafeTitle(
+  reading
+) {
+  return (
+    reading?.title?.trim() ||
+    "Lectura sin título"
+  );
+}
+
+
+/* =========================================================
+   ESCAPAR HTML
+   ========================================================= */
+
+function escapeHTML(
+  value
+) {
   const element =
     document.createElement(
       "div"
     );
 
+
   element.textContent =
     String(
       value ?? ""
     );
+
 
   return element.innerHTML;
 }
