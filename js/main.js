@@ -1,6 +1,3 @@
-console.log("main.js cargado correctamente");
-
-
 import { CONFIG } from "./config.js";
 
 import {
@@ -21,7 +18,8 @@ import {
 
 import {
   renderPreview,
-  renderResult
+  renderResult,
+  renderReadingPage
 } from "./modules/readingRenderer.js";
 
 import {
@@ -35,111 +33,264 @@ import {
 } from "./modules/revealAnimation.js";
 
 
+/* =========================================================
+   ESTADO GLOBAL DE LA EXPERIENCIA
+   ========================================================= */
+
 const state = {
   readings: [],
+
   selectedReading: null,
+
   previousReadingId: null,
+
   previewReadingId: null,
+
   isSelecting: false,
+
   hasOpenedBook: false
 };
 
 
-const elements = {
+/* =========================================================
+   REFERENCIAS DEL DOM
+   ========================================================= */
 
-    resultStar:
-  document.querySelector(
-    "#result-star"
-  ),
-  
+const elements = {
   welcome:
-    document.querySelector("#welcome"),
+    document.querySelector(
+      "#welcome"
+    ),
 
   discovery:
-    document.querySelector("#discovery"),
+    document.querySelector(
+      "#discovery"
+    ),
 
   discoverButton:
-    document.querySelector("#discover-button"),
+    document.querySelector(
+      "#discover-button"
+    ),
+
+
+  /* Libro */
 
   book:
-    document.querySelector("#book"),
-
-  pageTurn:
-    document.querySelector("#page-turn"),
+    document.querySelector(
+      "#book"
+    ),
 
   ritual:
-    document.querySelector("#ritual"),
+    document.querySelector(
+      "#ritual"
+    ),
+
+
+  /* Página real animada */
+
+  turningPage:
+    document.querySelector(
+      "#turning-page"
+    ),
+
+  turningFrontContent:
+    document.querySelector(
+      "#turning-front-content"
+    ),
+
+  turningBackContent:
+    document.querySelector(
+      "#turning-back-content"
+    ),
+
+
+  /* Páginas fijas */
+
+  leftPageContent:
+    document.querySelector(
+      "#left-page-content"
+    ),
+
+  rightPageContent:
+    document.querySelector(
+      "#right-page-content"
+    ),
+
+
+  /*
+   * Preview anterior.
+   *
+   * Todavía lo mantenemos porque forma
+   * parte del HTML actual, pero poco a poco
+   * dejará de ser protagonista.
+   */
 
   preview:
-    document.querySelector("#story-preview"),
+    document.querySelector(
+      "#story-preview"
+    ),
 
   previewImage:
-    document.querySelector("#preview-image"),
+    document.querySelector(
+      "#preview-image"
+    ),
 
   previewTitle:
-    document.querySelector("#preview-title"),
+    document.querySelector(
+      "#preview-title"
+    ),
+
+
+  /* Resultado */
 
   result:
-    document.querySelector("#story-result"),
+    document.querySelector(
+      "#story-result"
+    ),
+
+  resultStar:
+    document.querySelector(
+      "#result-star"
+    ),
 
   resultEyebrow:
-    document.querySelector("#result-eyebrow"),
+    document.querySelector(
+      "#result-eyebrow"
+    ),
 
   resultCoverWrapper:
-    document.querySelector("#result-cover-wrapper"),
+    document.querySelector(
+      "#result-cover-wrapper"
+    ),
 
   resultImage:
-    document.querySelector("#result-image"),
+    document.querySelector(
+      "#result-image"
+    ),
 
   resultTitle:
-    document.querySelector("#result-title"),
+    document.querySelector(
+      "#result-title"
+    ),
 
   resultDescription:
-    document.querySelector("#result-description"),
+    document.querySelector(
+      "#result-description"
+    ),
 
   resultActions:
-    document.querySelector("#result-actions"),
+    document.querySelector(
+      "#result-actions"
+    ),
+
+
+  /* Acciones */
 
   readButton:
-    document.querySelector("#read-button"),
+    document.querySelector(
+      "#read-button"
+    ),
 
   againButton:
-    document.querySelector("#again-button"),
+    document.querySelector(
+      "#again-button"
+    ),
+
+
+  /* Accesibilidad */
 
   liveRegion:
-    document.querySelector("#live-region")
+    document.querySelector(
+      "#live-region"
+    )
 };
 
 
+/* =========================================================
+   VALIDACIÓN DE INTERFAZ
+   ========================================================= */
+
 function validateRequiredElements() {
   const requiredElements = {
-    welcome: elements.welcome,
-    discovery: elements.discovery,
-    discoverButton: elements.discoverButton,
-    book: elements.book,
-    pageTurn: elements.pageTurn,
-    ritual: elements.ritual,
-    preview: elements.preview,
-    previewImage: elements.previewImage,
-    previewTitle: elements.previewTitle,
-    result: elements.result,
-    resultEyebrow: elements.resultEyebrow,
+    welcome:
+      elements.welcome,
+
+    discovery:
+      elements.discovery,
+
+    discoverButton:
+      elements.discoverButton,
+
+    book:
+      elements.book,
+
+    ritual:
+      elements.ritual,
+
+    turningPage:
+      elements.turningPage,
+
+    turningFrontContent:
+      elements.turningFrontContent,
+
+    turningBackContent:
+      elements.turningBackContent,
+
+    leftPageContent:
+      elements.leftPageContent,
+
+    rightPageContent:
+      elements.rightPageContent,
+
+    preview:
+      elements.preview,
+
+    previewImage:
+      elements.previewImage,
+
+    previewTitle:
+      elements.previewTitle,
+
+    result:
+      elements.result,
+
+    resultStar:
+      elements.resultStar,
+
+    resultEyebrow:
+      elements.resultEyebrow,
+
     resultCoverWrapper:
       elements.resultCoverWrapper,
-    resultImage: elements.resultImage,
-    resultTitle: elements.resultTitle,
+
+    resultImage:
+      elements.resultImage,
+
+    resultTitle:
+      elements.resultTitle,
+
     resultDescription:
       elements.resultDescription,
-    resultActions: elements.resultActions,
-    readButton: elements.readButton,
-    againButton: elements.againButton,
-    liveRegion: elements.liveRegion
+
+    resultActions:
+      elements.resultActions,
+
+    readButton:
+      elements.readButton,
+
+    againButton:
+      elements.againButton,
+
+    liveRegion:
+      elements.liveRegion
   };
 
 
   for (
     const [name, element]
-    of Object.entries(requiredElements)
+    of Object.entries(
+      requiredElements
+    )
   ) {
     if (!element) {
       throw new Error(
@@ -149,6 +300,98 @@ function validateRequiredElements() {
   }
 }
 
+
+/* =========================================================
+   INICIALIZACIÓN
+   ========================================================= */
+
+async function initialize() {
+  try {
+    validateRequiredElements();
+
+
+    /*
+     * El botón empieza deshabilitado
+     * mientras Quodam carga.
+     */
+    setDiscoveryButtonLoading();
+
+
+    state.readings =
+      await loadReadings(
+        CONFIG.readingsIndexPath
+      );
+
+
+    if (!state.readings.length) {
+      throw new Error(
+        "Quodam no tiene lecturas disponibles."
+      );
+    }
+
+
+    /*
+     * Precargamos las imágenes para
+     * reducir parpadeos.
+     */
+    await preloadReadingImages(
+      state.readings
+    );
+
+
+    registerEvents();
+
+
+    setDiscoveryButtonReady();
+
+
+    console.info(
+      `Quodam iniciado con ${state.readings.length} lecturas.`
+    );
+
+
+    handleInitialNavigation();
+
+  } catch (error) {
+    console.error(
+      "Error al inicializar Quodam:",
+      error
+    );
+
+
+    setDiscoveryButtonError();
+  }
+}
+
+
+/* =========================================================
+   EVENTOS
+   ========================================================= */
+
+function registerEvents() {
+  elements.discoverButton.addEventListener(
+    "click",
+    startDiscovery
+  );
+
+
+  elements.againButton.addEventListener(
+    "click",
+    startDiscovery
+  );
+
+
+  elements.readButton.addEventListener(
+    "click",
+    openSelectedReading
+  );
+}
+
+
+/* =========================================================
+   NAVEGACIÓN INICIAL
+   ========================================================= */
+
 function handleInitialNavigation() {
   const params =
     new URLSearchParams(
@@ -157,11 +400,15 @@ function handleInitialNavigation() {
 
 
   const shouldDiscover =
-    params.get("discover") === "true";
+    params.get(
+      "discover"
+    ) === "true";
 
 
   const previousReadingId =
-    params.get("previous");
+    params.get(
+      "previous"
+    );
 
 
   if (previousReadingId) {
@@ -175,6 +422,11 @@ function handleInitialNavigation() {
   }
 
 
+  /*
+   * Limpiamos la URL para que
+   * actualizar la página no vuelva
+   * a iniciar automáticamente.
+   */
   window.history.replaceState(
     {},
     "",
@@ -185,162 +437,53 @@ function handleInitialNavigation() {
   startDiscovery();
 }
 
-async function initialize() {
-  console.log("initialize ejecutado");
 
-  try {
-    validateRequiredElements();
-
-
-    state.readings =
-      await loadReadings(
-        CONFIG.readingsIndexPath
-      );
-
-      await preloadReadingImages(
-  state.readings
-);
-
-elements.discoverButton.disabled =
-  false;
-
-elements.discoverButton.textContent =
-  "Descubrir una lectura";
-
-  handleInitialNavigation();
-
-    elements.discoverButton.addEventListener(
-      "click",
-      startDiscovery
-    );
-
-
-    elements.againButton.addEventListener(
-      "click",
-      startDiscovery
-    );
-
-
-    elements.readButton.addEventListener(
-      "click",
-      openSelectedReading
-    );
-
-
-    console.info(
-      `Quodam iniciado con ${state.readings.length} lecturas.`
-    );
-
-  } catch (error) {
-    console.error(
-      "Error al inicializar Quodam:",
-      error
-    );
-
-
-    if (elements.discoverButton) {
-      elements.discoverButton.disabled = true;
-
-      elements.discoverButton.textContent =
-        "No fue posible iniciar Quodam";
-    }
-  }
-}
-
+/* =========================================================
+   DESCUBRIMIENTO
+   ========================================================= */
 
 async function startDiscovery() {
-
-elements.discoverButton.disabled =
-  true;
-
-elements.againButton.disabled =
-  true;
-
   if (state.isSelecting) {
     return;
   }
 
 
-  state.isSelecting = true;
+  state.isSelecting =
+    true;
+
+
+  lockDiscoveryActions();
 
 
   try {
-    elements.welcome.classList.remove(
-      "scene--active"
+    showDiscoveryScene();
+
+
+    prepareDiscoveryInterface();
+
+
+    announce(
+      "Quodam está buscando una lectura para ti."
     );
-
-
-    elements.discovery.classList.add(
-      "scene--active"
-    );
-
-
-    hideElement(
-      elements.preview
-    );
-
-
-    hideElement(
-      elements.result
-    );
-
-
-    resetReveal(
-      elements
-    );
-
-
-    elements.liveRegion.textContent =
-      "Quodam está buscando una lectura para ti.";
 
 
     /*
-     * La primera vez abrimos el libro.
+     * Primera entrada:
+     * mostramos ritual y abrimos libro.
      */
     if (!state.hasOpenedBook) {
-      showElement(
-        elements.ritual
-      );
-
-
-      await openBook(
-        elements.book
-      );
-
-
-      state.hasOpenedBook = true;
-
-
-      await wait(
-        CONFIG.ritualDuration
-      );
-
-
-      await turnPage(
-        elements.pageTurn
-      );
-
-
-      hideElement(
-        elements.ritual
-      );
-
-    } else {
-      /*
-       * Si el libro ya está abierto,
-       * solamente pasamos una página.
-       */
-      await turnPage(
-        elements.pageTurn
-      );
+      await runOpeningSequence();
     }
 
 
-    showElement(
-      elements.preview
-    );
+    /*
+     * En búsquedas posteriores no
+     * volvemos a abrir el libro.
+     */
 
-
+    elements.book.classList.add(
+  "book--searching"
+);
     await runSelectionAnimation();
 
   } catch (error) {
@@ -350,24 +493,128 @@ elements.againButton.disabled =
     );
 
 
-    elements.liveRegion.textContent =
-      "Ocurrió un problema al buscar una lectura.";
+    announce(
+      "Ocurrió un problema al buscar una lectura."
+    );
 
   } finally {
-   state.isSelecting = false;
+    state.isSelecting =
+      false;
 
-  elements.discoverButton.disabled =
-    false;
 
-  elements.againButton.disabled =
-    false;
+    unlockDiscoveryActions();
   }
 }
 
 
+/* =========================================================
+   CAMBIO DE ESCENA
+   ========================================================= */
+
+function showDiscoveryScene() {
+  elements.welcome.classList.remove(
+    "scene--active"
+  );
+
+
+  elements.discovery.classList.add(
+    "scene--active"
+  );
+}
+
+
+/* =========================================================
+   PREPARACIÓN DE INTERFAZ
+   ========================================================= */
+
+function prepareDiscoveryInterface() {
+  hideElement(
+    elements.preview
+  );
+
+
+  hideElement(
+    elements.result
+  );
+
+
+  resetReveal(
+    elements
+  );
+
+
+  clearTurningPage();
+
+
+  /*
+   * La página dinámica derecha queda
+   * preparada para recibir contenido.
+   */
+  elements.rightPageContent.innerHTML =
+    "";
+
+
+  elements.leftPageContent.innerHTML =
+    "";
+}
+
+
+/* =========================================================
+   SECUENCIA DE APERTURA
+   ========================================================= */
+
+async function runOpeningSequence() {
+  showElement(
+    elements.ritual
+  );
+
+
+  await openBook(
+    elements.book
+  );
+
+
+  state.hasOpenedBook =
+    true;
+
+
+  await wait(
+    CONFIG.ritualDuration
+  );
+
+
+  /*
+   * Una hoja pasa para dar inicio
+   * al descubrimiento.
+   */
+  await turnPage(
+    elements.turningPage,
+    650
+  );
+
+
+  hideElement(
+    elements.ritual
+  );
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE SELECCIÓN
+   ========================================================= */
+
 async function runSelectionAnimation() {
   let currentReadingId =
     state.previewReadingId;
+
+
+  /*
+   * Durante la ruleta no necesitamos
+   * mostrar el preview antiguo.
+   */
+  hideElement(
+    elements.preview
+  );
 
 
   for (
@@ -384,7 +631,7 @@ async function runSelectionAnimation() {
 
     if (!previewReading) {
       throw new Error(
-        "No se pudo obtener una lectura para la vista previa."
+        "No se pudo obtener una lectura para la página."
       );
     }
 
@@ -397,9 +644,24 @@ async function runSelectionAnimation() {
       previewReading.id;
 
 
-    renderPreview(
+    /*
+     * La lectura actual aparece
+     * físicamente en la hoja.
+     */
+    renderReadingPage(
       previewReading,
-      elements
+      elements.turningFrontContent
+    );
+
+
+    /*
+     * También preparamos la cara posterior
+     * para que no se vea completamente vacía
+     * durante el giro.
+     */
+    renderReadingPage(
+      previewReading,
+      elements.turningBackContent
     );
 
 
@@ -409,10 +671,28 @@ async function runSelectionAnimation() {
       );
 
 
-    await wait(delay);
+    const pageDuration =
+      calculatePageDuration(
+        delay
+      );
+
+
+    await turnPage(
+      elements.turningPage,
+      pageDuration
+    );
   }
 
 
+  await selectFinalReading();
+}
+
+
+/* =========================================================
+   LECTURA FINAL
+   ========================================================= */
+
+async function selectFinalReading() {
   const selectedReading =
     selectRandomReading(
       state.readings,
@@ -436,27 +716,44 @@ async function runSelectionAnimation() {
 
 
   /*
-   * Mostramos la lectura definitiva
-   * brevemente antes de revelar
-   * el resultado.
+   * Antes de revelar el resultado,
+   * mostramos la lectura final
+   * en una última página.
    */
-  renderPreview(
+  renderReadingPage(
     selectedReading,
-    elements
+    elements.turningFrontContent
   );
 
 
-  await wait(600);
+  renderReadingPage(
+    selectedReading,
+    elements.turningBackContent
+  );
 
 
   await turnPage(
-    elements.pageTurn
+    elements.turningPage,
+    700
   );
 
 
+  await wait(180);
+
+elements.book.classList.remove(
+  "book--searching"
+);
+
+elements.book.classList.add(
+  "book--selected"
+); 
   await showSelectedReading();
 }
 
+
+/* =========================================================
+   REVELACIÓN
+   ========================================================= */
 
 async function showSelectedReading() {
   if (!state.selectedReading) {
@@ -487,8 +784,9 @@ async function showSelectedReading() {
   );
 
 
-  elements.liveRegion.textContent =
-    `Lectura encontrada: ${state.selectedReading.title}`;
+  announce(
+    `Lectura encontrada: ${state.selectedReading.title}`
+  );
 
 
   await revealReading(
@@ -496,6 +794,10 @@ async function showSelectedReading() {
   );
 }
 
+
+/* =========================================================
+   ABRIR LECTURA
+   ========================================================= */
 
 function openSelectedReading() {
   if (!state.selectedReading) {
@@ -518,16 +820,26 @@ function openSelectedReading() {
 }
 
 
-function calculateSelectionDelay(round) {
+/* =========================================================
+   VELOCIDAD DE LA RULETA
+   ========================================================= */
+
+function calculateSelectionDelay(
+  round
+) {
   const {
     initialDelay,
     maximumDelay,
     slowdownStart,
     totalRounds
-  } = CONFIG.selection;
+  } =
+    CONFIG.selection;
 
 
-  if (round < slowdownStart) {
+  if (
+    round <
+    slowdownStart
+  ) {
     return initialDelay;
   }
 
@@ -538,11 +850,9 @@ function calculateSelectionDelay(round) {
     1;
 
 
-  /*
-   * Evitamos división entre cero
-   * si la configuración cambia.
-   */
-  if (remainingRounds <= 0) {
+  if (
+    remainingRounds <= 0
+  ) {
     return maximumDelay;
   }
 
@@ -556,13 +866,14 @@ function calculateSelectionDelay(round) {
 
 
   /*
-   * Curva cuadrática:
-   * mantiene la búsqueda rápida
-   * al principio y frena más
-   * claramente al final.
+   * Curva cuadrática.
+   *
+   * La desaceleración apenas se percibe
+   * al inicio y aumenta al final.
    */
   const easedProgress =
-    progress * progress;
+    progress *
+    progress;
 
 
   return Math.round(
@@ -575,5 +886,139 @@ function calculateSelectionDelay(round) {
   );
 }
 
+
+/* =========================================================
+   VELOCIDAD DE LAS PÁGINAS
+   ========================================================= */
+
+function calculatePageDuration(
+  delay
+) {
+  /*
+   * Evitamos páginas tan rápidas
+   * que sean prácticamente invisibles.
+   */
+  const minimumDuration =
+    170;
+
+
+  const maximumDuration =
+    650;
+
+
+  return Math.max(
+    minimumDuration,
+    Math.min(
+      delay,
+      maximumDuration
+    )
+  );
+}
+
+
+/* =========================================================
+   LIMPIEZA DE LA HOJA
+   ========================================================= */
+
+function clearTurningPage() {
+  elements.turningPage.classList.remove(
+    "is-turning"
+  );
+
+
+  elements.turningPage.style.animationDuration =
+    "";
+
+
+  elements.turningFrontContent.innerHTML =
+    "";
+
+
+  elements.turningBackContent.innerHTML =
+    "";
+}
+
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
+function lockDiscoveryActions() {
+  elements.discoverButton.disabled =
+    true;
+
+
+  elements.againButton.disabled =
+    true;
+}
+
+
+function unlockDiscoveryActions() {
+  elements.discoverButton.disabled =
+    false;
+
+
+  elements.againButton.disabled =
+    false;
+}
+
+
+function setDiscoveryButtonLoading() {
+  elements.discoverButton.disabled =
+    true;
+
+
+  elements.discoverButton.textContent =
+    "Preparando Quodam...";
+}
+
+
+function setDiscoveryButtonReady() {
+  elements.discoverButton.disabled =
+    false;
+
+
+  elements.discoverButton.textContent =
+    "Descubrir una lectura";
+}
+
+
+function setDiscoveryButtonError() {
+  if (
+    !elements.discoverButton
+  ) {
+    return;
+  }
+
+
+  elements.discoverButton.disabled =
+    true;
+
+
+  elements.discoverButton.textContent =
+    "No fue posible iniciar Quodam";
+}
+
+
+/* =========================================================
+   ACCESIBILIDAD
+   ========================================================= */
+
+function announce(message) {
+  if (
+    !elements.liveRegion
+  ) {
+    return;
+  }
+
+
+  elements.liveRegion.textContent =
+    message;
+}
+
+
+/* =========================================================
+   INICIAR QUODAM
+   ========================================================= */
 
 initialize();
