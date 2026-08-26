@@ -1,62 +1,63 @@
 /* =========================================================
-   QUODAM — LIVING BOOK
+   QUODAM — LIVING STORYBOOK
+   Libro cinematográfico de lecturas
    ========================================================= */
 
 
 /* =========================================================
-   LIBRO
+   1. CONTENEDOR PRINCIPAL
    ========================================================= */
 
 .book {
   position: relative;
 
-  width: min(94vw, 920px);
+  width: min(94vw, 960px);
 
   aspect-ratio: 16 / 10;
 
   margin-inline: auto;
 
-  perspective: 2200px;
+  perspective: 2400px;
+  perspective-origin: 50% 42%;
 
   transform-style: preserve-3d;
 
   transition:
     transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 600ms ease;
+    opacity 600ms ease,
+    filter 700ms ease;
 
   filter:
     drop-shadow(
-      0 32px 35px
-      rgb(0 0 0 / 35%)
+      0 34px 38px
+      rgb(0 0 0 / 38%)
     );
 }
 
 
-/* Estado inicial */
+/* =========================================================
+   2. ESTADOS DEL LIBRO
+   ========================================================= */
 
 .book--closed {
   opacity: 0;
 
   transform:
-    translateY(40px)
-    rotateX(7deg)
-    scale(0.94);
+    translateY(55px)
+    rotateX(11deg)
+    scale(0.91);
 }
 
-
-/* Mientras abre */
 
 .book--opening {
   opacity: 1;
 
   transform:
-    translateY(0)
-    rotateX(0deg)
-    scale(1);
+    translateY(-2px)
+    rotateX(2deg)
+    scale(1.01);
 }
 
-
-/* Libro abierto */
 
 .book--ready {
   opacity: 1;
@@ -68,80 +69,133 @@
 }
 
 
+/* Durante la búsqueda */
+
+.book--searching {
+  transform:
+    translateY(-3px)
+    rotateX(1deg)
+    scale(1.025);
+}
+
+
+/* Cuando Quodam encuentra la lectura */
+
+.book--selected {
+  transform:
+    translateY(-4px)
+    scale(1.04);
+
+  filter:
+    drop-shadow(
+      0 38px 48px
+      rgb(0 0 0 / 42%)
+    );
+}
+
+
 /* =========================================================
-   SOMBRA
+   3. SOMBRA DEL LIBRO
    ========================================================= */
 
 .book__shadow {
   position: absolute;
 
-  left: 5%;
-  right: 5%;
-  bottom: -6%;
+  left: 6%;
+  right: 6%;
+  bottom: -7%;
+
+  z-index: -4;
 
   height: 18%;
 
-  z-index: -3;
-
   border-radius: 50%;
 
+  pointer-events: none;
+
   background:
-    rgb(0 0 0 / 40%);
+    radial-gradient(
+      ellipse at center,
+      rgb(0 0 0 / 48%),
+      rgb(0 0 0 / 16%) 55%,
+      transparent 75%
+    );
 
   filter:
-    blur(30px);
+    blur(24px);
 
   transform:
-    rotateX(70deg);
+    rotateX(72deg)
+    scaleX(1.06);
 }
 
 
 /* =========================================================
-   CUBIERTA
+   4. CUBIERTA
    ========================================================= */
 
 .book__cover {
   position: absolute;
 
-  inset: 1%;
+  inset:
+    1%
+    0.8%
+    0;
 
   border-radius:
-    16px 26px 26px 16px;
+    18px 30px 30px 18px;
 
   background:
     linear-gradient(
       145deg,
-      #241811 0%,
-      #513522 38%,
-      #68472f 58%,
-      #362319 100%
+      #1e130e 0%,
+      #342117 18%,
+      #6c482f 48%,
+      #50331f 72%,
+      #24170f 100%
     );
 
   box-shadow:
     inset 0 0 0 2px
-      rgb(212 175 55 / 15%),
-    inset 0 0 35px
-      rgb(0 0 0 / 45%),
-    0 8px 18px
+      rgb(212 175 55 / 16%),
+    inset 0 0 0 5px
+      rgb(0 0 0 / 10%),
+    inset 0 0 42px
+      rgb(0 0 0 / 48%),
+    0 10px 18px
       rgb(0 0 0 / 25%);
 }
 
 
-/* Cubierta que se ve debajo de las hojas */
+/* Borde decorativo de cubierta */
+
+.book__cover::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 12px;
+
+  border:
+    1px solid
+    rgb(212 175 55 / 16%);
+
+  border-radius:
+    10px 20px 20px 10px;
+
+  pointer-events: none;
+}
+
 
 .book__cover--back {
   z-index: 0;
 
   transform:
-    translateY(10px)
+    translateY(11px)
     scale(1.018);
 }
 
 
-/*
- * Esta pieza queda preparada para
- * futuras animaciones de apertura.
- */
 .book__cover--front {
   z-index: -1;
 
@@ -150,7 +204,7 @@
 
 
 /* =========================================================
-   BLOQUE DE HOJAS
+   5. BLOQUE DE HOJAS
    ========================================================= */
 
 .book__sheets {
@@ -161,56 +215,92 @@
     3.5%
     4%;
 
-  z-index: 2;
+  z-index: 3;
 
   display: grid;
 
   grid-template-columns:
-    1fr 1fr;
+    minmax(0, 1fr)
+    minmax(0, 1fr);
 
   transform-style:
     preserve-3d;
 
-  border-radius: 12px;
+  border-radius:
+    14px;
 }
 
 
-/*
- * Simula el grosor inferior del papel.
- */
+/* Grosor inferior de páginas */
+
 .book__sheets::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0.8%;
+  right: 0.8%;
+  bottom: -11px;
+
+  z-index: -1;
+
+  height: 14px;
+
+  border-radius:
+    0 0 12px 12px;
+
+  background:
+    repeating-linear-gradient(
+      180deg,
+      #d2bb90 0,
+      #d2bb90 1px,
+      #eee0c1 1px,
+      #eee0c1 2px,
+      #cdb487 2px,
+      #cdb487 3px,
+      #f2e5c8 3px,
+      #f2e5c8 4px
+    );
+
+  box-shadow:
+    0 7px 13px
+      rgb(0 0 0 / 20%);
+}
+
+
+/* Pequeño canto superior */
+
+.book__sheets::before {
   content: "";
 
   position: absolute;
 
   left: 1%;
   right: 1%;
-  bottom: -7px;
-
-  height: 10px;
+  top: -5px;
 
   z-index: -1;
 
+  height: 7px;
+
   border-radius:
-    0 0 10px 10px;
+    9px 9px 0 0;
 
   background:
     repeating-linear-gradient(
       180deg,
-      #e0cda6 0,
-      #e0cda6 1px,
-      #f3e8ce 1px,
-      #f3e8ce 2px
+      #f1e4c7 0,
+      #f1e4c7 1px,
+      #ccb287 1px,
+      #ccb287 2px
     );
 
-  box-shadow:
-    0 5px 10px
-      rgb(0 0 0 / 18%);
+  opacity: 0.8;
 }
 
 
 /* =========================================================
-   PÁGINAS FIJAS
+   6. PÁGINAS FIJAS
    ========================================================= */
 
 .book__page {
@@ -225,49 +315,67 @@
     var(--color-night-950);
 
   box-shadow:
-    inset 0 0 30px
-      rgb(93 66 38 / 10%);
+    inset 0 0 32px
+      rgb(93 66 38 / 9%);
 }
 
 
-/* Página izquierda */
+/* Ligera irregularidad para no parecer una tarjeta */
 
 .book__page--left {
   border-radius:
-    14px 3px 3px 14px;
+    16px 3px 3px 14px;
+
+  transform:
+    rotateZ(-0.16deg);
 
   background:
     linear-gradient(
       90deg,
-      #d9c299 0%,
-      #ead9b9 4%,
-      #f6ecd8 11%,
-      #fbf6ea 42%,
-      #f9f1df 100%
+      #d0b486 0%,
+      #e3cca4 3%,
+      #f0dfbe 7%,
+      #f8edd7 16%,
+      #fcf7ec 55%,
+      #f7edd9 100%
     );
+
+  box-shadow:
+    inset -12px 0 24px
+      rgb(72 46 24 / 11%),
+    inset 0 -5px 10px
+      rgb(85 59 32 / 5%);
 }
 
 
-/* Página derecha */
-
 .book__page--right {
   border-radius:
-    3px 14px 14px 3px;
+    3px 16px 14px 3px;
+
+  transform:
+    rotateZ(0.12deg);
 
   background:
     linear-gradient(
       90deg,
-      #eee0c3 0%,
-      #faf3e2 8%,
-      #fbf6ea 60%,
-      #f1e2c6 94%,
-      #d8bd90 100%
+      #ebdbba 0%,
+      #f8ecd4 7%,
+      #fcf7ec 47%,
+      #f8edd7 85%,
+      #dfc59a 97%,
+      #caaa78 100%
     );
+
+  box-shadow:
+    inset 12px 0 24px
+      rgb(72 46 24 / 11%),
+    inset 0 -5px 10px
+      rgb(85 59 32 / 5%);
 }
 
 
 /* =========================================================
-   INTERIOR DE PÁGINA
+   7. INTERIOR
    ========================================================= */
 
 .book__page-inner {
@@ -278,15 +386,15 @@
 
   padding:
     clamp(
-      1.25rem,
-      3vw,
-      2.5rem
+      1.15rem,
+      2.8vw,
+      2.4rem
     );
 }
 
 
 /* =========================================================
-   TEXTURA DEL PAPEL
+   8. TEXTURA DE PAPEL
    ========================================================= */
 
 .book__page::before,
@@ -294,34 +402,42 @@
   content: "";
 
   position: absolute;
+
   inset: 0;
 
   z-index: 1;
 
   pointer-events: none;
 
-  opacity: 0.13;
+  opacity: 0.11;
 
   background-image:
     radial-gradient(
-      circle at 20% 15%,
-      rgb(97 66 35 / 26%) 0.55px,
-      transparent 0.8px
+      circle at 15% 20%,
+      rgb(95 64 35 / 30%) 0.45px,
+      transparent 0.75px
     ),
     radial-gradient(
-      circle at 70% 70%,
-      rgb(120 90 55 / 12%) 0.5px,
+      circle at 70% 65%,
+      rgb(104 72 40 / 16%) 0.5px,
       transparent 0.8px
+    ),
+    linear-gradient(
+      115deg,
+      transparent 20%,
+      rgb(255 255 255 / 20%) 45%,
+      transparent 70%
     );
 
   background-size:
-    15px 15px,
-    19px 19px;
+    17px 17px,
+    23px 23px,
+    100% 100%;
 }
 
 
 /* =========================================================
-   SOMBRA DEL LOMO SOBRE LAS PÁGINAS
+   9. PROFUNDIDAD DEL LOMO
    ========================================================= */
 
 .book__page--left::after {
@@ -333,9 +449,9 @@
   right: 0;
   bottom: 0;
 
-  z-index: 4;
+  z-index: 6;
 
-  width: 13%;
+  width: 17%;
 
   pointer-events: none;
 
@@ -343,8 +459,9 @@
     linear-gradient(
       90deg,
       transparent 0%,
-      rgb(71 46 24 / 7%) 40%,
-      rgb(62 40 21 / 20%) 100%
+      rgb(77 48 24 / 4%) 28%,
+      rgb(68 42 20 / 12%) 62%,
+      rgb(48 29 14 / 25%) 100%
     );
 }
 
@@ -358,36 +475,37 @@
   left: 0;
   bottom: 0;
 
-  z-index: 4;
+  z-index: 6;
 
-  width: 13%;
+  width: 17%;
 
   pointer-events: none;
 
   background:
     linear-gradient(
       90deg,
-      rgb(62 40 21 / 20%) 0%,
-      rgb(71 46 24 / 7%) 60%,
+      rgb(48 29 14 / 25%) 0%,
+      rgb(68 42 20 / 12%) 38%,
+      rgb(77 48 24 / 4%) 72%,
       transparent 100%
     );
 }
 
 
 /* =========================================================
-   LOMO CENTRAL
+   10. LOMO CENTRAL
    ========================================================= */
 
 .book__spine {
   position: absolute;
 
-  top: 4%;
-  bottom: 5%;
+  top: 3.5%;
+  bottom: 4.5%;
   left: 50%;
 
-  z-index: 30;
+  z-index: 40;
 
-  width: 18px;
+  width: 25px;
 
   transform:
     translateX(-50%);
@@ -395,15 +513,44 @@
   pointer-events: none;
 
   background:
-    linear-gradient(
-      90deg,
-      transparent 0%,
-      rgb(65 41 22 / 20%) 20%,
-      rgb(52 33 18 / 42%) 45%,
-      rgb(255 255 255 / 8%) 50%,
-      rgb(52 33 18 / 42%) 55%,
-      rgb(65 41 22 / 20%) 80%,
+    radial-gradient(
+      ellipse at center,
+      rgb(37 22 11 / 35%) 0%,
+      rgb(50 31 15 / 23%) 22%,
+      rgb(255 255 255 / 7%) 48%,
+      rgb(52 32 16 / 20%) 70%,
       transparent 100%
+    );
+
+  filter:
+    blur(1.6px);
+}
+
+
+/* Línea más oscura justo en el pliegue */
+
+.book__spine::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 50%;
+
+  width: 3px;
+
+  transform:
+    translateX(-50%);
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgb(42 25 12 / 28%) 10%,
+      rgb(42 25 12 / 38%) 50%,
+      rgb(42 25 12 / 28%) 90%,
+      transparent
     );
 
   filter:
@@ -412,13 +559,13 @@
 
 
 /* =========================================================
-   CONTENIDO DE LAS PÁGINAS
+   11. CONTENIDO BASE
    ========================================================= */
 
 .book__page-content {
   position: relative;
 
-  z-index: 3;
+  z-index: 4;
 
   display: grid;
 
@@ -436,13 +583,13 @@
 
 
 /* =========================================================
-   FRASE RITUAL
+   12. FRASE RITUAL
    ========================================================= */
 
 .book__ritual {
   position: relative;
 
-  z-index: 5;
+  z-index: 8;
 
   display: grid;
 
@@ -452,7 +599,11 @@
 
   align-content: center;
 
-  gap: var(--space-md);
+  gap:
+    var(--space-md);
+
+  padding:
+    var(--space-lg);
 
   text-align: center;
 }
@@ -462,12 +613,17 @@
   color:
     var(--color-gold-500);
 
-  font-size: 1.6rem;
+  font-size:
+    clamp(
+      1.25rem,
+      2vw,
+      1.8rem
+    );
 }
 
 
 .book__ritual-text {
-  max-width: 300px;
+  max-width: 285px;
 
   color:
     var(--color-night-900);
@@ -477,35 +633,38 @@
 
   font-size:
     clamp(
-      1.65rem,
-      3vw,
-      2.5rem
+      1.5rem,
+      2.8vw,
+      2.35rem
     );
 
   font-weight: 500;
 
-  line-height: 1.25;
+  line-height: 1.27;
+
+  text-wrap: balance;
 }
 
 
 /* =========================================================
-   NÚMEROS DE PÁGINA
+   13. NÚMEROS DE PÁGINA
    ========================================================= */
 
 .book__page-number {
   position: absolute;
 
-  bottom: 0.7rem;
+  bottom: 0.65rem;
 
-  z-index: 6;
+  z-index: 8;
 
   color:
-    rgb(88 61 40 / 55%);
+    rgb(88 61 40 / 46%);
 
   font-family:
     var(--font-display);
 
-  font-size: 0.8rem;
+  font-size:
+    0.76rem;
 }
 
 
@@ -522,13 +681,199 @@
 
 
 /* =========================================================
-   PREVIEW DE LECTURA
+   14. LECTURA EN UNA PÁGINA
+   ========================================================= */
+
+.book-reading {
+  display: grid;
+
+  width: 100%;
+  height: 100%;
+
+  min-height: 0;
+
+  align-content: center;
+
+  justify-items: center;
+
+  gap:
+    clamp(
+      0.4rem,
+      1vw,
+      0.8rem
+    );
+
+  padding:
+    clamp(
+      0.6rem,
+      1.5vw,
+      1.2rem
+    );
+
+  text-align: center;
+}
+
+
+/* Imagen */
+
+.book-reading__image-wrapper,
+.book-reading__image-placeholder {
+  width:
+    min(66%, 178px);
+
+  aspect-ratio:
+    3 / 4;
+
+  overflow: hidden;
+
+  border:
+    4px solid
+    rgb(255 255 255 / 35%);
+
+  border-radius:
+    6px;
+
+  background:
+    #e2cfaa;
+
+  box-shadow:
+    0 7px 16px
+      rgb(58 37 19 / 17%);
+}
+
+
+.book-reading__image-placeholder {
+  display: grid;
+
+  place-items: center;
+
+  color:
+    var(--color-gold-500);
+
+  font-size:
+    1.8rem;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f1e5cb,
+      #d3b98a
+    );
+}
+
+
+.book-reading__image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  opacity: 0;
+
+  transform:
+    scale(1.015);
+
+  transition:
+    opacity 200ms ease,
+    transform 350ms ease;
+}
+
+
+.book-reading__image.is-loaded {
+  opacity: 1;
+
+  transform:
+    scale(1);
+}
+
+
+/* Categoría */
+
+.book-reading__category {
+  color:
+    var(--color-brown-700);
+
+  font-size:
+    0.6rem;
+
+  font-weight: 800;
+
+  letter-spacing:
+    0.15em;
+
+  text-transform:
+    uppercase;
+}
+
+
+/* Título */
+
+.book-reading__title {
+  max-width: 250px;
+
+  color:
+    var(--color-night-900);
+
+  font-family:
+    var(--font-display);
+
+  font-size:
+    clamp(
+      1.05rem,
+      1.8vw,
+      1.55rem
+    );
+
+  font-weight: 600;
+
+  line-height: 1.08;
+
+  text-wrap: balance;
+}
+
+
+/* Extracto */
+
+.book-reading__excerpt {
+  display: grid;
+
+  gap:
+    0.2rem;
+
+  max-width:
+    245px;
+
+  color:
+    #655648;
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    clamp(
+      0.67rem,
+      1vw,
+      0.84rem
+    );
+
+  line-height:
+    1.42;
+
+  text-wrap:
+    pretty;
+}
+
+
+/* =========================================================
+   15. PREVIEW LEGACY
    ========================================================= */
 
 .story-preview {
   position: relative;
 
-  z-index: 5;
+  z-index: 8;
 
   display: grid;
 
@@ -549,32 +894,38 @@
   color:
     var(--color-brown-700);
 
-  font-size: 0.68rem;
+  font-size:
+    0.65rem;
 
-  font-weight: 700;
+  font-weight:
+    800;
 
-  letter-spacing: 0.12em;
+  letter-spacing:
+    0.13em;
 
-  text-transform: uppercase;
+  text-transform:
+    uppercase;
 }
 
 
 .story-preview__image-wrapper {
   width:
-    min(72%, 230px);
+    min(67%, 210px);
+
+  aspect-ratio:
+    3 / 4;
 
   overflow: hidden;
 
-  aspect-ratio: 3 / 4;
-
   border:
     5px solid
-    rgb(255 255 255 / 40%);
+    rgb(255 255 255 / 38%);
 
-  border-radius: 8px;
+  border-radius:
+    7px;
 
   background:
-    #e4d3b2;
+    #e0cda7;
 
   box-shadow:
     0 8px 18px
@@ -587,10 +938,6 @@
   height: 100%;
 
   object-fit: cover;
-
-  transition:
-    opacity 180ms ease,
-    transform 220ms ease;
 }
 
 
@@ -606,31 +953,36 @@
 
   font-size:
     clamp(
-      1.3rem,
-      2.3vw,
-      2rem
+      1.15rem,
+      2vw,
+      1.8rem
     );
 
-  font-weight: 600;
+  font-weight:
+    600;
 }
 
 
 /* =========================================================
-   RESULTADO
+   16. RESULTADO
    ========================================================= */
 
 .story-result {
   position: relative;
 
-  z-index: 5;
+  z-index: 9;
 
   display: grid;
 
+  width: 100%;
   height: 100%;
 
   align-content: center;
 
   justify-items: center;
+
+  padding:
+    var(--space-sm);
 
   text-align: center;
 }
@@ -645,32 +997,14 @@
   color:
     var(--color-gold-500);
 
-  font-size: 1.7rem;
+  font-size:
+    1.65rem;
 
   opacity: 0;
 
   transform:
     scale(0.5)
     rotate(-25deg);
-}
-
-
-.story-result__star.is-visible {
-  opacity: 1;
-
-  transform:
-    scale(1)
-    rotate(0deg);
-
-  transition:
-    opacity 450ms ease,
-    transform 550ms
-      cubic-bezier(
-        0.34,
-        1.56,
-        0.64,
-        1
-      );
 }
 
 
@@ -686,22 +1020,6 @@
 }
 
 
-.story-result__eyebrow.is-visible,
-.story-result__cover-wrapper.is-visible,
-.story-result__title.is-visible,
-.story-result__description.is-visible,
-.story-result__actions.is-visible {
-  opacity: 1;
-
-  transform:
-    translateY(0);
-
-  transition:
-    opacity 450ms ease,
-    transform 450ms ease;
-}
-
-
 .story-result__eyebrow {
   margin-bottom:
     var(--space-sm);
@@ -709,28 +1027,38 @@
   color:
     var(--color-brown-700);
 
-  font-size: 0.67rem;
+  font-size:
+    0.62rem;
 
-  font-weight: 800;
+  font-weight:
+    800;
 
-  letter-spacing: 0.15em;
+  letter-spacing:
+    0.16em;
 
-  text-transform: uppercase;
+  text-transform:
+    uppercase;
 }
 
 
 .story-result__cover-wrapper {
   width:
-    min(56%, 180px);
+    min(50%, 165px);
+
+  aspect-ratio:
+    3 / 4;
 
   overflow: hidden;
 
-  aspect-ratio: 3 / 4;
+  border:
+    4px solid
+    rgb(255 255 255 / 35%);
 
-  border-radius: 8px;
+  border-radius:
+    7px;
 
   background:
-    #e4d3b2;
+    #e0cda7;
 
   box-shadow:
     0 8px 18px
@@ -742,13 +1070,14 @@
   width: 100%;
   height: 100%;
 
-  object-fit: cover;
+  object-fit:
+    cover;
 }
 
 
 .story-result__title {
   margin-top:
-    var(--space-md);
+    var(--space-sm);
 
   color:
     var(--color-night-900);
@@ -758,25 +1087,31 @@
 
   font-size:
     clamp(
-      1.5rem,
-      2.5vw,
-      2.2rem
+      1.3rem,
+      2.3vw,
+      2rem
     );
 
-  line-height: 1.1;
+  line-height:
+    1.08;
+
+  text-wrap:
+    balance;
 }
 
 
 .story-result__description {
-  max-width: 300px;
+  max-width:
+    285px;
 
   margin-top:
-    var(--space-sm);
+    var(--space-xs);
 
   color:
     #625446;
 
-  font-size: 0.83rem;
+  font-size:
+    0.78rem;
 }
 
 
@@ -791,12 +1126,12 @@
     var(--space-sm);
 
   margin-top:
-    var(--space-lg);
+    var(--space-md);
 }
 
 
 /* =========================================================
-   HOJA REAL QUE GIRA
+   17. HOJA CINEMATOGRÁFICA
    ========================================================= */
 
 .book__turning-page {
@@ -805,7 +1140,7 @@
   top: 0;
   right: 0;
 
-  z-index: 20;
+  z-index: 30;
 
   width: 50%;
   height: 100%;
@@ -819,13 +1154,18 @@
   transform-style:
     preserve-3d;
 
-  pointer-events: none;
+  pointer-events:
+    none;
 
-  will-change: transform;
+  will-change:
+    transform,
+    filter;
 }
 
 
-/* Ambas caras */
+/* =========================================================
+   18. CARAS DE LA HOJA
+   ========================================================= */
 
 .book__turning-face {
   position: absolute;
@@ -842,15 +1182,13 @@
 
   box-shadow:
     0 8px 20px
-      rgb(0 0 0 / 16%);
+      rgb(0 0 0 / 15%);
 }
 
 
-/* Frente */
-
 .book__turning-face--front {
   border-radius:
-    3px 14px 14px 3px;
+    3px 15px 13px 3px;
 
   transform:
     rotateY(0deg);
@@ -858,19 +1196,18 @@
   background:
     linear-gradient(
       90deg,
-      #efe1c4 0%,
-      #faf3e2 10%,
-      #fcf7eb 80%,
-      #ddc393 100%
+      #ebd9b7 0%,
+      #f5e8cf 7%,
+      #fbf5e8 48%,
+      #f4e7cc 89%,
+      #d3b683 100%
     );
 }
 
 
-/* Reverso */
-
 .book__turning-face--back {
   border-radius:
-    14px 3px 3px 14px;
+    15px 3px 3px 13px;
 
   transform:
     rotateY(180deg);
@@ -878,38 +1215,124 @@
   background:
     linear-gradient(
       90deg,
-      #d9be90 0%,
-      #f2e3c7 12%,
-      #faf3e4 100%
+      #d2b582 0%,
+      #eddbb9 9%,
+      #f9f0df 52%,
+      #f5e8cf 100%
     );
 }
 
 
-/* Página girando */
+/* =========================================================
+   19. LUZ SOBRE LA HOJA
+   ========================================================= */
+
+.book__turning-face::after {
+  content: "";
+
+  position: absolute;
+
+  inset:
+    -5%
+    -20%;
+
+  z-index: 20;
+
+  pointer-events:
+    none;
+
+  opacity: 0;
+
+  transform:
+    translateX(45%);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 5%,
+      rgb(72 43 20 / 6%) 25%,
+      rgb(38 22 10 / 28%) 47%,
+      rgb(255 255 255 / 18%) 62%,
+      transparent 83%
+    );
+}
+
+
+.book__turning-page.is-turning
+.book__turning-face::after {
+  animation-name:
+    page-light-sweep;
+
+  animation-duration:
+    inherit;
+
+  animation-timing-function:
+    ease-in-out;
+
+  animation-fill-mode:
+    both;
+}
+
+
+/* =========================================================
+   20. ESQUINA / CURVATURA VISUAL
+   ========================================================= */
+
+.book__turning-face--front::before {
+  box-shadow:
+    inset -18px 0 22px
+      rgb(73 47 24 / 11%),
+    inset 0 -12px 16px
+      rgb(70 44 22 / 5%);
+}
+
+
+.book__turning-face--back::before {
+  box-shadow:
+    inset 18px 0 22px
+      rgb(73 47 24 / 11%),
+    inset 0 -12px 16px
+      rgb(70 44 22 / 5%);
+}
+
+
+/* =========================================================
+   21. GIRO
+   ========================================================= */
 
 .book__turning-page.is-turning {
-  animation:
-    real-page-turn
-    850ms
+  animation-name:
+    cinematic-page-turn;
+
+  animation-duration:
+    850ms;
+
+  animation-timing-function:
     cubic-bezier(
-      0.42,
+      0.4,
       0,
-      0.18,
+      0.17,
       1
-    )
+    );
+
+  animation-fill-mode:
     forwards;
 }
 
 
 /* =========================================================
-   COMPATIBILIDAD TEMPORAL CON SISTEMA ANTERIOR
+   22. ESTADO HIDDEN
    ========================================================= */
 
-/*
- * main.js todavía busca #page-turn.
- * Lo dejamos en el DOM, pero ya no
- * queremos que tape el nuevo libro.
- */
+.book [hidden] {
+  display:
+    none !important;
+}
+
+
+/* =========================================================
+   23. COMPATIBILIDAD TEMPORAL
+   ========================================================= */
 
 .book__page-turn {
   position: absolute;
@@ -921,36 +1344,43 @@
 
   opacity: 0;
 
-  pointer-events: none;
+  pointer-events:
+    none;
 }
 
 
 /* =========================================================
-   UTILIDAD HIDDEN
+   24. TABLET
    ========================================================= */
 
-.book [hidden] {
-  display: none !important;
-}
-
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
-@media (max-width: 900px) {
+@media (
+  max-width: 900px
+) {
   .book {
     width:
-      min(96vw, 800px);
+      min(
+        96vw,
+        800px
+      );
   }
 
 
   .book__page-inner {
     padding:
       clamp(
-        1rem,
-        2.5vw,
-        2rem
+        0.9rem,
+        2.3vw,
+        1.8rem
+      );
+  }
+
+
+  .book-reading__image-wrapper,
+  .book-reading__image-placeholder {
+    width:
+      min(
+        64%,
+        160px
       );
   }
 
@@ -963,16 +1393,30 @@
 
 
 /* =========================================================
-   MÓVIL
+   25. MÓVIL
    ========================================================= */
 
-@media (max-width: 700px) {
+@media (
+  max-width: 700px
+) {
   .book {
     width:
-      min(94vw, 470px);
+      min(
+        94vw,
+        460px
+      );
 
     aspect-ratio:
       3 / 4;
+
+    perspective:
+      1800px;
+  }
+
+
+  .book__cover {
+    border-radius:
+      15px 22px 22px 15px;
   }
 
 
@@ -988,35 +1432,39 @@
 
 
   /*
-   * En pantallas pequeñas mostramos
-   * solamente la página derecha.
+   * En móvil privilegiamos legibilidad.
+   * Se conserva la metáfora del libro,
+   * pero se muestra una sola página.
    */
 
   .book__page--left {
-    display: none;
+    display:
+      none;
   }
 
 
   .book__page--right {
-    grid-column: 1;
+    grid-column:
+      1;
+
+    transform:
+      none;
 
     border-radius:
       12px;
   }
 
 
-  .book__page--right::after {
-    display: none;
-  }
-
-
+  .book__page--right::after,
   .book__spine {
-    display: none;
+    display:
+      none;
   }
 
 
   .book__turning-page {
-    width: 100%;
+    width:
+      100%;
 
     transform-origin:
       left center;
@@ -1030,34 +1478,104 @@
   }
 
 
-  .story-preview__image-wrapper {
+  .book-reading__image-wrapper,
+  .book-reading__image-placeholder {
     width:
-      min(64%, 210px);
+      min(
+        58%,
+        175px
+      );
+  }
+
+
+  .book-reading__excerpt {
+    max-width:
+      250px;
+
+    font-size:
+      0.78rem;
   }
 
 
   .story-result__cover-wrapper {
     width:
-      min(48%, 170px);
+      min(
+        46%,
+        155px
+      );
   }
 
 
   .story-result__actions {
-    width: 100%;
+    width:
+      100%;
 
-    flex-direction: column;
+    flex-direction:
+      column;
   }
 
 
   .story-result__actions
   .button {
-    width: 100%;
+    width:
+      100%;
   }
 }
 
 
 /* =========================================================
-   MOVIMIENTO REDUCIDO
+   26. PANTALLAS MUY PEQUEÑAS
+   ========================================================= */
+
+@media (
+  max-width: 420px
+) {
+  .book {
+    width:
+      96vw;
+
+    aspect-ratio:
+      3 / 4.25;
+  }
+
+
+  .book__page-inner {
+    padding:
+      1rem;
+  }
+
+
+  .book-reading {
+    gap:
+      0.38rem;
+
+    padding:
+      0.5rem;
+  }
+
+
+  .book-reading__image-wrapper,
+  .book-reading__image-placeholder {
+    width:
+      min(
+        52%,
+        145px
+      );
+  }
+
+
+  .book-reading__excerpt {
+    font-size:
+      0.72rem;
+
+    line-height:
+      1.35;
+  }
+}
+
+
+/* =========================================================
+   27. MOVIMIENTO REDUCIDO
    ========================================================= */
 
 @media (
@@ -1065,6 +1583,8 @@
 ) {
   .book,
   .book__turning-page,
+  .book__turning-face::after,
+  .book-reading__image,
   .story-preview__image,
   .story-result__star,
   .story-result__eyebrow,
@@ -1075,203 +1595,127 @@
     animation-duration:
       0.01ms !important;
 
+    animation-delay:
+      0ms !important;
+
     transition-duration:
       0.01ms !important;
+
+    transition-delay:
+      0ms !important;
   }
 }
-/* =========================================================
-   CONTENIDO DE LECTURA EN PÁGINAS
-   ========================================================= */
 
-.book-reading {
-  display: grid;
-
-  width: 100%;
-  height: 100%;
-
-  align-content: center;
-
-  justify-items: center;
-
-  gap: var(--space-sm);
-
-  padding: var(--space-md);
-
-  text-align: center;
-}
-
-
-.book-reading__image {
-  width:
-    min(70%, 190px);
-
-  aspect-ratio:
-    3 / 4;
-
-  object-fit: cover;
-
-  border-radius: 6px;
-
-  box-shadow:
-    0 6px 15px
-    rgb(66 43 23 / 16%);
-}
-
-
-.book-reading__title {
-  color:
-    var(--color-night-900);
-
-  font-family:
-    var(--font-display);
-
-  font-size:
-    clamp(
-      1.15rem,
-      2vw,
-      1.7rem
+.book--searching {
+  filter:
+    drop-shadow(
+      0 34px 40px
+      rgb(0 0 0 / 36%)
+    )
+    drop-shadow(
+      0 0 28px
+      rgb(212 175 55 / 16%)
     );
-
-  line-height: 1.1;
 }
 
+.book--searching::before {
+  content: "";
 
-.book-reading__excerpt {
-  display: grid;
+  position: absolute;
+  inset: -8%;
 
-  gap: 0.3rem;
+  z-index: -5;
 
-  max-width: 240px;
+  border-radius: 50%;
 
-  color: #625446;
+  pointer-events: none;
 
-  font-size:
-    clamp(
-      0.72rem,
-      1.2vw,
-      0.9rem
-    );
-
-  line-height: 1.45;
-}
-.book-reading__image-wrapper {
-  width:
-    min(70%, 190px);
-
-  overflow: hidden;
-
-  aspect-ratio:
-    3 / 4;
-
-  border-radius: 6px;
+  opacity: 0.75;
 
   background:
-    #e5d4b3;
+    conic-gradient(
+      from 0deg,
+      rgb(212 175 55 / 12%),
+      rgb(96 165 250 / 11%),
+      rgb(192 132 252 / 10%),
+      rgb(244 114 182 / 8%),
+      rgb(52 211 153 / 8%),
+      rgb(212 175 55 / 12%)
+    );
 
-  box-shadow:
-    0 6px 15px
-    rgb(66 43 23 / 16%);
+  filter:
+    blur(28px);
+
+  animation:
+    discovery-aura
+    5s
+    linear
+    infinite;
 }
+.book__sparkles {
+  position: absolute;
+  inset: -5%;
 
+  z-index: 60;
 
-.book-reading__image {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
+  pointer-events: none;
 
   opacity: 0;
-
-  transition:
-    opacity 180ms ease;
 }
 
-
-.book-reading__image.is-loaded {
+.book--searching
+.book__sparkles {
   opacity: 1;
 }
 
-
-.book-reading__image-placeholder {
-  display: grid;
-
-  width:
-    min(70%, 190px);
-
-  aspect-ratio:
-    3 / 4;
-
-  place-items: center;
-
-  border-radius: 6px;
+.book__sparkles span {
+  position: absolute;
 
   color:
     var(--color-gold-500);
 
-  font-size: 2rem;
-
-  background:
-    linear-gradient(
-      145deg,
-      #eee1c6,
-      #dac49c
-    );
-}
-
-
-.book-reading__category {
-  color:
-    var(--color-brown-700);
-
-  font-size:
-    0.62rem;
-
-  font-weight: 800;
-
-  letter-spacing:
-    0.13em;
-
-  text-transform:
-    uppercase;
-}
-
-
-.book-reading__title {
-  color:
-    var(--color-night-900);
-
-  font-family:
-    var(--font-display);
+  opacity: 0;
 
   font-size:
     clamp(
-      1.1rem,
-      2vw,
-      1.65rem
+      0.8rem,
+      1.8vw,
+      1.35rem
     );
 
-  line-height: 1.1;
+  animation:
+    sparkle-pop
+    1.5s
+    ease-in-out
+    infinite;
 }
 
+.book__sparkles span:nth-child(1) {
+  top: 12%;
+  left: 8%;
+  animation-delay: 0ms;
+}
 
-.book-reading__excerpt {
-  display: grid;
+.book__sparkles span:nth-child(2) {
+  top: 5%;
+  right: 15%;
+  animation-delay: 300ms;
+}
 
-  gap: 0.25rem;
+.book__sparkles span:nth-child(3) {
+  bottom: 10%;
+  left: 18%;
+  animation-delay: 650ms;
+}
 
-  max-width: 240px;
+.book__sparkles span:nth-child(4) {
+  right: 8%;
+  bottom: 18%;
+  animation-delay: 950ms;
+}
 
-  color: #625446;
-
-  font-family:
-    var(--font-body);
-
-  font-size:
-    clamp(
-      0.7rem,
-      1.1vw,
-      0.88rem
-    );
-
-  line-height: 1.45;
+.book__sparkles span:nth-child(5) {
+  top: 45%;
+  right: 2%;
+  animation-delay: 1200ms;
 }
