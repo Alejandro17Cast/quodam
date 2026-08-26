@@ -296,3 +296,26 @@
     ease
     both;
 }
+#discovery {
+  position: relative;
+
+  transition:
+    background
+    700ms ease;
+}
+
+#discovery::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgb(212 175 55 / 7%),
+      transparent 45%
+    );
+}
