@@ -11,7 +11,7 @@
 
   <meta
     name="description"
-    content="Quodam, una biblioteca digital de lecturas cortas donde cada texto encuentra a su lector."
+    content="Quodam, una biblioteca digital de lecturas cortas donde cada historia encuentra a su lector."
   >
 
   <meta
@@ -19,7 +19,9 @@
     content="#111827"
   >
 
-  <title>Quodam — Lecturas que te encuentran</title>
+  <title>
+    Quodam — Lecturas que te encuentran
+  </title>
 
   <link
     rel="stylesheet"
@@ -30,11 +32,14 @@
 
 <body>
 
-  <main id="app" class="app">
+  <main
+    id="app"
+    class="app"
+  >
 
-    <!-- ========================================
+    <!-- =====================================================
          BIENVENIDA
-    ========================================= -->
+    ====================================================== -->
 
     <section
       id="welcome"
@@ -59,6 +64,7 @@
 
         <p class="welcome__phrase">
           Las historias no se buscan,
+
           <span>
             ellas te encuentran.
           </span>
@@ -80,9 +86,9 @@
 
 
 
-    <!-- ========================================
+    <!-- =====================================================
          DESCUBRIMIENTO
-    ========================================= -->
+    ====================================================== -->
 
     <section
       id="discovery"
@@ -98,27 +104,36 @@
       </h2>
 
 
-      <!-- ======================================
+      <!-- ===================================================
            LIBRO
-      ======================================= -->
+      ==================================================== -->
 
       <div
         id="book"
         class="book book--closed"
+        aria-busy="false"
       >
-      <div
-  id="book-sparkles"
-  class="book__sparkles"
-  aria-hidden="true"
->
-  <span>✦</span>
-  <span>✧</span>
-  <span>✦</span>
-  <span>✧</span>
-  <span>✦</span>
-</div>
 
-        <!-- Sombra del libro -->
+        <!-- ================================================
+             DESTELLOS DECORATIVOS
+        ================================================= -->
+
+        <div
+          id="book-sparkles"
+          class="book__sparkles"
+          aria-hidden="true"
+        >
+          <span>✦</span>
+          <span>✧</span>
+          <span>✦</span>
+          <span>✧</span>
+          <span>✦</span>
+        </div>
+
+
+        <!-- ================================================
+             SOMBRA
+        ================================================= -->
 
         <div
           class="book__shadow"
@@ -126,7 +141,9 @@
         ></div>
 
 
-        <!-- Cubierta inferior -->
+        <!-- ================================================
+             CUBIERTA INFERIOR
+        ================================================= -->
 
         <div
           class="book__cover book__cover--back"
@@ -135,20 +152,28 @@
 
 
 
-        <!-- ====================================
+        <!-- =================================================
              CONJUNTO DE PÁGINAS
-        ===================================== -->
+
+             REGLA:
+             - izquierda = ilustración
+             - derecha   = título + extracto
+
+             Ambas páginas representan SIEMPRE
+             la misma lectura.
+        ================================================== -->
 
         <div class="book__sheets">
 
 
-          <!-- ==================================
+          <!-- ==============================================
                PÁGINA IZQUIERDA
-          =================================== -->
+               ILUSTRACIÓN
+          =============================================== -->
 
           <section
             class="book__page book__page--left"
-            aria-label="Página izquierda"
+            aria-label="Ilustración de la lectura"
           >
 
             <div class="book__page-inner">
@@ -178,27 +203,14 @@
 
 
               <!--
-                Contenido dinámico.
-
-                En la siguiente fase esta página
-                mostrará parte de la lectura
-                mientras las hojas avanzan.
+                readingRenderer.js inserta aquí
+                la ilustración de la lectura.
               -->
 
               <div
                 id="left-page-content"
                 class="book__page-content"
-                hidden
               ></div>
-
-
-              <span
-                id="left-page-number"
-                class="book__page-number"
-                aria-hidden="true"
-              >
-                12
-              </span>
 
             </div>
 
@@ -206,24 +218,26 @@
 
 
 
-          <!-- ==================================
+          <!-- ==============================================
                PÁGINA DERECHA
-          =================================== -->
+               TEXTO + ACCIONES
+          =============================================== -->
 
           <section
             class="book__page book__page--right"
-            aria-label="Página derecha"
+            aria-label="Información de la lectura"
           >
 
             <div class="book__page-inner">
 
 
-              <!-- ==============================
-                   PREVISUALIZACIÓN
+              <!-- ==========================================
+                   COMPATIBILIDAD TEMPORAL
 
-                   Se conserva para mantener
-                   compatibilidad con main.js.
-              =============================== -->
+                   main.js todavía valida estos elementos,
+                   pero la experiencia nueva utiliza
+                   #right-page-content.
+              =========================================== -->
 
               <div
                 id="story-preview"
@@ -259,16 +273,40 @@
 
 
 
-              <!-- ==============================
-                   RESULTADO
+              <!-- ==========================================
+                   CONTENIDO PRINCIPAL
 
-                   La lectura ganadora permanece
-                   dentro del libro.
-              =============================== -->
+                   readingRenderer.js inserta aquí:
+                   - categoría
+                   - título
+                   - nivel
+                   - tiempo
+                   - extracto
+              =========================================== -->
+
+              <div
+                id="right-page-content"
+                class="book__page-content"
+              ></div>
+
+
+
+              <!-- ==========================================
+                   RESULTADO / ACCIONES
+
+                   Se conserva porque main.js y
+                   revealAnimation.js todavía trabajan
+                   con estos IDs.
+
+                   En una siguiente limpieza puede
+                   simplificarse para mostrar únicamente
+                   las acciones sobre la página derecha.
+              =========================================== -->
 
               <article
                 id="story-result"
                 class="story-result"
+                aria-labelledby="result-title"
                 hidden
               >
 
@@ -325,6 +363,7 @@
                     id="read-button"
                     class="button button--primary"
                     type="button"
+                    aria-disabled="true"
                   >
                     Comenzar a leer
                   </button>
@@ -342,47 +381,24 @@
 
               </article>
 
-
-
-              <!--
-                Página dinámica derecha.
-
-                Se utilizará cuando eliminemos
-                definitivamente story-preview.
-              -->
-
-              <div
-                id="right-page-content"
-                class="book__page-content"
-                hidden
-              ></div>
-
-
-              <span
-                id="right-page-number"
-                class="book__page-number"
-                aria-hidden="true"
-              >
-                13
-              </span>
-
             </div>
 
           </section>
 
 
 
-          <!-- ==================================
-               HOJA REAL QUE GIRARÁ
+          <!-- ==============================================
+               HOJA ANIMADA
 
-               Esta será la pieza principal de
-               la nueva animación.
-          =================================== -->
+               Esta es la única hoja responsable
+               del giro visual.
+          =============================================== -->
 
           <div
             id="turning-page"
             class="book__turning-page"
             aria-hidden="true"
+            aria-busy="false"
           >
 
             <!-- Cara frontal -->
@@ -420,31 +436,13 @@
 
           </div>
 
-
-
-          <!-- ==================================
-               COMPATIBILIDAD TEMPORAL
-
-               main.js y bookAnimation.js todavía
-               utilizan #page-turn.
-
-               Lo eliminaremos cuando migremos
-               completamente a #turning-page.
-          =================================== -->
-
-          <div
-            id="page-turn"
-            class="book__page-turn"
-            aria-hidden="true"
-          ></div>
-
         </div>
 
 
 
-        <!-- ====================================
-             LOMO
-        ===================================== -->
+        <!-- =================================================
+             LOMO CENTRAL
+        ================================================== -->
 
         <div
           class="book__spine"
@@ -452,7 +450,9 @@
         ></div>
 
 
-        <!-- Cubierta decorativa -->
+        <!-- =================================================
+             CUBIERTA DECORATIVA
+        ================================================== -->
 
         <div
           class="book__cover book__cover--front"
@@ -465,12 +465,9 @@
 
 
 
-    <!-- ========================================
+    <!-- =====================================================
          REGIÓN ACCESIBLE
-
-         Comunica los cambios sin añadir
-         elementos visuales innecesarios.
-    ========================================= -->
+    ====================================================== -->
 
     <div
       id="live-region"
@@ -483,9 +480,9 @@
 
 
 
-  <!-- ========================================
+  <!-- =======================================================
        JAVASCRIPT
-  ========================================= -->
+  ======================================================== -->
 
   <script
     type="module"

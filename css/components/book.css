@@ -1,7 +1,67 @@
 /* =========================================================
-   QUODAM — LIVING STORYBOOK
-   Libro cinematográfico de lecturas
+   QUODAM — LIVING STORYBOOK v2
+   Libro interactivo de lecturas
+
+   ESTRUCTURA VISUAL
+   ---------------------------------------------------------
+   Escritorio / tablet:
+   [ ILUSTRACIÓN ] [ TÍTULO + EXTRACTO ]
+
+   Móvil:
+   [ ILUSTRACIÓN ]
+   [ TÍTULO + EXTRACTO ]
+
+   Diseñado para:
+   - Mantener la metáfora de un libro real.
+   - Ser atractivo para niños sin sobrecargar.
+   - Funcionar con bookAnimation.js actualizado.
+   - Funcionar con readingRenderer.js usando:
+       "image"
+       "text"
    ========================================================= */
+
+
+/* =========================================================
+   0. VARIABLES LOCALES
+   ========================================================= */
+
+.book {
+  --book-paper:
+    #fcf7ec;
+
+  --book-paper-warm:
+    #f3e4c7;
+
+  --book-paper-edge:
+    #ceb181;
+
+  --book-ink:
+    var(
+      --color-night-950,
+      #21170f
+    );
+
+  --book-ink-soft:
+    #655648;
+
+  --book-brown:
+    var(
+      --color-brown-700,
+      #79523a
+    );
+
+  --book-gold:
+    var(
+      --color-gold-500,
+      #d4af37
+    );
+
+  --book-shadow:
+    rgb(28 18 10 / 38%);
+
+  --book-radius:
+    18px;
+}
 
 
 /* =========================================================
@@ -10,27 +70,49 @@
 
 .book {
   position: relative;
+  isolation: isolate;
 
-  width: min(94vw, 960px);
+  width:
+    min(
+      94vw,
+      960px
+    );
 
-  aspect-ratio: 16 / 10;
+  aspect-ratio:
+    16 / 10;
 
-  margin-inline: auto;
+  margin-inline:
+    auto;
 
-  perspective: 2400px;
-  perspective-origin: 50% 42%;
+  perspective:
+    2400px;
 
-  transform-style: preserve-3d;
+  perspective-origin:
+    50% 42%;
+
+  transform-style:
+    preserve-3d;
 
   transition:
-    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 600ms ease,
-    filter 700ms ease;
+    transform
+      850ms
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      ),
+    opacity
+      500ms
+      ease,
+    filter
+      650ms
+      ease;
 
   filter:
     drop-shadow(
-      0 34px 38px
-      rgb(0 0 0 / 38%)
+      0 32px 36px
+      var(--book-shadow)
     );
 }
 
@@ -40,56 +122,177 @@
    ========================================================= */
 
 .book--closed {
-  opacity: 0;
+  opacity:
+    0;
 
   transform:
-    translateY(55px)
-    rotateX(11deg)
-    scale(0.91);
+    translateY(
+      50px
+    )
+    rotateX(
+      10deg
+    )
+    scale(
+      0.92
+    );
 }
 
 
 .book--opening {
-  opacity: 1;
+  opacity:
+    1;
 
   transform:
-    translateY(-2px)
-    rotateX(2deg)
-    scale(1.01);
+    translateY(
+      -2px
+    )
+    rotateX(
+      2deg
+    )
+    scale(
+      1.01
+    );
 }
 
 
 .book--ready {
-  opacity: 1;
+  opacity:
+    1;
 
   transform:
-    translateY(0)
-    rotateX(0deg)
-    scale(1);
+    translateY(
+      0
+    )
+    rotateX(
+      0deg
+    )
+    scale(
+      1
+    );
 }
 
 
-/* Durante la búsqueda */
+/* ---------------------------------------------------------
+   BUSCANDO
+   --------------------------------------------------------- */
 
 .book--searching {
   transform:
-    translateY(-3px)
-    rotateX(1deg)
-    scale(1.025);
+    translateY(
+      -3px
+    )
+    rotateX(
+      1deg
+    )
+    scale(
+      1.018
+    );
+
+  filter:
+    drop-shadow(
+      0 34px 42px
+      rgb(0 0 0 / 37%)
+    )
+    drop-shadow(
+      0 0 28px
+      rgb(212 175 55 / 14%)
+    );
 }
 
 
-/* Cuando Quodam encuentra la lectura */
+/*
+ * Aura suave.
+ * No usa colores demasiado intensos
+ * para evitar aspecto de videojuego.
+ */
+.book--searching::before {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    -7%;
+
+  z-index:
+    -5;
+
+  border-radius:
+    44%;
+
+  pointer-events:
+    none;
+
+  opacity:
+    0.68;
+
+  background:
+    conic-gradient(
+      from 0deg,
+      rgb(212 175 55 / 13%),
+      rgb(112 175 221 / 8%),
+      rgb(190 137 211 / 8%),
+      rgb(228 151 174 / 7%),
+      rgb(113 190 157 / 7%),
+      rgb(212 175 55 / 13%)
+    );
+
+  filter:
+    blur(
+      28px
+    );
+
+  animation:
+    discovery-aura
+    6s
+    linear
+    infinite;
+}
+
+
+/* ---------------------------------------------------------
+   SELECCIONADO
+   --------------------------------------------------------- */
 
 .book--selected {
   transform:
-    translateY(-4px)
-    scale(1.04);
+    translateY(
+      -4px
+    )
+    scale(
+      1.027
+    );
 
   filter:
     drop-shadow(
       0 38px 48px
-      rgb(0 0 0 / 42%)
+      rgb(0 0 0 / 40%)
+    )
+    drop-shadow(
+      0 0 20px
+      rgb(212 175 55 / 12%)
+    );
+}
+
+
+/*
+ * Celebración breve.
+ * bookAnimation.js agrega temporalmente
+ * esta clase.
+ */
+.book--celebrating {
+  animation:
+    quodam-book-celebrate
+    var(
+      --book-celebration-duration,
+      650ms
+    )
+    cubic-bezier(
+      0.34,
+      1.56,
+      0.64,
+      1
     );
 }
 
@@ -99,34 +302,50 @@
    ========================================================= */
 
 .book__shadow {
-  position: absolute;
+  position:
+    absolute;
 
-  left: 6%;
-  right: 6%;
-  bottom: -7%;
+  left:
+    6%;
 
-  z-index: -4;
+  right:
+    6%;
 
-  height: 18%;
+  bottom:
+    -7%;
 
-  border-radius: 50%;
+  z-index:
+    -4;
 
-  pointer-events: none;
+  height:
+    18%;
+
+  border-radius:
+    50%;
+
+  pointer-events:
+    none;
 
   background:
     radial-gradient(
       ellipse at center,
-      rgb(0 0 0 / 48%),
-      rgb(0 0 0 / 16%) 55%,
-      transparent 75%
+      rgb(0 0 0 / 45%),
+      rgb(0 0 0 / 14%) 56%,
+      transparent 76%
     );
 
   filter:
-    blur(24px);
+    blur(
+      24px
+    );
 
   transform:
-    rotateX(72deg)
-    scaleX(1.06);
+    rotateX(
+      72deg
+    )
+    scaleX(
+      1.05
+    );
 }
 
 
@@ -135,7 +354,8 @@
    ========================================================= */
 
 .book__cover {
-  position: absolute;
+  position:
+    absolute;
 
   inset:
     1%
@@ -143,7 +363,10 @@
     0;
 
   border-radius:
-    18px 30px 30px 18px;
+    18px
+    30px
+    30px
+    18px;
 
   background:
     linear-gradient(
@@ -156,50 +379,76 @@
     );
 
   box-shadow:
-    inset 0 0 0 2px
+    inset
+      0
+      0
+      0
+      2px
       rgb(212 175 55 / 16%),
-    inset 0 0 0 5px
+    inset
+      0
+      0
+      0
+      5px
       rgb(0 0 0 / 10%),
-    inset 0 0 42px
-      rgb(0 0 0 / 48%),
-    0 10px 18px
-      rgb(0 0 0 / 25%);
+    inset
+      0
+      0
+      42px
+      rgb(0 0 0 / 46%),
+    0
+      10px
+      18px
+      rgb(0 0 0 / 23%);
 }
 
 
-/* Borde decorativo de cubierta */
-
 .book__cover::after {
-  content: "";
+  content:
+    "";
 
-  position: absolute;
+  position:
+    absolute;
 
-  inset: 12px;
+  inset:
+    12px;
 
   border:
-    1px solid
-    rgb(212 175 55 / 16%);
+    1px
+    solid
+    rgb(212 175 55 / 17%);
 
   border-radius:
-    10px 20px 20px 10px;
+    10px
+    20px
+    20px
+    10px;
 
-  pointer-events: none;
+  pointer-events:
+    none;
 }
 
 
 .book__cover--back {
-  z-index: 0;
+  z-index:
+    0;
 
   transform:
-    translateY(11px)
-    scale(1.018);
+    translateY(
+      11px
+    )
+    scale(
+      1.018
+    );
 }
 
 
 .book__cover--front {
-  z-index: -1;
+  z-index:
+    -1;
 
-  pointer-events: none;
+  pointer-events:
+    none;
 }
 
 
@@ -208,20 +457,29 @@
    ========================================================= */
 
 .book__sheets {
-  position: absolute;
+  position:
+    absolute;
 
   inset:
     3%
     3.5%
     4%;
 
-  z-index: 3;
+  z-index:
+    3;
 
-  display: grid;
+  display:
+    grid;
 
   grid-template-columns:
-    minmax(0, 1fr)
-    minmax(0, 1fr);
+    minmax(
+      0,
+      1fr
+    )
+    minmax(
+      0,
+      1fr
+    );
 
   transform-style:
     preserve-3d;
@@ -231,23 +489,35 @@
 }
 
 
-/* Grosor inferior de páginas */
+/* Grosor inferior */
 
 .book__sheets::after {
-  content: "";
+  content:
+    "";
 
-  position: absolute;
+  position:
+    absolute;
 
-  left: 0.8%;
-  right: 0.8%;
-  bottom: -11px;
+  left:
+    0.8%;
 
-  z-index: -1;
+  right:
+    0.8%;
 
-  height: 14px;
+  bottom:
+    -11px;
+
+  z-index:
+    -1;
+
+  height:
+    14px;
 
   border-radius:
-    0 0 12px 12px;
+    0
+    0
+    12px
+    12px;
 
   background:
     repeating-linear-gradient(
@@ -263,28 +533,42 @@
     );
 
   box-shadow:
-    0 7px 13px
-      rgb(0 0 0 / 20%);
+    0
+    7px
+    13px
+    rgb(0 0 0 / 20%);
 }
 
 
-/* Pequeño canto superior */
+/* Canto superior */
 
 .book__sheets::before {
-  content: "";
+  content:
+    "";
 
-  position: absolute;
+  position:
+    absolute;
 
-  left: 1%;
-  right: 1%;
-  top: -5px;
+  left:
+    1%;
 
-  z-index: -1;
+  right:
+    1%;
 
-  height: 7px;
+  top:
+    -5px;
+
+  z-index:
+    -1;
+
+  height:
+    7px;
 
   border-radius:
-    9px 9px 0 0;
+    9px
+    9px
+    0
+    0;
 
   background:
     repeating-linear-gradient(
@@ -295,7 +579,8 @@
       #ccb287 2px
     );
 
-  opacity: 0.8;
+  opacity:
+    0.8;
 }
 
 
@@ -304,30 +589,43 @@
    ========================================================= */
 
 .book__page {
-  position: relative;
+  position:
+    relative;
 
-  min-width: 0;
-  min-height: 0;
+  min-width:
+    0;
 
-  overflow: hidden;
+  min-height:
+    0;
+
+  overflow:
+    hidden;
 
   color:
-    var(--color-night-950);
+    var(
+      --book-ink
+    );
 
   box-shadow:
-    inset 0 0 32px
+    inset
+      0
+      0
+      32px
       rgb(93 66 38 / 9%);
 }
 
 
-/* Ligera irregularidad para no parecer una tarjeta */
-
 .book__page--left {
   border-radius:
-    16px 3px 3px 14px;
+    16px
+    3px
+    3px
+    14px;
 
   transform:
-    rotateZ(-0.16deg);
+    rotateZ(
+      -0.12deg
+    );
 
   background:
     linear-gradient(
@@ -341,19 +639,30 @@
     );
 
   box-shadow:
-    inset -12px 0 24px
+    inset
+      -12px
+      0
+      24px
       rgb(72 46 24 / 11%),
-    inset 0 -5px 10px
+    inset
+      0
+      -5px
+      10px
       rgb(85 59 32 / 5%);
 }
 
 
 .book__page--right {
   border-radius:
-    3px 16px 14px 3px;
+    3px
+    16px
+    14px
+    3px;
 
   transform:
-    rotateZ(0.12deg);
+    rotateZ(
+      0.1deg
+    );
 
   background:
     linear-gradient(
@@ -367,28 +676,38 @@
     );
 
   box-shadow:
-    inset 12px 0 24px
+    inset
+      12px
+      0
+      24px
       rgb(72 46 24 / 11%),
-    inset 0 -5px 10px
+    inset
+      0
+      -5px
+      10px
       rgb(85 59 32 / 5%);
 }
 
 
 /* =========================================================
-   7. INTERIOR
+   7. INTERIOR DE PÁGINA
    ========================================================= */
 
 .book__page-inner {
-  position: relative;
+  position:
+    relative;
 
-  width: 100%;
-  height: 100%;
+  width:
+    100%;
+
+  height:
+    100%;
 
   padding:
     clamp(
-      1.15rem,
-      2.8vw,
-      2.4rem
+      1rem,
+      2.5vw,
+      2.2rem
     );
 }
 
@@ -399,40 +718,56 @@
 
 .book__page::before,
 .book__turning-face::before {
-  content: "";
+  content:
+    "";
 
-  position: absolute;
+  position:
+    absolute;
 
-  inset: 0;
+  inset:
+    0;
 
-  z-index: 1;
+  z-index:
+    1;
 
-  pointer-events: none;
+  pointer-events:
+    none;
 
-  opacity: 0.11;
+  opacity:
+    0.095;
 
   background-image:
     radial-gradient(
       circle at 15% 20%,
-      rgb(95 64 35 / 30%) 0.45px,
-      transparent 0.75px
+      rgb(95 64 35 / 30%)
+      0.45px,
+      transparent
+      0.75px
     ),
     radial-gradient(
       circle at 70% 65%,
-      rgb(104 72 40 / 16%) 0.5px,
-      transparent 0.8px
+      rgb(104 72 40 / 16%)
+      0.5px,
+      transparent
+      0.8px
     ),
     linear-gradient(
       115deg,
-      transparent 20%,
-      rgb(255 255 255 / 20%) 45%,
-      transparent 70%
+      transparent
+      20%,
+      rgb(255 255 255 / 20%)
+      45%,
+      transparent
+      70%
     );
 
   background-size:
-    17px 17px,
-    23px 23px,
-    100% 100%;
+    17px
+    17px,
+    23px
+    23px,
+    100%
+    100%;
 }
 
 
@@ -441,19 +776,29 @@
    ========================================================= */
 
 .book__page--left::after {
-  content: "";
+  content:
+    "";
 
-  position: absolute;
+  position:
+    absolute;
 
-  top: 0;
-  right: 0;
-  bottom: 0;
+  top:
+    0;
 
-  z-index: 6;
+  right:
+    0;
 
-  width: 17%;
+  bottom:
+    0;
 
-  pointer-events: none;
+  z-index:
+    6;
+
+  width:
+    17%;
+
+  pointer-events:
+    none;
 
   background:
     linear-gradient(
@@ -467,19 +812,29 @@
 
 
 .book__page--right::after {
-  content: "";
+  content:
+    "";
 
-  position: absolute;
+  position:
+    absolute;
 
-  top: 0;
-  left: 0;
-  bottom: 0;
+  top:
+    0;
 
-  z-index: 6;
+  left:
+    0;
 
-  width: 17%;
+  bottom:
+    0;
 
-  pointer-events: none;
+  z-index:
+    6;
+
+  width:
+    17%;
+
+  pointer-events:
+    none;
 
   background:
     linear-gradient(
@@ -497,20 +852,31 @@
    ========================================================= */
 
 .book__spine {
-  position: absolute;
+  position:
+    absolute;
 
-  top: 3.5%;
-  bottom: 4.5%;
-  left: 50%;
+  top:
+    3.5%;
 
-  z-index: 40;
+  bottom:
+    4.5%;
 
-  width: 25px;
+  left:
+    50%;
+
+  z-index:
+    40;
+
+  width:
+    25px;
 
   transform:
-    translateX(-50%);
+    translateX(
+      -50%
+    );
 
-  pointer-events: none;
+  pointer-events:
+    none;
 
   background:
     radial-gradient(
@@ -523,25 +889,35 @@
     );
 
   filter:
-    blur(1.6px);
+    blur(
+      1.6px
+    );
 }
 
 
-/* Línea más oscura justo en el pliegue */
-
 .book__spine::after {
-  content: "";
+  content:
+    "";
 
-  position: absolute;
+  position:
+    absolute;
 
-  top: 0;
-  bottom: 0;
-  left: 50%;
+  top:
+    0;
 
-  width: 3px;
+  bottom:
+    0;
+
+  left:
+    50%;
+
+  width:
+    3px;
 
   transform:
-    translateX(-50%);
+    translateX(
+      -50%
+    );
 
   background:
     linear-gradient(
@@ -554,7 +930,9 @@
     );
 
   filter:
-    blur(1px);
+    blur(
+      1px
+    );
 }
 
 
@@ -563,22 +941,35 @@
    ========================================================= */
 
 .book__page-content {
-  position: relative;
+  position:
+    relative;
 
-  z-index: 4;
+  z-index:
+    4;
 
-  display: grid;
+  display:
+    grid;
 
-  width: 100%;
-  height: 100%;
+  width:
+    100%;
 
-  min-width: 0;
+  height:
+    100%;
 
-  align-content: center;
+  min-width:
+    0;
 
-  justify-items: center;
+  min-height:
+    0;
 
-  text-align: center;
+  align-content:
+    center;
+
+  justify-items:
+    center;
+
+  text-align:
+    center;
 }
 
 
@@ -587,31 +978,46 @@
    ========================================================= */
 
 .book__ritual {
-  position: relative;
+  position:
+    relative;
 
-  z-index: 8;
+  z-index:
+    8;
 
-  display: grid;
+  display:
+    grid;
 
-  height: 100%;
+  height:
+    100%;
 
-  place-items: center;
+  place-items:
+    center;
 
-  align-content: center;
+  align-content:
+    center;
 
   gap:
-    var(--space-md);
+    var(
+      --space-md,
+      1rem
+    );
 
   padding:
-    var(--space-lg);
+    var(
+      --space-lg,
+      1.5rem
+    );
 
-  text-align: center;
+  text-align:
+    center;
 }
 
 
 .book__ritual-symbol {
   color:
-    var(--color-gold-500);
+    var(
+      --book-gold
+    );
 
   font-size:
     clamp(
@@ -623,13 +1029,20 @@
 
 
 .book__ritual-text {
-  max-width: 285px;
+  max-width:
+    285px;
 
   color:
-    var(--color-night-900);
+    var(
+      --book-ink
+    );
 
   font-family:
-    var(--font-display);
+    var(
+      --font-display,
+      Georgia,
+      serif
+    );
 
   font-size:
     clamp(
@@ -638,11 +1051,14 @@
       2.35rem
     );
 
-  font-weight: 500;
+  font-weight:
+    500;
 
-  line-height: 1.27;
+  line-height:
+    1.27;
 
-  text-wrap: balance;
+  text-wrap:
+    balance;
 }
 
 
@@ -651,157 +1067,414 @@
    ========================================================= */
 
 .book__page-number {
-  position: absolute;
+  position:
+    absolute;
 
-  bottom: 0.65rem;
+  bottom:
+    0.65rem;
 
-  z-index: 8;
+  z-index:
+    8;
 
   color:
     rgb(88 61 40 / 46%);
 
   font-family:
-    var(--font-display);
+    var(
+      --font-display,
+      Georgia,
+      serif
+    );
 
   font-size:
-    0.76rem;
+    0.75rem;
 }
 
 
 .book__page--left
 .book__page-number {
-  left: 1rem;
+  left:
+    1rem;
 }
 
 
 .book__page--right
 .book__page-number {
-  right: 1rem;
+  right:
+    1rem;
 }
 
 
 /* =========================================================
-   14. LECTURA EN UNA PÁGINA
+   14. COMPONENTE DE LECTURA
    ========================================================= */
 
 .book-reading {
-  display: grid;
+  position:
+    relative;
 
-  width: 100%;
-  height: 100%;
+  width:
+    100%;
 
-  min-height: 0;
+  height:
+    100%;
 
-  align-content: center;
+  min-width:
+    0;
 
-  justify-items: center;
+  min-height:
+    0;
+}
 
-  gap:
-    clamp(
-      0.4rem,
-      1vw,
-      0.8rem
-    );
+
+/* =========================================================
+   15. PÁGINA IZQUIERDA — ILUSTRACIÓN
+   ========================================================= */
+
+.book-reading--image-page {
+  display:
+    grid;
+
+  place-items:
+    center;
 
   padding:
     clamp(
-      0.6rem,
-      1.5vw,
-      1.2rem
+      0.7rem,
+      1.6vw,
+      1.4rem
     );
-
-  text-align: center;
 }
 
 
-/* Imagen */
+.book-reading__image-stage {
+  position:
+    relative;
 
-.book-reading__image-wrapper,
-.book-reading__image-placeholder {
+  display:
+    grid;
+
+  place-items:
+    center;
+
   width:
-    min(66%, 178px);
+    min(
+      88%,
+      340px
+    );
 
   aspect-ratio:
-    3 / 4;
-
-  overflow: hidden;
-
-  border:
-    4px solid
-    rgb(255 255 255 / 35%);
-
-  border-radius:
-    6px;
-
-  background:
-    #e2cfaa;
-
-  box-shadow:
-    0 7px 16px
-      rgb(58 37 19 / 17%);
+    4 / 5;
 }
 
 
-.book-reading__image-placeholder {
-  display: grid;
+/*
+ * Marco tipo ilustración de cuento,
+ * no una tarjeta rígida.
+ */
+.book-reading__image-stage::before {
+  content:
+    "";
 
-  place-items: center;
+  position:
+    absolute;
 
-  color:
-    var(--color-gold-500);
+  inset:
+    -3%;
 
-  font-size:
-    1.8rem;
+  z-index:
+    -1;
+
+  border:
+    1px
+    solid
+    rgb(126 86 48 / 12%);
+
+  border-radius:
+    40%
+    38%
+    42%
+    36%
+    /
+    34%
+    44%
+    38%
+    46%;
 
   background:
-    linear-gradient(
-      145deg,
-      #f1e5cb,
-      #d3b98a
+    rgb(255 255 255 / 19%);
+
+  transform:
+    rotate(
+      -0.8deg
     );
+}
+
+
+.book-reading__image,
+.book-reading__image-placeholder {
+  width:
+    100%;
+
+  height:
+    100%;
+
+  border-radius:
+    12px;
+
+  box-shadow:
+    0
+    12px
+    26px
+    rgb(58 37 19 / 15%);
 }
 
 
 .book-reading__image {
-  display: block;
+  display:
+    block;
 
-  width: 100%;
-  height: 100%;
+  object-fit:
+    contain;
 
-  object-fit: cover;
-
-  opacity: 0;
+  opacity:
+    0;
 
   transform:
-    scale(1.015);
+    scale(
+      0.975
+    )
+    translateY(
+      3px
+    );
 
   transition:
-    opacity 200ms ease,
-    transform 350ms ease;
+    opacity
+      260ms
+      ease,
+    transform
+      420ms
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      );
 }
 
 
 .book-reading__image.is-loaded {
-  opacity: 1;
+  opacity:
+    1;
 
   transform:
-    scale(1);
+    scale(
+      1
+    )
+    translateY(
+      0
+    );
+}
+
+
+.book--selected
+.book-reading--image-page
+.book-reading__image.is-loaded {
+  animation:
+    illustration-breathe
+    3.8s
+    ease-in-out
+    infinite;
+}
+
+
+.book-reading__image-placeholder {
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  color:
+    var(
+      --book-gold
+    );
+
+  font-size:
+    2rem;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f3e8d1,
+      #d7bd8f
+    );
+}
+
+
+/* ---------------------------------------------------------
+   Destellos decorativos
+   --------------------------------------------------------- */
+
+.book-reading__sparkle {
+  position:
+    absolute;
+
+  z-index:
+    5;
+
+  color:
+    var(
+      --book-gold
+    );
+
+  font-size:
+    clamp(
+      0.82rem,
+      1.5vw,
+      1.18rem
+    );
+
+  opacity:
+    0.38;
+
+  pointer-events:
+    none;
+}
+
+
+.book-reading__sparkle--one {
+  top:
+    1%;
+
+  left:
+    1%;
+
+  animation:
+    reading-sparkle
+    2.8s
+    ease-in-out
+    infinite;
+}
+
+
+.book-reading__sparkle--two {
+  right:
+    1%;
+
+  bottom:
+    3%;
+
+  animation:
+    reading-sparkle
+    3.2s
+    ease-in-out
+    700ms
+    infinite;
+}
+
+
+/* =========================================================
+   16. PÁGINA DERECHA — TEXTO
+   ========================================================= */
+
+.book-reading--text-page {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    center;
+
+  align-items:
+    flex-start;
+
+  gap:
+    clamp(
+      0.48rem,
+      1vw,
+      0.78rem
+    );
+
+  padding:
+    clamp(
+      1rem,
+      2.5vw,
+      2.15rem
+    );
+
+  text-align:
+    left;
+}
+
+
+/*
+ * Línea decorativa pequeña.
+ * Ayuda a separar categoría y título
+ * sin llenar la página de elementos.
+ */
+.book-reading--text-page::before {
+  content:
+    "";
+
+  width:
+    38px;
+
+  height:
+    2px;
+
+  margin-bottom:
+    0.1rem;
+
+  border-radius:
+    999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(
+        --book-gold
+      ),
+      transparent
+    );
+
+  opacity:
+    0.62;
 }
 
 
 /* Categoría */
 
 .book-reading__category {
+  margin:
+    0;
+
   color:
-    var(--color-brown-700);
+    var(
+      --book-brown
+    );
+
+  font-family:
+    var(
+      --font-body,
+      system-ui,
+      sans-serif
+    );
 
   font-size:
-    0.6rem;
+    clamp(
+      0.59rem,
+      0.8vw,
+      0.7rem
+    );
 
-  font-weight: 800;
+  font-weight:
+    800;
 
   letter-spacing:
-    0.15em;
+    0.14em;
 
   text-transform:
     uppercase;
@@ -811,88 +1484,299 @@
 /* Título */
 
 .book-reading__title {
-  max-width: 250px;
+  max-width:
+    300px;
+
+  margin:
+    0;
 
   color:
-    var(--color-night-900);
+    var(
+      --book-ink
+    );
 
   font-family:
-    var(--font-display);
+    var(
+      --font-display,
+      Georgia,
+      serif
+    );
 
   font-size:
     clamp(
-      1.05rem,
-      1.8vw,
-      1.55rem
+      1.35rem,
+      2.2vw,
+      2.05rem
     );
 
-  font-weight: 600;
+  font-weight:
+    600;
 
-  line-height: 1.08;
+  line-height:
+    1.07;
 
-  text-wrap: balance;
+  text-wrap:
+    balance;
+}
+
+
+/* Meta */
+
+.book-reading__meta {
+  margin:
+    0;
+
+  color:
+    rgb(92 72 57 / 66%);
+
+  font-family:
+    var(
+      --font-body,
+      system-ui,
+      sans-serif
+    );
+
+  font-size:
+    clamp(
+      0.7rem,
+      0.9vw,
+      0.8rem
+    );
+
+  font-weight:
+    600;
 }
 
 
 /* Extracto */
 
 .book-reading__excerpt {
-  display: grid;
+  display:
+    grid;
 
   gap:
-    0.2rem;
+    0.42rem;
+
+  width:
+    100%;
 
   max-width:
-    245px;
+    310px;
+
+  margin-top:
+    0.16rem;
 
   color:
-    #655648;
+    var(
+      --book-ink-soft
+    );
 
   font-family:
-    var(--font-body);
+    var(
+      --font-body,
+      system-ui,
+      sans-serif
+    );
 
   font-size:
     clamp(
-      0.67rem,
-      1vw,
-      0.84rem
+      0.78rem,
+      1.05vw,
+      0.95rem
     );
 
   line-height:
-    1.42;
+    1.52;
 
   text-wrap:
     pretty;
 }
 
 
+.book-reading__excerpt p {
+  margin:
+    0;
+}
+
+
+/*
+ * Preguntas dentro del extracto pueden
+ * destacarse si posteriormente agregas
+ * la clase desde JS.
+ */
+.book-reading__excerpt
+.book-reading__line--question {
+  color:
+    var(
+      --book-brown
+    );
+
+  font-weight:
+    650;
+}
+
+
+/* Invitación a continuar */
+
+.book-reading__continue {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    0.42rem;
+
+  margin-top:
+    auto;
+
+  padding-top:
+    0.65rem;
+
+  color:
+    rgb(101 77 56 / 62%);
+
+  font-family:
+    var(
+      --font-body,
+      system-ui,
+      sans-serif
+    );
+
+  font-size:
+    clamp(
+      0.68rem,
+      0.85vw,
+      0.78rem
+    );
+
+  font-weight:
+    650;
+}
+
+
+.book-reading__continue
+span:first-child {
+  color:
+    var(
+      --book-gold
+    );
+}
+
+
 /* =========================================================
-   15. PREVIEW LEGACY
+   17. COMPATIBILIDAD — VERSIÓN COMPLETA
+   ========================================================= */
+
+/*
+ * Se conserva para cualquier parte del proyecto
+ * que todavía llame renderReadingPage()
+ * sin variant.
+ */
+.book-reading:not(
+  .book-reading--image-page
+):not(
+  .book-reading--text-page
+) {
+  display:
+    grid;
+
+  align-content:
+    center;
+
+  justify-items:
+    center;
+
+  gap:
+    0.6rem;
+
+  padding:
+    1rem;
+
+  text-align:
+    center;
+}
+
+
+.book-reading__image-wrapper {
+  width:
+    min(
+      66%,
+      178px
+    );
+
+  aspect-ratio:
+    3 / 4;
+
+  overflow:
+    hidden;
+
+  border:
+    4px
+    solid
+    rgb(255 255 255 / 35%);
+
+  border-radius:
+    7px;
+
+  background:
+    #e2cfaa;
+
+  box-shadow:
+    0
+    7px
+    16px
+    rgb(58 37 19 / 17%);
+}
+
+
+.book-reading__image-wrapper
+.book-reading__image {
+  object-fit:
+    cover;
+}
+
+
+/* =========================================================
+   18. PREVIEW LEGACY
    ========================================================= */
 
 .story-preview {
-  position: relative;
+  position:
+    relative;
 
-  z-index: 8;
+  z-index:
+    8;
 
-  display: grid;
+  display:
+    grid;
 
-  height: 100%;
+  height:
+    100%;
 
-  align-content: center;
+  align-content:
+    center;
 
-  justify-items: center;
+  justify-items:
+    center;
 
-  text-align: center;
+  text-align:
+    center;
 }
 
 
 .story-preview__status {
   margin-bottom:
-    var(--space-sm);
+    var(
+      --space-sm,
+      0.75rem
+    );
 
   color:
-    var(--color-brown-700);
+    var(
+      --book-brown
+    );
 
   font-size:
     0.65rem;
@@ -910,15 +1794,20 @@
 
 .story-preview__image-wrapper {
   width:
-    min(67%, 210px);
+    min(
+      67%,
+      210px
+    );
 
   aspect-ratio:
     3 / 4;
 
-  overflow: hidden;
+  overflow:
+    hidden;
 
   border:
-    5px solid
+    5px
+    solid
     rgb(255 255 255 / 38%);
 
   border-radius:
@@ -928,28 +1817,43 @@
     #e0cda7;
 
   box-shadow:
-    0 8px 18px
-      rgb(64 42 23 / 18%);
+    0
+    8px
+    18px
+    rgb(64 42 23 / 18%);
 }
 
 
 .story-preview__image {
-  width: 100%;
-  height: 100%;
+  width:
+    100%;
 
-  object-fit: cover;
+  height:
+    100%;
+
+  object-fit:
+    cover;
 }
 
 
 .story-preview__title {
   margin-top:
-    var(--space-md);
+    var(
+      --space-md,
+      1rem
+    );
 
   color:
-    var(--color-night-900);
+    var(
+      --book-ink
+    );
 
   font-family:
-    var(--font-display);
+    var(
+      --font-display,
+      Georgia,
+      serif
+    );
 
   font-size:
     clamp(
@@ -964,47 +1868,67 @@
 
 
 /* =========================================================
-   16. RESULTADO
+   19. RESULTADO FINAL
    ========================================================= */
 
 .story-result {
-  position: relative;
+  position:
+    relative;
 
-  z-index: 9;
+  z-index:
+    9;
 
-  display: grid;
+  display:
+    grid;
 
-  width: 100%;
-  height: 100%;
+  width:
+    100%;
 
-  align-content: center;
+  height:
+    100%;
 
-  justify-items: center;
+  align-content:
+    center;
+
+  justify-items:
+    center;
 
   padding:
-    var(--space-sm);
+    var(
+      --space-sm,
+      0.75rem
+    );
 
-  text-align: center;
+  text-align:
+    center;
 }
 
 
 .story-result__star {
-  display: block;
+  display:
+    block;
 
   margin-bottom:
-    var(--space-xs);
+    0.3rem;
 
   color:
-    var(--color-gold-500);
+    var(
+      --book-gold
+    );
 
   font-size:
-    1.65rem;
+    1.55rem;
 
-  opacity: 0;
+  opacity:
+    0;
 
   transform:
-    scale(0.5)
-    rotate(-25deg);
+    scale(
+      0.5
+    )
+    rotate(
+      -25deg
+    );
 }
 
 
@@ -1013,19 +1937,27 @@
 .story-result__title,
 .story-result__description,
 .story-result__actions {
-  opacity: 0;
+  opacity:
+    0;
 
   transform:
-    translateY(12px);
+    translateY(
+      12px
+    );
 }
 
 
 .story-result__eyebrow {
   margin-bottom:
-    var(--space-sm);
+    var(
+      --space-sm,
+      0.75rem
+    );
 
   color:
-    var(--color-brown-700);
+    var(
+      --book-brown
+    );
 
   font-size:
     0.62rem;
@@ -1043,32 +1975,45 @@
 
 .story-result__cover-wrapper {
   width:
-    min(50%, 165px);
+    min(
+      48%,
+      158px
+    );
 
   aspect-ratio:
     3 / 4;
 
-  overflow: hidden;
+  overflow:
+    hidden;
 
   border:
-    4px solid
+    4px
+    solid
     rgb(255 255 255 / 35%);
 
   border-radius:
-    7px;
+    8px;
 
   background:
     #e0cda7;
 
   box-shadow:
-    0 8px 18px
-      rgb(64 42 23 / 18%);
+    0
+    9px
+    20px
+    rgb(64 42 23 / 18%);
 }
 
 
 .story-result__cover {
-  width: 100%;
-  height: 100%;
+  display:
+    block;
+
+  width:
+    100%;
+
+  height:
+    100%;
 
   object-fit:
     cover;
@@ -1077,19 +2022,28 @@
 
 .story-result__title {
   margin-top:
-    var(--space-sm);
+    var(
+      --space-sm,
+      0.75rem
+    );
 
   color:
-    var(--color-night-900);
+    var(
+      --book-ink
+    );
 
   font-family:
-    var(--font-display);
+    var(
+      --font-display,
+      Georgia,
+      serif
+    );
 
   font-size:
     clamp(
-      1.3rem,
-      2.3vw,
-      2rem
+      1.25rem,
+      2.1vw,
+      1.9rem
     );
 
   line-height:
@@ -1105,51 +2059,76 @@
     285px;
 
   margin-top:
-    var(--space-xs);
+    0.3rem;
 
   color:
-    #625446;
+    var(
+      --book-ink-soft
+    );
 
   font-size:
     0.78rem;
+
+  line-height:
+    1.45;
 }
 
 
 .story-result__actions {
-  display: flex;
+  display:
+    flex;
 
-  flex-wrap: wrap;
+  flex-wrap:
+    wrap;
 
-  justify-content: center;
+  justify-content:
+    center;
 
   gap:
-    var(--space-sm);
+    var(
+      --space-sm,
+      0.75rem
+    );
 
   margin-top:
-    var(--space-md);
+    var(
+      --space-md,
+      1rem
+    );
 }
 
 
 /* =========================================================
-   17. HOJA CINEMATOGRÁFICA
+   20. HOJA QUE GIRA
    ========================================================= */
 
 .book__turning-page {
-  position: absolute;
+  position:
+    absolute;
 
-  top: 0;
-  right: 0;
+  top:
+    0;
 
-  z-index: 30;
+  right:
+    0;
 
-  width: 50%;
-  height: 100%;
+  z-index:
+    30;
+
+  width:
+    50%;
+
+  height:
+    100%;
 
   transform:
-    rotateY(0deg);
+    rotateY(
+      0deg
+    );
 
   transform-origin:
-    left center;
+    left
+    center;
 
   transform-style:
     preserve-3d;
@@ -1164,15 +2143,18 @@
 
 
 /* =========================================================
-   18. CARAS DE LA HOJA
+   21. CARAS DE LA HOJA
    ========================================================= */
 
 .book__turning-face {
-  position: absolute;
+  position:
+    absolute;
 
-  inset: 0;
+  inset:
+    0;
 
-  overflow: hidden;
+  overflow:
+    hidden;
 
   backface-visibility:
     hidden;
@@ -1181,17 +2163,24 @@
     hidden;
 
   box-shadow:
-    0 8px 20px
-      rgb(0 0 0 / 15%);
+    0
+    8px
+    20px
+    rgb(0 0 0 / 15%);
 }
 
 
 .book__turning-face--front {
   border-radius:
-    3px 15px 13px 3px;
+    3px
+    15px
+    13px
+    3px;
 
   transform:
-    rotateY(0deg);
+    rotateY(
+      0deg
+    );
 
   background:
     linear-gradient(
@@ -1207,10 +2196,15 @@
 
 .book__turning-face--back {
   border-radius:
-    15px 3px 3px 13px;
+    15px
+    3px
+    3px
+    13px;
 
   transform:
-    rotateY(180deg);
+    rotateY(
+      180deg
+    );
 
   background:
     linear-gradient(
@@ -1224,27 +2218,33 @@
 
 
 /* =========================================================
-   19. LUZ SOBRE LA HOJA
+   22. LUZ DURANTE EL GIRO
    ========================================================= */
 
 .book__turning-face::after {
-  content: "";
+  content:
+    "";
 
-  position: absolute;
+  position:
+    absolute;
 
   inset:
     -5%
     -20%;
 
-  z-index: 20;
+  z-index:
+    20;
 
   pointer-events:
     none;
 
-  opacity: 0;
+  opacity:
+    0;
 
   transform:
-    translateX(45%);
+    translateX(
+      45%
+    );
 
   background:
     linear-gradient(
@@ -1260,68 +2260,225 @@
 
 .book__turning-page.is-turning
 .book__turning-face::after {
-  animation-name:
-    page-light-sweep;
+  /*
+   * La animación real se define en el bloque
+   * de fluidez al final del archivo.
+   */
+  animation:
+    none;
+}
 
-  animation-duration:
-    inherit;
 
-  animation-timing-function:
-    ease-in-out;
-
-  animation-fill-mode:
-    both;
+/*
+ * En el punto medio del giro,
+ * bookAnimation.js añade is-half-turn.
+ */
+.book__turning-page.is-half-turn {
+  filter:
+    brightness(
+      0.96
+    )
+    drop-shadow(
+      -4px
+      5px
+      8px
+      rgb(0 0 0 / 18%)
+    );
 }
 
 
 /* =========================================================
-   20. ESQUINA / CURVATURA VISUAL
+   23. CURVATURA VISUAL
    ========================================================= */
 
 .book__turning-face--front::before {
   box-shadow:
-    inset -18px 0 22px
+    inset
+      -18px
+      0
+      22px
       rgb(73 47 24 / 11%),
-    inset 0 -12px 16px
+    inset
+      0
+      -12px
+      16px
       rgb(70 44 22 / 5%);
 }
 
 
 .book__turning-face--back::before {
   box-shadow:
-    inset 18px 0 22px
+    inset
+      18px
+      0
+      22px
       rgb(73 47 24 / 11%),
-    inset 0 -12px 16px
+    inset
+      0
+      -12px
+      16px
       rgb(70 44 22 / 5%);
 }
 
 
 /* =========================================================
-   21. GIRO
+   24. GIRO
    ========================================================= */
 
 .book__turning-page.is-turning {
-  animation-name:
-    cinematic-page-turn;
+  /*
+   * El giro lo controla bookAnimation.js mediante
+   * Web Animations API. CSS solo prepara la capa.
+   */
+  animation:
+    none;
 
-  animation-duration:
-    850ms;
+  transition:
+    none;
 
-  animation-timing-function:
-    cubic-bezier(
-      0.4,
-      0,
-      0.17,
-      1
-    );
-
-  animation-fill-mode:
-    forwards;
+  will-change:
+    transform;
 }
 
 
 /* =========================================================
-   22. ESTADO HIDDEN
+   25. DESTELLOS DEL LIBRO
+   ========================================================= */
+
+.book__sparkles {
+  position:
+    absolute;
+
+  inset:
+    -5%;
+
+  z-index:
+    60;
+
+  pointer-events:
+    none;
+
+  opacity:
+    0;
+
+  transition:
+    opacity
+    250ms
+    ease;
+}
+
+
+.book--searching
+.book__sparkles {
+  opacity:
+    1;
+}
+
+
+.book__sparkles span {
+  position:
+    absolute;
+
+  color:
+    var(
+      --book-gold
+    );
+
+  opacity:
+    0;
+
+  font-size:
+    clamp(
+      0.78rem,
+      1.6vw,
+      1.25rem
+    );
+
+  animation:
+    sparkle-pop
+    1.7s
+    ease-in-out
+    infinite;
+}
+
+
+.book__sparkles
+span:nth-child(
+  1
+) {
+  top:
+    12%;
+
+  left:
+    8%;
+
+  animation-delay:
+    0ms;
+}
+
+
+.book__sparkles
+span:nth-child(
+  2
+) {
+  top:
+    5%;
+
+  right:
+    15%;
+
+  animation-delay:
+    320ms;
+}
+
+
+.book__sparkles
+span:nth-child(
+  3
+) {
+  bottom:
+    10%;
+
+  left:
+    18%;
+
+  animation-delay:
+    650ms;
+}
+
+
+.book__sparkles
+span:nth-child(
+  4
+) {
+  right:
+    8%;
+
+  bottom:
+    18%;
+
+  animation-delay:
+    980ms;
+}
+
+
+.book__sparkles
+span:nth-child(
+  5
+) {
+  top:
+    45%;
+
+  right:
+    2%;
+
+  animation-delay:
+    1250ms;
+}
+
+
+/* =========================================================
+   26. HIDDEN
    ========================================================= */
 
 .book [hidden] {
@@ -1331,18 +2488,24 @@
 
 
 /* =========================================================
-   23. COMPATIBILIDAD TEMPORAL
+   27. COMPATIBILIDAD TEMPORAL
    ========================================================= */
 
 .book__page-turn {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 1px;
-  height: 1px;
+  width:
+    1px;
 
-  overflow: hidden;
+  height:
+    1px;
 
-  opacity: 0;
+  overflow:
+    hidden;
+
+  opacity:
+    0;
 
   pointer-events:
     none;
@@ -1350,11 +2513,224 @@
 
 
 /* =========================================================
-   24. TABLET
+   28. ANIMACIONES
+   ========================================================= */
+
+@keyframes page-light-sweep {
+  0% {
+    opacity:
+      0;
+
+    transform:
+      translateX(
+        48%
+      );
+  }
+
+  34% {
+    opacity:
+      0.44;
+  }
+
+  52% {
+    opacity:
+      0.72;
+
+    transform:
+      translateX(
+        -3%
+      );
+  }
+
+  76% {
+    opacity:
+      0.26;
+  }
+
+  100% {
+    opacity:
+      0;
+
+    transform:
+      translateX(
+        -48%
+      );
+  }
+}
+
+
+@keyframes discovery-aura {
+  from {
+    transform:
+      rotate(
+        0deg
+      )
+      scale(
+        0.98
+      );
+  }
+
+  50% {
+    transform:
+      rotate(
+        180deg
+      )
+      scale(
+        1.02
+      );
+  }
+
+  to {
+    transform:
+      rotate(
+        360deg
+      )
+      scale(
+        0.98
+      );
+  }
+}
+
+
+@keyframes sparkle-pop {
+  0%,
+  100% {
+    opacity:
+      0;
+
+    transform:
+      translateY(
+        5px
+      )
+      scale(
+        0.65
+      )
+      rotate(
+        -8deg
+      );
+  }
+
+  45% {
+    opacity:
+      0.72;
+
+    transform:
+      translateY(
+        -2px
+      )
+      scale(
+        1.05
+      )
+      rotate(
+        6deg
+      );
+  }
+
+  70% {
+    opacity:
+      0.32;
+  }
+}
+
+
+@keyframes reading-sparkle {
+  0%,
+  100% {
+    opacity:
+      0.28;
+
+    transform:
+      scale(
+        0.8
+      )
+      rotate(
+        0deg
+      );
+  }
+
+  50% {
+    opacity:
+      0.7;
+
+    transform:
+      scale(
+        1.12
+      )
+      rotate(
+        10deg
+      );
+  }
+}
+
+
+@keyframes illustration-breathe {
+  0%,
+  100% {
+    transform:
+      scale(
+        1
+      );
+  }
+
+  50% {
+    transform:
+      scale(
+        1.012
+      );
+  }
+}
+
+
+@keyframes quodam-book-celebrate {
+  0% {
+    transform:
+      translateY(
+        -4px
+      )
+      scale(
+        1.027
+      );
+  }
+
+  42% {
+    transform:
+      translateY(
+        -8px
+      )
+      scale(
+        1.045
+      );
+  }
+
+  72% {
+    transform:
+      translateY(
+        -2px
+      )
+      scale(
+        1.022
+      );
+  }
+
+  100% {
+    transform:
+      translateY(
+        -4px
+      )
+      scale(
+        1.027
+      );
+  }
+}
+
+
+/* =========================================================
+   29. TABLET
    ========================================================= */
 
 @media (
-  max-width: 900px
+  max-width:
+    900px
 ) {
   .book {
     width:
@@ -1368,58 +2744,89 @@
   .book__page-inner {
     padding:
       clamp(
-        0.9rem,
-        2.3vw,
-        1.8rem
+        0.85rem,
+        2vw,
+        1.6rem
       );
   }
 
 
-  .book-reading__image-wrapper,
-  .book-reading__image-placeholder {
+  .book-reading__image-stage {
     width:
       min(
-        64%,
-        160px
+        86%,
+        280px
       );
   }
 
 
-  .story-result__actions {
-    gap:
-      var(--space-xs);
+  .book-reading--text-page {
+    padding:
+      clamp(
+        0.8rem,
+        2vw,
+        1.5rem
+      );
+  }
+
+
+  .book-reading__title {
+    font-size:
+      clamp(
+        1.15rem,
+        2.4vw,
+        1.65rem
+      );
+  }
+
+
+  .book-reading__excerpt {
+    font-size:
+      clamp(
+        0.72rem,
+        1.2vw,
+        0.86rem
+      );
   }
 }
 
 
 /* =========================================================
-   25. MÓVIL
+   30. MÓVIL
    ========================================================= */
 
 @media (
-  max-width: 700px
+  max-width:
+    700px
 ) {
   .book {
     width:
       min(
         94vw,
-        460px
+        470px
       );
 
     aspect-ratio:
-      3 / 4;
+      4 / 5.8;
 
     perspective:
-      1800px;
+      1700px;
   }
 
 
   .book__cover {
     border-radius:
-      15px 22px 22px 15px;
+      16px;
   }
 
 
+  /*
+   * NO ocultamos la página izquierda.
+   *
+   * En móvil:
+   * arriba = ilustración
+   * abajo = texto
+   */
   .book__sheets {
     inset:
       3%
@@ -1428,46 +2835,280 @@
 
     grid-template-columns:
       1fr;
+
+    grid-template-rows:
+      minmax(
+        0,
+        0.46fr
+      )
+      minmax(
+        0,
+        0.54fr
+      );
   }
 
-
-  /*
-   * En móvil privilegiamos legibilidad.
-   * Se conserva la metáfora del libro,
-   * pero se muestra una sola página.
-   */
 
   .book__page--left {
     display:
-      none;
-  }
+      block;
 
-
-  .book__page--right {
-    grid-column:
+    grid-row:
       1;
 
     transform:
       none;
 
     border-radius:
-      12px;
+      12px
+      12px
+      3px
+      3px;
+
+    background:
+      linear-gradient(
+        180deg,
+        #f8ecd4 0%,
+        #fcf7ec 58%,
+        #ead8b6 100%
+      );
   }
 
 
-  .book__page--right::after,
-  .book__spine {
+  .book__page--right {
+    display:
+      block;
+
+    grid-row:
+      2;
+
+    transform:
+      none;
+
+    border-radius:
+      3px
+      3px
+      12px
+      12px;
+
+    background:
+      linear-gradient(
+        180deg,
+        #ead8b6 0%,
+        #fcf7ec 12%,
+        #f8ecd4 100%
+      );
+  }
+
+
+  /*
+   * Eliminamos sombra vertical del lomo.
+   */
+  .book__page--left::after,
+  .book__page--right::after {
     display:
       none;
   }
 
 
+  /*
+   * El lomo se vuelve horizontal.
+   */
+  .book__spine {
+    top:
+      46%;
+
+    bottom:
+      auto;
+
+    left:
+      4%;
+
+    right:
+      4%;
+
+    width:
+      auto;
+
+    height:
+      18px;
+
+    transform:
+      translateY(
+        -50%
+      );
+
+    background:
+      radial-gradient(
+        ellipse at center,
+        rgb(37 22 11 / 27%) 0%,
+        rgb(50 31 15 / 14%) 27%,
+        rgb(255 255 255 / 8%) 55%,
+        transparent 100%
+      );
+  }
+
+
+  .book__spine::after {
+    top:
+      50%;
+
+    right:
+      0;
+
+    bottom:
+      auto;
+
+    left:
+      0;
+
+    width:
+      100%;
+
+    height:
+      2px;
+
+    transform:
+      translateY(
+        -50%
+      );
+
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgb(42 25 12 / 24%) 15%,
+        rgb(42 25 12 / 32%) 50%,
+        rgb(42 25 12 / 24%) 85%,
+        transparent
+      );
+  }
+
+
+  .book__page-inner {
+    padding:
+      0.8rem
+      1rem;
+  }
+
+
+  .book-reading--image-page {
+    padding:
+      0.5rem;
+  }
+
+
+  .book-reading__image-stage {
+    width:
+      min(
+        72%,
+        220px
+      );
+
+    aspect-ratio:
+      4 / 3;
+  }
+
+
+  .book-reading__image {
+    object-fit:
+      contain;
+  }
+
+
+  .book-reading--text-page {
+    justify-content:
+      center;
+
+    gap:
+      0.35rem;
+
+    padding:
+      0.65rem
+      1.25rem;
+
+    text-align:
+      center;
+
+    align-items:
+      center;
+  }
+
+
+  .book-reading--text-page::before {
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        var(
+          --book-gold
+        ),
+        transparent
+      );
+  }
+
+
+  .book-reading__title {
+    max-width:
+      300px;
+
+    font-size:
+      clamp(
+        1.15rem,
+        5.3vw,
+        1.55rem
+      );
+  }
+
+
+  .book-reading__meta {
+    font-size:
+      0.7rem;
+  }
+
+
+  .book-reading__excerpt {
+    max-width:
+      310px;
+
+    gap:
+      0.22rem;
+
+    font-size:
+      clamp(
+        0.72rem,
+        3vw,
+        0.82rem
+      );
+
+    line-height:
+      1.4;
+
+    text-align:
+      center;
+  }
+
+
+  .book-reading__continue {
+    margin-top:
+      0.2rem;
+
+    padding-top:
+      0.25rem;
+  }
+
+
+  /*
+   * En móvil la hoja cubre todo el libro.
+   * Se mantiene la sensación de pasar página,
+   * aunque el contenido final quede apilado.
+   */
   .book__turning-page {
     width:
       100%;
 
     transform-origin:
-      left center;
+      left
+      center;
   }
 
 
@@ -1478,30 +3119,11 @@
   }
 
 
-  .book-reading__image-wrapper,
-  .book-reading__image-placeholder {
-    width:
-      min(
-        58%,
-        175px
-      );
-  }
-
-
-  .book-reading__excerpt {
-    max-width:
-      250px;
-
-    font-size:
-      0.78rem;
-  }
-
-
   .story-result__cover-wrapper {
     width:
       min(
-        46%,
-        155px
+        42%,
+        145px
       );
   }
 
@@ -1524,67 +3146,92 @@
 
 
 /* =========================================================
-   26. PANTALLAS MUY PEQUEÑAS
+   31. PANTALLAS MUY PEQUEÑAS
    ========================================================= */
 
 @media (
-  max-width: 420px
+  max-width:
+    420px
 ) {
   .book {
     width:
       96vw;
 
     aspect-ratio:
-      3 / 4.25;
+      4 / 6.15;
   }
 
 
   .book__page-inner {
     padding:
-      1rem;
+      0.7rem;
   }
 
 
-  .book-reading {
-    gap:
-      0.38rem;
-
-    padding:
-      0.5rem;
-  }
-
-
-  .book-reading__image-wrapper,
-  .book-reading__image-placeholder {
+  .book-reading__image-stage {
     width:
       min(
-        52%,
-        145px
+        68%,
+        190px
+      );
+  }
+
+
+  .book-reading--text-page {
+    padding:
+      0.55rem
+      0.9rem;
+  }
+
+
+  .book-reading__title {
+    font-size:
+      clamp(
+        1.05rem,
+        5.5vw,
+        1.38rem
       );
   }
 
 
   .book-reading__excerpt {
     font-size:
-      0.72rem;
+      0.7rem;
 
     line-height:
-      1.35;
+      1.33;
+  }
+
+
+  .book-reading__continue {
+    font-size:
+      0.65rem;
+  }
+
+
+  .book__sparkles span {
+    font-size:
+      0.8rem;
   }
 }
 
 
 /* =========================================================
-   27. MOVIMIENTO REDUCIDO
+   32. MOVIMIENTO REDUCIDO
    ========================================================= */
 
 @media (
-  prefers-reduced-motion: reduce
+  prefers-reduced-motion:
+    reduce
 ) {
   .book,
+  .book::before,
   .book__turning-page,
   .book__turning-face::after,
+  .book__sparkles span,
   .book-reading__image,
+  .book-reading__image.is-loaded,
+  .book-reading__sparkle,
   .story-preview__image,
   .story-result__star,
   .story-result__eyebrow,
@@ -1592,11 +3239,8 @@
   .story-result__title,
   .story-result__description,
   .story-result__actions {
-    animation-duration:
-      0.01ms !important;
-
-    animation-delay:
-      0ms !important;
+    animation:
+      none !important;
 
     transition-duration:
       0.01ms !important;
@@ -1606,116 +3250,1459 @@
   }
 }
 
-.book--searching {
-  filter:
-    drop-shadow(
-      0 34px 40px
-      rgb(0 0 0 / 36%)
-    )
-    drop-shadow(
-      0 0 28px
-      rgb(212 175 55 / 16%)
-    );
-}
 
-.book--searching::before {
-  content: "";
+/* =========================================================
+   33. INTEGRACIÓN FINAL — GIRO FLUIDO
+   ========================================================= */
 
-  position: absolute;
-  inset: -8%;
+/*
+ * bookAnimation.js controla el giro con Web Animations API.
+ * Evitamos cualquier segunda animación CSS sobre transform.
+ */
+.book__turning-page.is-turning {
+  display:
+    block;
 
-  z-index: -5;
-
-  border-radius: 50%;
-
-  pointer-events: none;
-
-  opacity: 0.75;
-
-  background:
-    conic-gradient(
-      from 0deg,
-      rgb(212 175 55 / 12%),
-      rgb(96 165 250 / 11%),
-      rgb(192 132 252 / 10%),
-      rgb(244 114 182 / 8%),
-      rgb(52 211 153 / 8%),
-      rgb(212 175 55 / 12%)
-    );
-
-  filter:
-    blur(28px);
+  visibility:
+    visible;
 
   animation:
-    discovery-aura
-    5s
-    linear
-    infinite;
-}
-.book__sparkles {
-  position: absolute;
-  inset: -5%;
+    none !important;
 
-  z-index: 60;
+  transition:
+    none !important;
 
-  pointer-events: none;
+  will-change:
+    transform;
 
-  opacity: 0;
+  contain:
+    layout
+    paint;
 }
 
-.book--searching
-.book__sparkles {
-  opacity: 1;
+
+/*
+ * Cuando la hoja temporal termina de girar, desaparece.
+ * Así nunca tapa la lectura real de la página derecha.
+ */
+.book__turning-page[hidden] {
+  display:
+    none !important;
 }
 
-.book__sparkles span {
-  position: absolute;
+
+/*
+ * Evitamos filtros costosos durante el punto medio.
+ */
+.book__turning-page.is-half-turn {
+  filter:
+    none !important;
+}
+
+
+/*
+ * Barrido de luz liviano.
+ * Solo modifica opacity + transform.
+ */
+.book__turning-page.is-turning
+.book__turning-face::after {
+  animation:
+    page-light-smooth
+    460ms
+    ease-in-out
+    both;
+}
+
+
+@keyframes page-light-smooth {
+  0% {
+    opacity:
+      0;
+
+    transform:
+      translateX(42%);
+  }
+
+  48% {
+    opacity:
+      0.4;
+
+    transform:
+      translateX(0);
+  }
+
+  100% {
+    opacity:
+      0;
+
+    transform:
+      translateX(-42%);
+  }
+}
+
+
+/* =========================================================
+   34. EXTRACTO — PREGUNTAS
+   ========================================================= */
+
+.book-reading__excerpt-line--question {
+  color:
+    var(--book-brown);
+
+  font-weight:
+    700;
+}
+
+
+/* =========================================================
+   35. ACCIONES FINALES
+   ========================================================= */
+
+.book-reading__final-actions {
+  display:
+    grid;
+
+  width:
+    100%;
+
+  max-width:
+    310px;
+
+  gap:
+    0.55rem;
+
+  margin-top:
+    0.55rem;
+
+  opacity:
+    0;
+
+  transform:
+    translateY(10px);
+
+  transition:
+    opacity
+    260ms
+    ease,
+
+    transform
+    320ms
+    cubic-bezier(
+      0.22,
+      1,
+      0.36,
+      1
+    );
+}
+
+
+.book-reading__final-actions.is-visible {
+  opacity:
+    1;
+
+  transform:
+    translateY(0);
+}
+
+
+.book-reading__final-actions
+.button {
+  width:
+    100%;
+
+  min-height:
+    44px;
+}
+
+
+@media (
+  max-width:
+    700px
+) {
+  .book-reading__final-actions {
+    max-width:
+      290px;
+
+    gap:
+      0.45rem;
+
+    margin-top:
+      0.35rem;
+  }
+
+
+  .book-reading__final-actions
+  .button {
+    min-height:
+      42px;
+
+    padding:
+      0.65rem
+      0.8rem;
+  }
+}
+
+
+/* =========================================================
+   QUODAM — HOJA PARLANCHINA v3
+   =========================================================
+   La hoja ENTERA funciona como una boca de papel.
+
+   Secuencia:
+   cerrada
+      ↓
+   abre un poco
+      ↓
+   cierra
+      ↓
+   abre mucho
+      ↓
+   cierra
+      ↓
+   habla rápido
+      ↓
+   se cierra completamente
+   ========================================================= */
+
+
+/* =========================================================
+   36. ESCENA DEL ORÁCULO
+   ========================================================= */
+
+.book-oracle {
+  position:
+    absolute;
+
+  inset:
+    -3%;
+
+  z-index:
+    300;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  pointer-events:
+    none;
+
+  opacity:
+    0;
+
+  transition:
+    opacity
+    260ms
+    ease;
+}
+
+
+.book-oracle.is-visible {
+  opacity:
+    1;
+}
+
+
+.book-oracle__veil {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  border-radius:
+    30px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgb(38 26 16 / 13%) 0%,
+      rgb(22 15 10 / 44%) 74%
+    );
+
+  backdrop-filter:
+    blur(2px);
+}
+
+
+/* =========================================================
+   37. CONTENEDOR DE LA HOJA
+   ========================================================= */
+
+.book-oracle__sheet {
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  width:
+    min(
+      78%,
+      460px
+    );
+
+  aspect-ratio:
+    1.68 / 1;
+
+  perspective:
+    1000px;
+
+  transform-style:
+    preserve-3d;
+
+  opacity:
+    0;
+
+  transform:
+    translateY(28px)
+    scale(0.82)
+    rotate(-2deg);
+
+  transition:
+    opacity
+    320ms
+    ease,
+
+    transform
+    500ms
+    cubic-bezier(
+      0.34,
+      1.56,
+      0.64,
+      1
+    );
+}
+
+
+.book-oracle.is-visible
+.book-oracle__sheet {
+  opacity:
+    1;
+
+  transform:
+    translateY(0)
+    scale(1)
+    rotate(-1deg);
+}
+
+
+/* =========================================================
+   38. DOS MITADES DEL PAPEL
+   ========================================================= */
+
+.book-oracle__jaw {
+  position:
+    absolute;
+
+  left:
+    0;
+
+  width:
+    100%;
+
+  height:
+    50.5%;
+
+  overflow:
+    hidden;
+
+  border:
+    1px
+    solid
+    rgb(104 71 40 / 23%);
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff9e8 0%,
+      #f5e4bd 58%,
+      #ddbd82 100%
+    );
+
+  box-shadow:
+    inset
+    0
+    0
+    30px
+    rgb(88 57 28 / 9%),
+
+    0
+    13px
+    26px
+    rgb(0 0 0 / 18%);
+
+  backface-visibility:
+    hidden;
+
+  transform-style:
+    preserve-3d;
+
+  will-change:
+    transform;
+}
+
+
+/*
+ * Papel ligeramente irregular.
+ */
+.book-oracle__jaw::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  opacity:
+    0.13;
+
+  background:
+    repeating-linear-gradient(
+      8deg,
+      transparent
+      0
+      12px,
+      rgb(106 72 38 / 12%)
+      13px,
+      transparent
+      14px
+    );
+}
+
+
+.book-oracle__jaw--top {
+  top:
+    0;
+
+  z-index:
+    5;
+
+  border-radius:
+    30px
+    30px
+    5px
+    5px;
+
+  transform-origin:
+    center
+    bottom;
+
+  transform:
+    translateY(0)
+    rotateX(0deg);
+}
+
+
+.book-oracle__jaw--bottom {
+  bottom:
+    0;
+
+  z-index:
+    4;
+
+  border-radius:
+    5px
+    5px
+    30px
+    30px;
+
+  transform-origin:
+    center
+    top;
+
+  transform:
+    translateY(0)
+    rotateX(0deg);
+}
+
+
+/* =========================================================
+   39. OJOS / EXPRESIÓN
+   ========================================================= */
+
+.book-oracle__face {
+  position:
+    absolute;
+
+  left:
+    50%;
+
+  bottom:
+    17%;
+
+  width:
+    126px;
+
+  height:
+    58px;
+
+  z-index:
+    6;
+
+  transform:
+    translateX(-50%);
+}
+
+
+.book-oracle__eye {
+  position:
+    absolute;
+
+  top:
+    24px;
+
+  width:
+    17px;
+
+  height:
+    10px;
+
+  border-radius:
+    50%;
+
+  background:
+    #49301e;
+
+  box-shadow:
+    inset
+    0
+    2px
+    0
+    rgb(255 255 255 / 14%);
+
+  transform-origin:
+    center;
+}
+
+
+.book-oracle__eye::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  top:
+    2px;
+
+  left:
+    3px;
+
+  width:
+    4px;
+
+  height:
+    3px;
+
+  border-radius:
+    50%;
+
+  background:
+    rgb(255 246 216 / 80%);
+}
+
+
+.book-oracle__eye--left {
+  left:
+    29px;
+
+  transform:
+    rotate(5deg);
+}
+
+
+.book-oracle__eye--right {
+  right:
+    29px;
+
+  transform:
+    rotate(-5deg);
+}
+
+
+/*
+ * Cejas.
+ */
+.book-oracle__face::before,
+.book-oracle__face::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  top:
+    8px;
+
+  width:
+    31px;
+
+  height:
+    10px;
+
+  border-top:
+    4px
+    solid
+    #6d482e;
+
+  border-radius:
+    50%;
+}
+
+
+.book-oracle__face::before {
+  left:
+    18px;
+
+  transform:
+    rotate(12deg);
+}
+
+
+.book-oracle__face::after {
+  right:
+    18px;
+
+  transform:
+    rotate(-12deg);
+}
+
+
+/* =========================================================
+   40. INTERIOR DE LA BOCA
+   ========================================================= */
+
+.book-oracle__mouth-space {
+  position:
+    absolute;
+
+  top:
+    50%;
+
+  left:
+    3.5%;
+
+  z-index:
+    3;
+
+  display:
+    grid;
+
+  width:
+    93%;
+
+  height:
+    42%;
+
+  overflow:
+    hidden;
+
+  place-items:
+    center;
+
+  padding:
+    0.7rem
+    1rem;
+
+  border-radius:
+    12px;
 
   color:
-    var(--color-gold-500);
+    #fff8e7;
 
-  opacity: 0;
+  background:
+    radial-gradient(
+      ellipse at center,
+      #654028 0%,
+      #402718 56%,
+      #22140d 100%
+    );
+
+  box-shadow:
+    inset
+    0
+    14px
+    26px
+    rgb(0 0 0 / 42%),
+
+    inset
+    0
+    -6px
+    14px
+    rgb(120 76 39 / 15%);
+
+  opacity:
+    0;
+
+  transform:
+    translateY(-50%)
+    scaleY(0.02);
+
+  transform-origin:
+    center;
+
+  will-change:
+    transform,
+    opacity;
+}
+
+
+/* =========================================================
+   41. MENSAJE DENTRO DE LA BOCA
+   ========================================================= */
+
+.book-oracle__speech {
+  display:
+    grid;
+
+  justify-items:
+    center;
+
+  gap:
+    0.32rem;
+
+  width:
+    100%;
+
+  opacity:
+    0;
+
+  transform:
+    scale(0.88);
+
+  text-align:
+    center;
+}
+
+
+.book-oracle__message {
+  margin:
+    0;
+
+  color:
+    #fff8e8;
+
+  font-family:
+    var(
+      --font-display,
+      Georgia,
+      serif
+    );
 
   font-size:
     clamp(
-      0.8rem,
-      1.8vw,
-      1.35rem
+      1.12rem,
+      3vw,
+      1.8rem
     );
 
+  font-weight:
+    650;
+
+  line-height:
+    1.06;
+
+  text-wrap:
+    balance;
+}
+
+
+.book-oracle__title {
+  color:
+    #e9c778;
+
+  font-family:
+    var(
+      --font-display,
+      Georgia,
+      serif
+    );
+
+  font-size:
+    clamp(
+      0.88rem,
+      2vw,
+      1.15rem
+    );
+
+  font-weight:
+    750;
+}
+
+
+/* =========================================================
+   42. SELLO
+   ========================================================= */
+
+.book-oracle__seal {
+  position:
+    absolute;
+
+  left:
+    50%;
+
+  top:
+    50%;
+
+  z-index:
+    10;
+
+  display:
+    grid;
+
+  width:
+    36px;
+
+  height:
+    36px;
+
+  place-items:
+    center;
+
+  border-radius:
+    50%;
+
+  color:
+    #fff0b7;
+
+  background:
+    #93662f;
+
+  box-shadow:
+    0
+    5px
+    12px
+    rgb(57 34 16 / 27%);
+
+  transform:
+    translate(-50%, -50%)
+    scale(1);
+
+  transition:
+    opacity
+    140ms
+    ease,
+
+    transform
+    180ms
+    ease;
+}
+
+
+.book-oracle.is-speaking
+.book-oracle__seal {
+  opacity:
+    0;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.55);
+}
+
+
+/* =========================================================
+   43. ANIMACIÓN DE HABLA
+   ========================================================= */
+
+/*
+ * Esta es la animación importante:
+ * NO es un simple "alternate".
+ *
+ * Cambia amplitud como si pronunciara varias
+ * sílabas / palabras.
+ */
+
+.book-oracle.is-speaking
+.book-oracle__jaw--top {
   animation:
-    sparkle-pop
-    1.5s
+    oracle-talk-top
+    2.7s
+    cubic-bezier(
+      0.4,
+      0,
+      0.2,
+      1
+    )
+    both;
+}
+
+
+.book-oracle.is-speaking
+.book-oracle__jaw--bottom {
+  animation:
+    oracle-talk-bottom
+    2.7s
+    cubic-bezier(
+      0.4,
+      0,
+      0.2,
+      1
+    )
+    both;
+}
+
+
+.book-oracle.is-speaking
+.book-oracle__mouth-space {
+  animation:
+    oracle-talk-mouth
+    2.7s
     ease-in-out
-    infinite;
+    both;
 }
 
-.book__sparkles span:nth-child(1) {
-  top: 12%;
-  left: 8%;
-  animation-delay: 0ms;
+
+.book-oracle.is-speaking
+.book-oracle__speech {
+  animation:
+    oracle-talk-speech
+    2.7s
+    ease-in-out
+    both;
 }
 
-.book__sparkles span:nth-child(2) {
-  top: 5%;
-  right: 15%;
-  animation-delay: 300ms;
+
+.book-oracle.is-speaking
+.book-oracle__eye {
+  animation:
+    oracle-talk-blink
+    2.7s
+    ease-in-out
+    both;
 }
 
-.book__sparkles span:nth-child(3) {
-  bottom: 10%;
-  left: 18%;
-  animation-delay: 650ms;
+
+.book-oracle.is-speaking
+.book-oracle__face::before {
+  animation:
+    oracle-talk-brow-left
+    2.7s
+    ease-in-out
+    both;
 }
 
-.book__sparkles span:nth-child(4) {
-  right: 8%;
-  bottom: 18%;
-  animation-delay: 950ms;
+
+.book-oracle.is-speaking
+.book-oracle__face::after {
+  animation:
+    oracle-talk-brow-right
+    2.7s
+    ease-in-out
+    both;
 }
 
-.book__sparkles span:nth-child(5) {
-  top: 45%;
-  right: 2%;
-  animation-delay: 1200ms;
+
+/* =========================================================
+   44. SECUENCIA DE LA "BOCA"
+   ========================================================= */
+
+@keyframes oracle-talk-top {
+
+  0%,
+  4% {
+    transform:
+      translateY(0)
+      rotateX(0deg);
+  }
+
+  12% {
+    transform:
+      translateY(-18px)
+      rotateX(-25deg);
+  }
+
+  22% {
+    transform:
+      translateY(-5px)
+      rotateX(-7deg);
+  }
+
+  34% {
+    transform:
+      translateY(-35px)
+      rotateX(-47deg);
+  }
+
+  45% {
+    transform:
+      translateY(-10px)
+      rotateX(-13deg);
+  }
+
+  56% {
+    transform:
+      translateY(-27px)
+      rotateX(-36deg);
+  }
+
+  65% {
+    transform:
+      translateY(-4px)
+      rotateX(-5deg);
+  }
+
+  75% {
+    transform:
+      translateY(-31px)
+      rotateX(-42deg);
+  }
+
+  84% {
+    transform:
+      translateY(-13px)
+      rotateX(-17deg);
+  }
+
+  92% {
+    transform:
+      translateY(-24px)
+      rotateX(-32deg);
+  }
+
+  100% {
+    transform:
+      translateY(0)
+      rotateX(0deg);
+  }
+}
+
+
+@keyframes oracle-talk-bottom {
+
+  0%,
+  4% {
+    transform:
+      translateY(0)
+      rotateX(0deg);
+  }
+
+  12% {
+    transform:
+      translateY(19px)
+      rotateX(26deg);
+  }
+
+  22% {
+    transform:
+      translateY(5px)
+      rotateX(7deg);
+  }
+
+  34% {
+    transform:
+      translateY(37px)
+      rotateX(49deg);
+  }
+
+  45% {
+    transform:
+      translateY(11px)
+      rotateX(14deg);
+  }
+
+  56% {
+    transform:
+      translateY(29px)
+      rotateX(38deg);
+  }
+
+  65% {
+    transform:
+      translateY(4px)
+      rotateX(5deg);
+  }
+
+  75% {
+    transform:
+      translateY(33px)
+      rotateX(44deg);
+  }
+
+  84% {
+    transform:
+      translateY(14px)
+      rotateX(18deg);
+  }
+
+  92% {
+    transform:
+      translateY(26px)
+      rotateX(34deg);
+  }
+
+  100% {
+    transform:
+      translateY(0)
+      rotateX(0deg);
+  }
+}
+
+
+@keyframes oracle-talk-mouth {
+
+  0%,
+  4%,
+  100% {
+    opacity:
+      0;
+
+    transform:
+      translateY(-50%)
+      scaleY(0.02);
+  }
+
+  12% {
+    opacity:
+      0.88;
+
+    transform:
+      translateY(-50%)
+      scaleY(0.55);
+  }
+
+  22% {
+    opacity:
+      0.35;
+
+    transform:
+      translateY(-50%)
+      scaleY(0.13);
+  }
+
+  34% {
+    opacity:
+      1;
+
+    transform:
+      translateY(-50%)
+      scaleY(1);
+  }
+
+  45% {
+    opacity:
+      0.55;
+
+    transform:
+      translateY(-50%)
+      scaleY(0.28);
+  }
+
+  56% {
+    opacity:
+      1;
+
+    transform:
+      translateY(-50%)
+      scaleY(0.78);
+  }
+
+  65% {
+    opacity:
+      0.28;
+
+    transform:
+      translateY(-50%)
+      scaleY(0.1);
+  }
+
+  75% {
+    opacity:
+      1;
+
+    transform:
+      translateY(-50%)
+      scaleY(0.9);
+  }
+
+  84% {
+    opacity:
+      0.65;
+
+    transform:
+      translateY(-50%)
+      scaleY(0.36);
+  }
+
+  92% {
+    opacity:
+      0.95;
+
+    transform:
+      translateY(-50%)
+      scaleY(0.68);
+  }
+}
+
+
+@keyframes oracle-talk-speech {
+
+  0%,
+  7%,
+  100% {
+    opacity:
+      0;
+
+    transform:
+      scale(0.88);
+  }
+
+  12% {
+    opacity:
+      0.7;
+
+    transform:
+      scale(0.96);
+  }
+
+  28%,
+  94% {
+    opacity:
+      1;
+
+    transform:
+      scale(1);
+  }
+}
+
+
+@keyframes oracle-talk-blink {
+
+  0%,
+  18%,
+  22%,
+  55%,
+  59%,
+  100% {
+    transform:
+      scaleY(1);
+  }
+
+  20%,
+  57% {
+    transform:
+      scaleY(0.08);
+  }
+}
+
+
+@keyframes oracle-talk-brow-left {
+
+  0%,
+  100% {
+    transform:
+      rotate(12deg)
+      translateY(0);
+  }
+
+  34% {
+    transform:
+      rotate(1deg)
+      translateY(-4px);
+  }
+
+  75% {
+    transform:
+      rotate(6deg)
+      translateY(-2px);
+  }
+}
+
+
+@keyframes oracle-talk-brow-right {
+
+  0%,
+  100% {
+    transform:
+      rotate(-12deg)
+      translateY(0);
+  }
+
+  34% {
+    transform:
+      rotate(-1deg)
+      translateY(-4px);
+  }
+
+  75% {
+    transform:
+      rotate(-6deg)
+      translateY(-2px);
+  }
+}
+
+
+/* =========================================================
+   45. CIERRE Y SALIDA
+   ========================================================= */
+
+.book-oracle.is-closing
+.book-oracle__jaw--top,
+.book-oracle.is-closing
+.book-oracle__jaw--bottom {
+  animation:
+    none;
+
+  transition:
+    transform
+    420ms
+    cubic-bezier(
+      0.22,
+      1,
+      0.36,
+      1
+    );
+
+  transform:
+    translateY(0)
+    rotateX(0deg);
+}
+
+
+.book-oracle.is-closing
+.book-oracle__mouth-space {
+  animation:
+    none;
+
+  opacity:
+    0;
+
+  transform:
+    translateY(-50%)
+    scaleY(0.02);
+
+  transition:
+    opacity
+    260ms
+    ease,
+
+    transform
+    420ms
+    ease;
+}
+
+
+.book-oracle.is-leaving {
+  opacity:
+    0;
+}
+
+
+.book-oracle.is-leaving
+.book-oracle__sheet {
+  transform:
+    translateY(-14px)
+    scale(0.94)
+    rotate(1deg);
+}
+
+
+/* =========================================================
+   46. MÓVIL
+   ========================================================= */
+
+@media (
+  max-width:
+    700px
+) {
+
+  .book-oracle {
+    inset:
+      -1%;
+  }
+
+
+  .book-oracle__sheet {
+    width:
+      min(
+        90%,
+        370px
+      );
+  }
+
+
+  .book-oracle__face {
+    transform:
+      translateX(-50%)
+      scale(0.9);
+  }
+
+
+  .book-oracle__mouth-space {
+    height:
+      39%;
+
+    padding:
+      0.55rem
+      0.8rem;
+  }
+}
+
+
+/* =========================================================
+   47. MOVIMIENTO REDUCIDO
+   ========================================================= */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+
+  .book-oracle,
+  .book-oracle__sheet,
+  .book-oracle__jaw,
+  .book-oracle__mouth-space,
+  .book-oracle__speech,
+  .book-oracle__eye,
+  .book-oracle__face::before,
+  .book-oracle__face::after {
+    animation:
+      none !important;
+
+    transition-duration:
+      0.01ms !important;
+  }
+
+
+  .book-oracle.is-speaking
+  .book-oracle__jaw--top {
+    transform:
+      translateY(-22px)
+      rotateX(-30deg);
+  }
+
+
+  .book-oracle.is-speaking
+  .book-oracle__jaw--bottom {
+    transform:
+      translateY(22px)
+      rotateX(30deg);
+  }
+
+
+  .book-oracle.is-speaking
+  .book-oracle__mouth-space {
+    opacity:
+      1;
+
+    transform:
+      translateY(-50%)
+      scaleY(0.7);
+  }
+
+
+  .book-oracle.is-speaking
+  .book-oracle__speech {
+    opacity:
+      1;
+
+    transform:
+      scale(1);
+  }
 }
