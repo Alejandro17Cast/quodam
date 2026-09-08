@@ -50,8 +50,8 @@
       <div class="welcome__content">
 
         <p class="welcome__eyebrow">
-          Una biblioteca diferente
-        </p>
+  Tu aventura de lectura
+</p>
 
 
         <h1
@@ -63,22 +63,141 @@
 
 
         <p class="welcome__phrase">
-          Las historias no se buscan,
+  Cada lectura es una aventura.
 
-          <span>
-            ellas te encuentran.
-          </span>
-        </p>
+  <span>
+    ¿Cuál te encontrará hoy?
+  </span>
+</p>
 
 
-        <button
-          id="discover-button"
-          class="button button--primary"
-          type="button"
-          disabled
-        >
-          Preparando Quodam...
-        </button>
+       <div
+  id="mode-selector"
+  class="mode-selector"
+  aria-labelledby="mode-selector-title"
+>
+
+  <p
+    id="mode-selector-title"
+    class="mode-selector__title"
+  >
+    ¿Cómo quieres leer hoy?
+  </p>
+
+
+  <div class="mode-selector__grid">
+
+    <!-- ESPAÑOL -->
+
+    <button
+      class="
+        mode-card
+        mode-card--spanish
+      "
+      type="button"
+      data-reading-mode="es"
+    >
+      <span
+        class="mode-card__icon"
+        aria-hidden="true"
+      >
+        ¡Hola!
+      </span>
+
+      <span class="mode-card__name">
+        Español
+      </span>
+
+      <span class="mode-card__description">
+        Descubre una lectura en español
+      </span>
+
+      <span
+        class="mode-card__action"
+        aria-hidden="true"
+      >
+        Comenzar →
+      </span>
+    </button>
+
+
+    <!-- ENGLISH -->
+
+    <button
+      class="
+        mode-card
+        mode-card--english
+      "
+      type="button"
+      data-reading-mode="en"
+    >
+      <span
+        class="mode-card__icon"
+        aria-hidden="true"
+      >
+        Hello!
+      </span>
+
+      <span class="mode-card__name">
+        English
+      </span>
+
+      <span class="mode-card__description">
+        Discover a reading in English
+      </span>
+
+      <span
+        class="mode-card__action"
+        aria-hidden="true"
+      >
+        Start →
+      </span>
+    </button>
+
+
+    <!-- MIXTO -->
+
+    <button
+      class="
+        mode-card
+        mode-card--mixed
+      "
+      type="button"
+      data-reading-mode="mixed"
+    >
+      <span
+        class="mode-card__icon"
+        aria-hidden="true"
+      >
+        Hola + Hello
+      </span>
+
+      <span class="mode-card__name">
+        Mixto
+      </span>
+
+      <span class="mode-card__description">
+        Una aventura en dos idiomas
+      </span>
+
+      <span
+        class="mode-card__action"
+        aria-hidden="true"
+      >
+        Explorar →
+      </span>
+    </button>
+
+  </div>
+
+
+  <p
+    id="mode-status"
+    class="mode-selector__status"
+    aria-live="polite"
+  ></p>
+
+</div>
 
       </div>
 

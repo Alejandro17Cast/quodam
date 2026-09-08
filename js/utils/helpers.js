@@ -31,7 +31,9 @@ export function hideElement(element) {
 }
 
 
-export function getReadingImagePath(reading) {
+export function getReadingImagePath(
+  reading
+) {
   if (!reading) {
     console.warn(
       "No se recibió una lectura para obtener su imagen."
@@ -40,13 +42,33 @@ export function getReadingImagePath(reading) {
     return null;
   }
 
-  if (!reading.image) {
-    console.warn(
-      `La lectura "${reading.title ?? reading.id ?? "sin identificar"}" no tiene una imagen asignada.`
-    );
 
+  if (!reading.image) {
     return null;
   }
 
+
+  /*
+   * QUODAM v4
+   *
+   * Las nuevas lecturas contienen language
+   * y utilizan archivos WebP directos.
+   */
+  if (
+    reading.language ===
+      "es" ||
+    reading.language ===
+      "en"
+  ) {
+    return `./assets/images/readings/${reading.language}/${reading.image}`;
+  }
+
+
+  /*
+   * QUODAM v3
+   *
+   * Compatibilidad temporal con las imágenes
+   * antiguas.
+   */
   return `./assets/images/readings/${reading.image}/illustration.png`;
 }

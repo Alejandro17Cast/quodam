@@ -2,10 +2,16 @@ import {
   CONFIG
 } from "./config.js";
 
+import {
+  loadReadingsForMode
+} from "./modules/readingRepository.js";
+
 
 import {
-  preloadReadingImages
-} from "./modules/imagePreloader.js";
+  saveReadingMode,
+  getSavedReadingMode,
+  normalizeReadingMode
+} from "./modules/languageMode.js";
 
 
 import {
@@ -16,8 +22,7 @@ import {
 
 
 import {
-  loadReadings,
-  selectFinalReading,
+   selectFinalReading,
   selectRandomReading,
   selectDifferentReading
 } from "./modules/readingSelector.js";
@@ -44,6 +49,9 @@ import {
    ========================================================= */
 
 const state = {
+  mode:
+    null,
+
   readings:
     [],
 
@@ -59,17 +67,19 @@ const state = {
   isSelecting:
     false,
 
+  isLoadingMode:
+    false,
+
   hasOpenedBook:
     false
 };
-
 
 /* =========================================================
    DOM
    ========================================================= */
 
 const elements = {
-  welcome:
+   welcome:
     document.querySelector(
       "#welcome"
     ),
@@ -79,15 +89,26 @@ const elements = {
       "#discovery"
     ),
 
-  discoverButton:
+  modeSelector:
     document.querySelector(
-      "#discover-button"
+      "#mode-selector"
+    ),
+
+  modeButtons:
+    document.querySelectorAll(
+      "[data-reading-mode]"
+    ),
+
+  modeStatus:
+    document.querySelector(
+      "#mode-status"
     ),
 
   book:
     document.querySelector(
       "#book"
     ),
+
 
   ritual:
     document.querySelector(
@@ -135,36 +156,29 @@ async function initialize() {
     validateRequiredElements();
 
 
-    setDiscoveryButtonLoading();
-
-
-    state.readings =
-      await loadReadings(
-        CONFIG.readingsIndexPath
-      );
-
-
-    validateReadings(
-      state.readings
-    );
-
-
-    await preloadReadingImages(
-      state.readings
-    );
-
-
     registerEvents();
 
 
-    setDiscoveryButtonReady();
+    const savedMode =
+      getSavedReadingMode();
+
+
+    if (savedMode) {
+      state.mode =
+        savedMode;
+    }
+
+
+    setModeStatus(
+      ""
+    );
 
 
     handleInitialNavigation();
 
 
     console.info(
-      `Quodam iniciado con ${state.readings.length} lecturas.`
+      "Quodam v4 listo para seleccionar un modo."
     );
 
   } catch (error) {
@@ -174,7 +188,9 @@ async function initialize() {
     );
 
 
-    setDiscoveryButtonError();
+    setModeStatus(
+      "No pudimos preparar Quodam. Intenta recargar la página."
+    );
   }
 }
 
@@ -191,8 +207,11 @@ function validateRequiredElements() {
     discovery:
       elements.discovery,
 
-    discoverButton:
-      elements.discoverButton,
+  modeSelector:
+  elements.modeSelector,
+
+modeStatus:
+  elements.modeStatus,
 
     book:
       elements.book,
@@ -254,6 +273,14 @@ function validateRequiredElements() {
     );
   }
 }
+if (
+  elements.modeButtons.length ===
+  0
+) {
+  throw new Error(
+    "No existen botones de modo de lectura."
+  );
+}
 
 
 /* =========================================================
@@ -261,10 +288,143 @@ function validateRequiredElements() {
    ========================================================= */
 
 function registerEvents() {
-  elements.discoverButton.addEventListener(
-    "click",
-    startDiscovery
+  elements.modeButtons.forEach(
+    (button) => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const mode =
+            button.dataset
+              .readingMode;
+
+
+          selectReadingMode(
+            mode
+          );
+        }
+      );
+
+    }
   );
+}
+
+/* =========================================================
+   SELECCIONAR MODO
+   ========================================================= */
+
+async function selectReadingMode(
+  mode
+) {
+  if (
+    state.isLoadingMode ||
+    state.isSelecting
+  ) {
+    return;
+  }
+
+
+  const normalizedMode =
+    normalizeReadingMode(
+      mode
+    );
+
+
+  if (!normalizedMode) {
+    setModeStatus(
+      "Ese modo de lectura no está disponible."
+    );
+
+    return;
+  }
+
+
+  state.isLoadingMode =
+    true;
+
+
+  setModeButtonsDisabled(
+    true
+  );
+
+
+  setModeStatus(
+    normalizedMode ===
+      "en"
+      ? "Preparing your adventure..."
+      : "Preparando tu aventura..."
+  );
+
+
+  try {
+
+    /*
+     * Aquí ocurre la nueva carga optimizada.
+     */
+    const catalog =
+      await loadReadingsForMode(
+        normalizedMode
+      );
+
+
+    state.mode =
+      saveReadingMode(
+        normalizedMode
+      );
+
+
+    state.readings =
+      catalog.all;
+
+
+    validateReadings(
+      state.readings
+    );
+
+
+    console.info(
+      "MODO QUODAM:",
+      {
+        mode:
+          state.mode,
+
+        languages:
+          catalog.languages,
+
+        readings:
+          state.readings.length
+      }
+    );
+
+
+    setModeStatus(
+      ""
+    );
+
+
+    await startDiscovery();
+
+  } catch (error) {
+    console.error(
+      "No se pudo preparar el modo de lectura:",
+      error
+    );
+
+
+    setModeStatus(
+      "No pudimos cargar las lecturas. Intenta otra vez."
+    );
+
+  } finally {
+    state.isLoadingMode =
+      false;
+
+
+    setModeButtonsDisabled(
+      false
+    );
+  }
 }
 
 
@@ -279,46 +439,29 @@ function handleInitialNavigation() {
     );
 
 
-  const shouldDiscover =
-    params.get(
-      "discover"
-    ) === "true";
+ if (
+  !shouldDiscover ||
+  !state.mode
+) {
+  return;
+}
 
 
-  const previousId =
-    normalizeReadingId(
-      params.get(
-        "previous"
-      )
-    );
+window.history.replaceState(
+  {},
+  "",
+  window.location.pathname
+);
 
 
-  if (
-    previousId &&
-    state.readings.some(
-      (reading) =>
-        reading.id ===
-        previousId
-    )
-  ) {
-    state.previousReadingId =
-      previousId;
-  }
+selectReadingMode(
+  state.mode
+);
 
 
-  if (!shouldDiscover) {
-    return;
-  }
-
-
-  window.history.replaceState(
-    {},
-    "",
-    window.location.pathname
-  );
-
-
-  startDiscovery();
+ if (!shouldDiscover) {
+  return;
+}
 }
 
 
@@ -335,10 +478,6 @@ async function startDiscovery() {
 
 
   state.isSelecting =
-    true;
-
-
-  elements.discoverButton.disabled =
     true;
 
 
@@ -384,9 +523,6 @@ async function startDiscovery() {
     state.isSelecting =
       false;
 
-
-    elements.discoverButton.disabled =
-      false;
   }
 }
 
@@ -1484,34 +1620,7 @@ function escapeHTML(
    BOTÓN PRINCIPAL
    ========================================================= */
 
-function setDiscoveryButtonLoading() {
-  elements.discoverButton.disabled =
-    true;
 
-
-  elements.discoverButton.textContent =
-    "Preparando Quodam...";
-}
-
-
-function setDiscoveryButtonReady() {
-  elements.discoverButton.disabled =
-    false;
-
-
-  elements.discoverButton.textContent =
-    "Descubrir una lectura";
-}
-
-
-function setDiscoveryButtonError() {
-  elements.discoverButton.disabled =
-    true;
-
-
-  elements.discoverButton.textContent =
-    "No fue posible iniciar Quodam";
-}
 
 
 /* =========================================================
@@ -1526,6 +1635,29 @@ function announce(
       message ??
       ""
     );
+}
+function setModeButtonsDisabled(
+  disabled
+) {
+  elements.modeButtons.forEach(
+    (button) => {
+      button.disabled =
+        disabled;
+    }
+  );
+}
+
+
+function setModeStatus(
+  message
+) {
+  if (!elements.modeStatus) {
+    return;
+  }
+
+
+  elements.modeStatus.textContent =
+    message;
 }
 
 

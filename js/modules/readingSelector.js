@@ -24,19 +24,17 @@ import {
    HISTORIAL PERSISTENTE
    ========================================================= */
 
-const READING_HISTORY_KEY =
-  "quodam-reading-history-v1";
+const READING_HISTORY_PREFIX =
+  "quodam-reading-history-v4";
 
 
 /*
- * Fallback en memoria.
+ * Historial de respaldo en memoria.
  *
- * Si localStorage no está disponible por alguna razón,
- * Quodam seguirá evitando repeticiones mientras la
- * página permanezca abierta.
+ * Cada idioma tiene su propio espacio.
  */
-let memoryHistory =
-  [];
+const memoryHistories =
+  new Map();
 
 
 /* =========================================================
@@ -318,7 +316,10 @@ export function selectFinalReading(
   validateReadingCollection(
     readings
   );
-
+const historyKey =
+  getHistoryKey(
+    readings
+  );
 
   if (
     readings.length ===
@@ -328,9 +329,12 @@ export function selectFinalReading(
       readings[0];
 
 
-    saveReadingHistory([
-      onlyReading.id
-    ]);
+    saveReadingHistory(
+  historyKey,
+  [
+    onlyReading.id
+  ]
+);
 
 
     return onlyReading;
@@ -347,8 +351,10 @@ export function selectFinalReading(
 
 
   let history =
-    getReadingHistory()
-      .filter(
+  getReadingHistory(
+    historyKey
+  )
+    .filter(
         (id) =>
           validIds.has(
             id
@@ -444,8 +450,9 @@ export function selectFinalReading(
 
 
   saveReadingHistory(
-    nextHistory
-  );
+  historyKey,
+  nextHistory
+);
 
 
   console.info(
@@ -580,10 +587,44 @@ export function selectDifferentReading(
    Útil para depuración o una futura interfaz de progreso.
    ========================================================= */
 
-export function getUsedReadingIds() {
-  return [
-    ...getReadingHistory()
-  ];
+export function getUsedReadingIds(
+  language = null
+) {
+  if (
+    language ===
+      "es" ||
+    language ===
+      "en"
+  ) {
+    return [
+      ...getReadingHistory(
+        createHistoryKey(
+          language
+        )
+      )
+    ];
+  }
+
+
+  return {
+    es:
+      [
+        ...getReadingHistory(
+          createHistoryKey(
+            "es"
+          )
+        )
+      ],
+
+    en:
+      [
+        ...getReadingHistory(
+          createHistoryKey(
+            "en"
+          )
+        )
+      ]
+  };
 }
 
 
@@ -594,22 +635,82 @@ export function getUsedReadingIds() {
    Quodam reinicia automáticamente después de mostrar todas.
    ========================================================= */
 
-export function resetReadingHistory() {
-  memoryHistory =
-    [];
+export function resetReadingHistory(
+  language = null
+) {
+  /*
+   * Reiniciar solamente un idioma.
+   */
+  if (
+    language ===
+      "es" ||
+    language ===
+      "en"
+  ) {
+    const historyKey =
+      createHistoryKey(
+        language
+      );
 
 
-  try {
-    window.localStorage.removeItem(
-      READING_HISTORY_KEY
+    memoryHistories.delete(
+      historyKey
     );
 
-  } catch (error) {
-    console.warn(
-      "No se pudo limpiar el historial persistente de Quodam:",
-      error
-    );
+
+    try {
+      window.localStorage.removeItem(
+        historyKey
+      );
+
+    } catch (error) {
+      console.warn(
+        `No se pudo limpiar el historial "${language}":`,
+        error
+      );
+    }
+
+
+    return;
   }
+
+
+  /*
+   * Reiniciar ambos.
+   */
+  const keys = [
+    createHistoryKey(
+      "es"
+    ),
+
+    createHistoryKey(
+      "en"
+    )
+  ];
+
+
+  keys.forEach(
+    (historyKey) => {
+
+      memoryHistories.delete(
+        historyKey
+      );
+
+
+      try {
+        window.localStorage.removeItem(
+          historyKey
+        );
+
+      } catch (error) {
+        console.warn(
+          "No se pudo limpiar un historial de Quodam:",
+          error
+        );
+      }
+
+    }
+  );
 }
 
 
@@ -620,6 +721,12 @@ export function resetReadingHistory() {
 function pruneReadingHistory(
   readings
 ) {
+  const historyKey =
+    getHistoryKey(
+      readings
+    );
+
+
   const validIds =
     new Set(
       readings.map(
@@ -630,7 +737,9 @@ function pruneReadingHistory(
 
 
   const history =
-    getReadingHistory();
+    getReadingHistory(
+      historyKey
+    );
 
 
   const cleaned =
@@ -647,6 +756,7 @@ function pruneReadingHistory(
     history.length
   ) {
     saveReadingHistory(
+      historyKey,
       cleaned
     );
   }
@@ -657,11 +767,19 @@ function pruneReadingHistory(
    LEER HISTORIAL
    ========================================================= */
 
-function getReadingHistory() {
+function getReadingHistory(
+  historyKey
+) {
+  const memoryHistory =
+    memoryHistories.get(
+      historyKey
+    ) ?? [];
+
+
   try {
     const raw =
       window.localStorage.getItem(
-        READING_HISTORY_KEY
+        historyKey
       );
 
 
@@ -703,8 +821,10 @@ function getReadingHistory() {
       ];
 
 
-    memoryHistory =
-      cleanHistory;
+    memoryHistories.set(
+      historyKey,
+      cleanHistory
+    );
 
 
     return [
@@ -730,6 +850,7 @@ function getReadingHistory() {
    ========================================================= */
 
 function saveReadingHistory(
+  historyKey,
   ids
 ) {
   const cleanHistory =
@@ -752,13 +873,15 @@ function saveReadingHistory(
     ];
 
 
-  memoryHistory =
-    cleanHistory;
+  memoryHistories.set(
+    historyKey,
+    cleanHistory
+  );
 
 
   try {
     window.localStorage.setItem(
-      READING_HISTORY_KEY,
+      historyKey,
       JSON.stringify(
         cleanHistory
       )
@@ -772,6 +895,66 @@ function saveReadingHistory(
   }
 }
 
+/* =========================================================
+   CLAVE DE HISTORIAL SEGÚN CATÁLOGO
+   ========================================================= */
+
+function getHistoryKey(
+  readings
+) {
+  const languages =
+    new Set(
+      readings
+        .map(
+          (reading) =>
+            reading?.language
+        )
+        .filter(
+          (language) =>
+            language ===
+              "es" ||
+            language ===
+              "en"
+        )
+    );
+
+
+  /*
+   * Catálogo de un único idioma.
+   */
+  if (
+    languages.size ===
+    1
+  ) {
+    const [
+      language
+    ] =
+      languages;
+
+
+    return createHistoryKey(
+      language
+    );
+  }
+
+
+  /*
+   * Compatibilidad temporal con las lecturas
+   * antiguas o con colecciones sin language.
+   */
+  return `${READING_HISTORY_PREFIX}-legacy`;
+}
+
+
+/* =========================================================
+   CREAR CLAVE
+   ========================================================= */
+
+function createHistoryKey(
+  language
+) {
+  return `${READING_HISTORY_PREFIX}-${language}`;
+}
 
 /* =========================================================
    VALIDAR COLECCIÓN
