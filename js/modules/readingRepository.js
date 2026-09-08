@@ -480,7 +480,107 @@ function validateCatalog(
     }
   );
 }
+/* =========================================================
+   BUSCAR LECTURA POR ID
+   ========================================================= */
 
+export async function findReadingById(
+  readingId
+) {
+  if (
+    typeof readingId !==
+    "string"
+  ) {
+    return null;
+  }
+
+
+  const id =
+    readingId.trim();
+
+
+  if (!id) {
+    return null;
+  }
+
+
+  let language =
+    null;
+
+
+  if (
+    id.startsWith(
+      "es-"
+    )
+  ) {
+    language =
+      "es";
+  }
+
+
+  if (
+    id.startsWith(
+      "en-"
+    )
+  ) {
+    language =
+      "en";
+  }
+
+
+  if (!language) {
+    return null;
+  }
+
+
+  /*
+   * Primero buscamos en el catálogo normal.
+   *
+   * Para la mayoría de casos solamente habrá
+   * UNA petición HTTP.
+   */
+  const normalReadings =
+    await loadReadingCatalog(
+      language,
+      {
+        wheelOnly:
+          false
+      }
+    );
+
+
+  const normalReading =
+    normalReadings.find(
+      (reading) =>
+        reading.id ===
+        id
+    );
+
+
+  if (normalReading) {
+    return normalReading;
+  }
+
+
+  /*
+   * Solo si no estaba en normales,
+   * buscamos en apoyo.
+   */
+  const supportReadings =
+    await loadSupportCatalog(
+      language
+    );
+
+
+  return (
+    supportReadings.find(
+      (reading) =>
+        reading.id ===
+        id
+    ) ??
+    null
+  );
+}
 
 /* =========================================================
    LIMPIAR CACHE

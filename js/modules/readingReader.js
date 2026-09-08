@@ -3,6 +3,20 @@ import {
 } from "./readingSelector.js";
 
 
+import {
+  findReadingById
+} from "./readingRepository.js";
+
+
+import {
+  getReadingSession,
+  getSessionReadingById,
+  setSessionCurrentReadingById,
+  getNextSessionReading,
+  advanceReadingSession
+} from "./readingSession.js";
+
+
 /* =========================================================
    QUODAM — READING READER KIDS v4
    ---------------------------------------------------------
@@ -78,23 +92,71 @@ async function initializeReader() {
     }
 
 
-    const readings =
-      await loadReadings(
-        "../data/readings-index.json"
-      );
+    /*
+ * ===============================================
+ * 1. SESIÓN
+ * ===============================================
+ *
+ * Es la ruta MÁS RÁPIDA.
+ *
+ * No requiere ningún fetch.
+ */
+let reading =
+  getSessionReadingById(
+    readingId
+  );
 
 
-    const readingsById =
-      buildReadingIndex(
-        readings
-      );
+if (reading) {
+  setSessionCurrentReadingById(
+    readingId
+  );
+}
 
 
-    const reading =
-      readingsById.get(
-        readingId
-      );
+/*
+ * ===============================================
+ * 2. CATÁLOGO v4
+ * ===============================================
+ *
+ * Solo ocurre si:
+ * - recargaron directamente la URL,
+ * - abrieron un enlace en otra pestaña,
+ * - sessionStorage no estaba disponible.
+ */
+if (!reading) {
+  reading =
+    await findReadingById(
+      readingId
+    );
+}
 
+
+/*
+ * ===============================================
+ * 3. LEGACY
+ * ===============================================
+ *
+ * Compatibilidad temporal con URLs de Quodam v3.
+ */
+if (!reading) {
+  const legacyReadings =
+    await loadReadings(
+      "../data/readings-index.json"
+    );
+
+
+  const legacyIndex =
+    buildReadingIndex(
+      legacyReadings
+    );
+
+
+  reading =
+    legacyIndex.get(
+      readingId
+    );
+}
 
     console.log(
       "READER:",
@@ -369,25 +431,48 @@ function getIllustrationPath(
 ) {
   if (
     typeof reading?.image !==
-    "string"
+      "string"
   ) {
     return null;
   }
 
 
-  const imageFolder =
+  const image =
     reading.image.trim();
 
 
-  if (!imageFolder) {
+  if (!image) {
     return null;
   }
 
 
+  /*
+   * QUODAM v4
+   */
+  if (
+    reading.language ===
+      "es" ||
+    reading.language ===
+      "en"
+  ) {
+    return (
+      "../assets/images/readings/" +
+      reading.language +
+      "/" +
+      encodeURIComponent(
+        image
+      )
+    );
+  }
+
+
+  /*
+   * QUODAM v3
+   */
   return (
     "../assets/images/readings/" +
     encodeURIComponent(
-      imageFolder
+      image
     ) +
     "/illustration.png"
   );
@@ -434,6 +519,25 @@ function renderReading(
       reading
     );
 
+    const session =
+  getReadingSession();
+
+
+const nextReading =
+  getNextSessionReading();
+
+
+const isMixedSession =
+  session?.mode ===
+    "mixed";
+
+
+const language =
+  reading?.language ===
+    "en"
+    ? "en"
+    : "es";
+
 
   document.title =
     `${title} — Quodam`;
@@ -477,7 +581,54 @@ function renderReading(
     `../index.html?discover=true&previous=${encodeURIComponent(
       readingId
     )}`;
+let primaryActionHTML;
 
+
+if (
+  isMixedSession &&
+  nextReading
+) {
+  const nextLabel =
+    nextReading.language ===
+      "en"
+      ? "Continue in English →"
+      : "Continuar en Español →";
+
+
+  primaryActionHTML = `
+    <button
+      type="button"
+      class="button button--primary"
+      data-reader-action="next"
+    >
+      ${escapeHTML(
+        nextLabel
+      )}
+    </button>
+  `;
+
+} else {
+
+  const rediscoverLabel =
+    language ===
+      "en"
+      ? "Discover another reading"
+      : "Descubrir otra lectura";
+
+
+  primaryActionHTML = `
+    <a
+      href="${escapeHTML(
+        rediscoverURL
+      )}"
+      class="button button--primary"
+    >
+      ${escapeHTML(
+        rediscoverLabel
+      )}
+    </a>
+  `;
+}
 
   elements.container.innerHTML = `
 
@@ -683,14 +834,7 @@ function renderReading(
           class="reading-text__actions"
         >
 
-          <a
-            href="${escapeHTML(
-              rediscoverURL
-            )}"
-            class="button button--primary"
-          >
-            Descubrir otra lectura
-          </a>
+         ${primaryActionHTML}
 
 
           <a
@@ -710,6 +854,41 @@ function renderReading(
 
   elements.container.hidden =
     false;
+
+    const nextButton =
+  elements.container.querySelector(
+    '[data-reader-action="next"]'
+  );
+
+
+if (
+  nextButton
+) {
+  nextButton.addEventListener(
+    "click",
+    () => {
+
+      const next =
+        advanceReadingSession();
+
+
+      if (!next) {
+        console.warn(
+          "No existe otra lectura en la sesión."
+        );
+
+        return;
+      }
+
+
+      window.location.assign(
+        `./lectura.html?id=${encodeURIComponent(
+          next.id
+        )}&mode=mixed`
+      );
+    }
+  );
+}
 
 
   if (
@@ -1244,6 +1423,7 @@ function getSafeLevel(
 ) {
   const level =
     Number(
+      reading?.grade ??
       reading?.level
     );
 
@@ -1263,7 +1443,6 @@ function getSafeLevel(
 
   return 1;
 }
-
 
 function getSafeReadingTime(
   reading

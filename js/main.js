@@ -6,6 +6,9 @@ import {
   loadReadingsForMode
 } from "./modules/readingRepository.js";
 
+import {
+  createReadingSession
+} from "./modules/readingSession.js";
 
 import {
   saveReadingMode,
@@ -52,7 +55,13 @@ const state = {
   mode:
     null,
 
+  catalog:
+    null,
+
   readings:
+    [],
+
+  selectedReadings:
     [],
 
   currentReading:
@@ -366,7 +375,8 @@ async function selectReadingMode(
       await loadReadingsForMode(
         normalizedMode
       );
-
+state.catalog =
+  catalog;
 
     state.mode =
       saveReadingMode(
@@ -561,7 +571,8 @@ function prepareDiscoveryInterface() {
   state.selectedReading =
     null;
 
-
+state.selectedReadings =
+  [];
   setBookSelected(
     elements.book,
     false
@@ -654,7 +665,175 @@ async function runOpeningSequence() {
     elements.ritual
   );
 }
+/* =========================================================
+   PREPARAR SELECCIÓN FINAL
+   ========================================================= */
 
+function prepareFinalSelection() {
+
+  /*
+   * ===============================================
+   * ESPAÑOL / ENGLISH
+   * ===============================================
+   */
+  if (
+    state.mode !==
+    "mixed"
+  ) {
+    const selected =
+      selectFinalReading(
+        state.readings,
+        state.previousReadingId
+      );
+
+
+    state.selectedReading =
+      selected;
+
+
+    state.selectedReadings =
+      [
+        selected
+      ];
+
+
+    return;
+  }
+
+
+  /*
+   * ===============================================
+   * MIXTO
+   * ===============================================
+   */
+
+  const spanishReadings =
+    state.catalog
+      ?.byLanguage
+      ?.es;
+
+
+  const englishReadings =
+    state.catalog
+      ?.byLanguage
+      ?.en;
+
+
+  if (
+    !Array.isArray(
+      spanishReadings
+    ) ||
+    spanishReadings.length ===
+      0
+  ) {
+    throw new Error(
+      "El modo mixto no tiene lecturas en español."
+    );
+  }
+
+
+  if (
+    !Array.isArray(
+      englishReadings
+    ) ||
+    englishReadings.length ===
+      0
+  ) {
+    throw new Error(
+      "El modo mixto no tiene lecturas en inglés."
+    );
+  }
+
+
+  /*
+   * Cada idioma utiliza SU PROPIO historial.
+   */
+  const spanishReading =
+    selectFinalReading(
+      spanishReadings,
+      getPreviousReadingIdForLanguage(
+        "es"
+      )
+    );
+
+
+  const englishReading =
+    selectFinalReading(
+      englishReadings,
+      getPreviousReadingIdForLanguage(
+        "en"
+      )
+    );
+
+
+  /*
+   * La propuesta permite comenzar por cualquiera
+   * de los dos idiomas.
+   */
+  const spanishFirst =
+    Math.random() <
+    0.5;
+
+
+  state.selectedReadings =
+    spanishFirst
+      ? [
+          spanishReading,
+          englishReading
+        ]
+      : [
+          englishReading,
+          spanishReading
+        ];
+
+
+  /*
+   * La ruleta se detendrá en la PRIMERA lectura
+   * de la aventura bilingüe.
+   */
+  state.selectedReading =
+    state.selectedReadings[
+      0
+    ];
+
+
+  console.info(
+    "SESIÓN MIXTA PREPARADA:",
+    state.selectedReadings.map(
+      (reading) => ({
+        id:
+          reading.id,
+
+        language:
+          reading.language,
+
+        title:
+          reading.title
+      })
+    )
+  );
+}
+
+function getPreviousReadingIdForLanguage(
+  language
+) {
+  const previousId =
+    normalizeReadingId(
+      state.previousReadingId
+    );
+
+
+  if (!previousId) {
+    return null;
+  }
+
+
+  return previousId.startsWith(
+    `${language}-`
+  )
+    ? previousId
+    : null;
+}
 
 /* =========================================================
    RULETA
@@ -670,11 +849,7 @@ async function runSelectionAnimation() {
   /*
    * ÚNICA selección del ganador.
    */
-  state.selectedReading =
-    selectFinalReading(
-      state.readings,
-      state.previousReadingId
-    );
+   prepareFinalSelection();
 
 
   if (
@@ -1298,25 +1473,54 @@ function showFinalActions() {
   actions.className =
     "book-reading__final-actions";
 
-
-  actions.innerHTML = `
-    <button
-      class="button button--primary"
-      type="button"
-      data-quodam-action="read"
-    >
-      Leer cuento completo
-    </button>
+const isMixed =
+  state.mode ===
+  "mixed";
 
 
-    <button
-      class="button button--secondary"
-      type="button"
-      data-quodam-action="again"
-    >
-      Descubrir otra
-    </button>
-  `;
+const isEnglish =
+  state.selectedReading
+    ?.language ===
+  "en";
+
+
+const readLabel =
+  isMixed
+    ? "Comenzar aventura bilingüe"
+    : isEnglish
+      ? "Read full text"
+      : "Leer lectura completa";
+
+
+const againLabel =
+  isMixed
+    ? "Otra combinación"
+    : isEnglish
+      ? "Discover another"
+      : "Descubrir otra";
+
+ actions.innerHTML = `
+  <button
+    class="button button--primary"
+    type="button"
+    data-quodam-action="read"
+  >
+    ${escapeHTML(
+      readLabel
+    )}
+  </button>
+
+
+  <button
+    class="button button--secondary"
+    type="button"
+    data-quodam-action="again"
+  >
+    ${escapeHTML(
+      againLabel
+    )}
+  </button>
+`;
 
 
   const readButton =
@@ -1402,13 +1606,51 @@ function openSelectedReading() {
 
     return;
   }
+ 
+const sessionReadings =
+  state.mode ===
+    "mixed"
+    ? state.selectedReadings
+    : [
+        state.selectedReading
+      ];
 
+
+const session =
+  createReadingSession({
+    mode:
+      state.mode ??
+      state.selectedReading.language,
+
+    readings:
+      sessionReadings
+  });
+
+
+const firstReading =
+  session.readings[
+    0
+  ];
+
+
+if (
+  firstReading.id !==
+  selectedId
+) {
+  console.error(
+    "La sesión creada no coincide con la lectura visible."
+  );
+
+  return;
+}
 
   window.location.assign(
-    `./pages/lectura.html?id=${encodeURIComponent(
-      selectedId
-    )}`
-  );
+  `./pages/lectura.html?id=${encodeURIComponent(
+    firstReading.id
+  )}&mode=${encodeURIComponent(
+    session.mode
+  )}`
+);
 }
 
 
