@@ -1,0 +1,53 @@
+[
+  {
+    "id": "en-support-01",
+    "language": "en",
+    "title": "My Cat",
+    "grade": 1,
+    "group": "support",
+    "wheelEligible": false,
+    "image": null,
+    "lines": [
+      "I have a cat.",
+      "My cat is big.",
+      "It is black and white.",
+      "My cat can run.",
+      "I love my cat."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-support-02",
+    "language": "en",
+    "title": "At the Park",
+    "grade": 1,
+    "group": "support",
+    "wheelEligible": false,
+    "image": null,
+    "lines": [
+      "I go to the park.",
+      "I see a big tree.",
+      "I run and play.",
+      "My mom is with me.",
+      "We have fun."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-support-03",
+    "language": "en",
+    "title": "My Red Ball",
+    "grade": 1,
+    "group": "support",
+    "wheelEligible": false,
+    "image": null,
+    "lines": [
+      "I have a red ball.",
+      "The ball is big.",
+      "I can kick it.",
+      "I play with my dad.",
+      "We like to play."
+    ],
+    "active": true
+  }
+]

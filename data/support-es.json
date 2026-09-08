@@ -1,0 +1,122 @@
+[
+  {
+    "id": "es-support-01",
+    "language": "es",
+    "title": "La pelota",
+    "grade": 1,
+    "group": "support",
+    "wheelEligible": false,
+    "image": null,
+    "lines": [
+      "Lalo tiene una pelota.",
+      "La pelota es lila y lisa.",
+      "Lalo sale al patio.",
+      "Mamá mira a Lalo.",
+      "Lalo lanza la pelota.",
+      "¿Dónde está la pelota?",
+      "¡Está bajo la mesa!"
+    ],
+    "active": true
+  },
+  {
+    "id": "es-support-02",
+    "language": "es",
+    "title": "La pelota",
+    "grade": 1,
+    "group": "support",
+    "wheelEligible": false,
+    "image": null,
+    "lines": [
+      "Lola tiene una pelota.",
+      "La pelota es azul.",
+      "Lola sale al patio.",
+      "Ella lanza la pelota.",
+      "La pelota va al piso.",
+      "Lola corre por ella.",
+      "Luego toma la pelota.",
+      "Lola la lanza otra vez.",
+      "Mamá mira a Lola.",
+      "Mamá sonríe.",
+      "¿Lola está feliz?",
+      "Sí, Lola está feliz.",
+      "¡Qué lindo es jugar!"
+    ],
+    "active": true
+  },
+  {
+    "id": "es-support-03",
+    "language": "es",
+    "title": "Mi gato",
+    "grade": 1,
+    "group": "support",
+    "wheelEligible": false,
+    "image": null,
+    "lines": [
+      "Mi gato se llama Milo.",
+      "Milo es un gato muy lindo.",
+      "Milo tiene una cola larga.",
+      "Él sale al patio.",
+      "Milo mira una pelota.",
+      "La pelota es roja.",
+      "Milo toca la pelota.",
+      "La pelota se mueve.",
+      "Milo va tras ella.",
+      "Luego se sienta en el piso.",
+      "¿Está cansado Milo?",
+      "Sí, está cansado.",
+      "Milo toma agua y se duerme.",
+      "¡Qué lindo es Milo!"
+    ],
+    "active": true
+  },
+  {
+    "id": "es-support-04",
+    "language": "es",
+    "title": "Mi casa",
+    "grade": 1,
+    "group": "support",
+    "wheelEligible": false,
+    "image": null,
+    "lines": [
+      "Mi casa es pequeña.",
+      "Mi casa tiene una sala.",
+      "Mamá está en la sala.",
+      "Papá está en la mesa.",
+      "Yo tengo una mascota.",
+      "Mi mascota es un gato.",
+      "El gato está en el piso.",
+      "Luego va a la sala.",
+      "Yo llamo al gato.",
+      "El gato viene a mí.",
+      "¿Dónde está mi gato?",
+      "Está en la sala.",
+      "¡Qué feliz estoy!"
+    ],
+    "active": true
+  },
+  {
+    "id": "es-support-05",
+    "language": "es",
+    "title": "El pato",
+    "grade": 1,
+    "group": "support",
+    "wheelEligible": false,
+    "image": null,
+    "lines": [
+      "Pepe tiene un pato.",
+      "El pato es pequeño.",
+      "Pepe sale con su pato.",
+      "Van al lago.",
+      "El pato mira el agua.",
+      "Luego entra al lago.",
+      "Pepe mira al pato.",
+      "El pato nada y nada.",
+      "Después sale del agua.",
+      "Pepe le da una papa.",
+      "¿Tiene hambre el pato?",
+      "Sí, tiene hambre.",
+      "¡Qué feliz está Pepe!"
+    ],
+    "active": true
+  }
+]

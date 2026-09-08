@@ -1,9 +1,76 @@
 export const CONFIG = {
+
+  /*
+   * =======================================================
+   * SISTEMA LEGACY
+   * =======================================================
+   *
+   * Se mantiene temporalmente mientras migramos Quodam v3
+   * hacia la nueva arquitectura bilingüe.
+   */
   readingsIndexPath:
     "./data/readings-index.json",
 
+
+  /*
+   * =======================================================
+   * CATÁLOGOS DE LECTURA — QUODAM v4
+   * =======================================================
+   */
+  readingCatalogs: {
+
+    es:
+      "./data/readings-es.json",
+
+    en:
+      "./data/readings-en.json"
+
+  },
+
+
+  /*
+   * =======================================================
+   * LECTURAS DE APOYO
+   * =======================================================
+   */
+  supportCatalogs: {
+
+    es:
+      "./data/support-es.json",
+
+    en:
+      "./data/support-en.json"
+
+  },
+
+
+  /*
+   * =======================================================
+   * MODOS DISPONIBLES
+   * =======================================================
+   */
+  modes: {
+
+    spanish:
+      "es",
+
+    english:
+      "en",
+
+    mixed:
+      "mixed"
+
+  },
+
+
+  /*
+   * =======================================================
+   * IMÁGENES
+   * =======================================================
+   */
   imagesPath:
     "./assets/images/readings",
+
 
   /*
    * Un poco más corto para que el usuario
@@ -12,19 +79,12 @@ export const CONFIG = {
   ritualDuration:
     1150,
 
+
   selection: {
-    /*
-     * 8 vueltas se sienten dinámicas.
-     * 14 empieza a percibirse pesado.
-     */
+
     totalRounds:
       8,
 
-    /*
-     * main.js v3 calcula la duración real,
-     * pero conservamos estos valores para
-     * compatibilidad con otros módulos.
-     */
     initialDelay:
       310,
 
@@ -36,8 +96,11 @@ export const CONFIG = {
 
     slowdownStart:
       4
+
   },
+
 
   avoidImmediateRepeat:
     true
+
 };

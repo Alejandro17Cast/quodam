@@ -1,0 +1,287 @@
+[
+  {
+    "id": "en-my-new-bike",
+    "language": "en",
+    "title": "My New Bike",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "my-new-bike.webp",
+    "lines": [
+      "Last week, I got a new bike.",
+      "It is blue and has a small bell.",
+      "I ride it in the park with my dad.",
+      "Sometimes, my best friend rides with me.",
+      "We race around the park for fun.",
+      "I feel happy when the wind touches my face.",
+      "My new bike is my favorite gift."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-the-funny-monkey",
+    "language": "en",
+    "title": "The Funny Monkey",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "the-funny-monkey.webp",
+    "lines": [
+      "A little monkey lives in the zoo.",
+      "He likes to climb and swing from trees.",
+      "One day, he took a man's red hat.",
+      "The man looked up and started to laugh.",
+      "The monkey wore the hat on his head.",
+      "He jumped from one tree to another.",
+      "Everyone thought he looked very funny."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-a-rainy-afternoon",
+    "language": "en",
+    "title": "A Rainy Afternoon",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "a-rainy-afternoon.webp",
+    "lines": [
+      "It was raining all afternoon.",
+      "I could not go outside to play.",
+      "So, I made a fort with chairs and blankets.",
+      "I took some books and snacks inside.",
+      "My little sister wanted to join me.",
+      "We told stories and played fun games.",
+      "Soon, my rainy day became lots of fun."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-the-school-pet",
+    "language": "en",
+    "title": "The School Pet",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "the-school-pet.webp",
+    "lines": [
+      "Our class has a small pet hamster.",
+      "His name is Coco, and he is very active.",
+      "Every morning, we give him food and water.",
+      "Coco loves to run on his little wheel.",
+      "Sometimes, he hides under the soft paper.",
+      "We watch him and laugh at his funny moves.",
+      "We all enjoy taking care of him."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-the-surprise-box",
+    "language": "en",
+    "title": "The Surprise Box",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "the-surprise-box.webp",
+    "lines": [
+      "Lucy found a box under her bed.",
+      "She did not know what was inside.",
+      "The box was old and covered in dust.",
+      "When she opened it, she found a small toy.",
+      "The toy could sing and dance by itself.",
+      "Lucy called her brother to come and see.",
+      "She was surprised and very excited."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-a-trip-to-the-farm",
+    "language": "en",
+    "title": "A Trip to the Farm",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "a-trip-to-the-farm.webp",
+    "lines": [
+      "Last Sunday, we visited a farm.",
+      "We saw cows, pigs, chickens, and horses.",
+      "I gave some food to a hungry goat.",
+      "The goat followed me around the farm.",
+      "My sister laughed and took many pictures.",
+      "We also learned how farmers care for animals.",
+      "It was my favorite part of the day."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-the-big-snowman",
+    "language": "en",
+    "title": "The Big Snowman",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "the-big-snowman.webp",
+    "lines": [
+      "It was cold and snowy outside.",
+      "Tom and his sister made a big snowman.",
+      "They used a carrot for his nose.",
+      "They found two small stones for his eyes.",
+      "Then, they gave him an old black hat.",
+      "Tom put a long scarf around his neck.",
+      "Their snowman looked funny and friendly."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-my-secret-place",
+    "language": "en",
+    "title": "My Secret Place",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "my-secret-place.webp",
+    "lines": [
+      "There is a small tree behind my house.",
+      "I like to sit under it and read books.",
+      "Sometimes, I take my dog with me.",
+      "The leaves move softly in the wind.",
+      "I can hear birds singing in the tree.",
+      "It is quiet, cool, and peaceful there.",
+      "I think it is my favorite secret place."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-the-lost-ball",
+    "language": "en",
+    "title": "The Lost Ball",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "the-lost-ball.webp",
+    "lines": [
+      "Ben was playing soccer in his yard.",
+      "Suddenly, his ball went over the fence.",
+      "He looked everywhere, but he could not find it.",
+      "He asked his neighbor if she had seen it.",
+      "Then, she smiled and gave him the ball.",
+      "Ben thanked her and felt very happy.",
+      "Soon, he started to play again."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-a-day-at-the-beach",
+    "language": "en",
+    "title": "A Day at the Beach",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "a-day-at-the-beach.webp",
+    "lines": [
+      "My family went to the beach on Saturday.",
+      "We played in the water and built sandcastles.",
+      "My brother found a beautiful shell.",
+      "I collected small rocks near the water.",
+      "Later, we ate sandwiches under a big umbrella.",
+      "We watched the waves and enjoyed the warm sun.",
+      "We went home when the sun started to set."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-the-little-robot",
+    "language": "en",
+    "title": "The Little Robot",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "the-little-robot.webp",
+    "lines": [
+      "Sam got a robot for his birthday.",
+      "The robot could walk and move its arms.",
+      "It also made funny sounds when it danced.",
+      "Sam showed the robot to all his friends.",
+      "They gave the robot simple commands to follow.",
+      "Sometimes, the robot moved in a silly way.",
+      "Everyone wanted to play with it."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-the-magic-pencil",
+    "language": "en",
+    "title": "The Magic Pencil",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "the-magic-pencil.webp",
+    "lines": [
+      "Anna found a strange pencil at school.",
+      "It was old, but it had a bright blue color.",
+      "Everything she drew became real for one hour.",
+      "She drew a cake and shared it with her friends.",
+      "Then, she drew a small puppy to play with.",
+      "The puppy ran around the classroom and barked.",
+      "Anna knew she had found a magic pencil."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-the-soccer-game",
+    "language": "en",
+    "title": "The Soccer Game",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "the-soccer-game.webp",
+    "lines": [
+      "Our class had a soccer game on Friday.",
+      "Both teams played very well.",
+      "At first, the score was zero to zero.",
+      "Everyone tried hard to kick the ball.",
+      "Then, Maria kicked the ball into the goal.",
+      "Our team cheered and celebrated together.",
+      "It was an exciting game for everyone."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-the-friendly-dragon",
+    "language": "en",
+    "title": "The Friendly Dragon",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "the-friendly-dragon.webp",
+    "lines": [
+      "A small dragon lived near a green hill.",
+      "He was different because he was very kind.",
+      "Instead of making people afraid, he helped them.",
+      "He carried heavy things for the old people.",
+      "He also protected lost animals in the forest.",
+      "Soon, people started to visit him every day.",
+      "Everyone loved the friendly dragon."
+    ],
+    "active": true
+  },
+  {
+    "id": "en-the-birthday-surprise",
+    "language": "en",
+    "title": "The Birthday Surprise",
+    "grade": 1,
+    "group": "standard",
+    "wheelEligible": true,
+    "image": "the-birthday-surprise.webp",
+    "lines": [
+      "Today is my birthday, but I feel sad.",
+      "I think everyone forgot about my special day.",
+      "When I get home, the lights are off.",
+      "I walk slowly into the living room.",
+      "Suddenly, everyone jumps out and says, “Surprise!”",
+      "There is a big cake and many colorful balloons.",
+      "I smile because my family planned a party for me."
+    ],
+    "active": true
+  }
+]
