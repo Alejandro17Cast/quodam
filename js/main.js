@@ -1036,13 +1036,7 @@ void preloadSessionImages(
       nextReading;
   }
 
-for (
-  let round = 0;
-  round < totalRounds;
-  round++
-) {
-  // animación
-}
+
 
 
   await finalizeSelection();
@@ -1219,9 +1213,19 @@ async function finalizeSelection() {
   );
 
 
-  announce(
-    `La lectura te ha escogido: ${state.selectedReading.title}`
-  );
+ const selectionAnnouncement =
+  state.mode ===
+    "mixed"
+    ? `Tu aventura bilingüe comienza con ${state.selectedReading.title}`
+    : state.selectedReading.language ===
+        "en"
+      ? `This reading chose you: ${state.selectedReading.title}`
+      : `La lectura te ha escogido: ${state.selectedReading.title}`;
+
+
+announce(
+  selectionAnnouncement
+);
 
 
   await celebrateBookSelection(
@@ -1379,9 +1383,13 @@ const oracleMessage =
           class="book-oracle__speech"
         >
 
-         ${escapeHTML(
-  oracleMessage
-)}
+<p
+  class="book-oracle__message"
+>
+  ${escapeHTML(
+    oracleMessage
+  )}
+</p>
 
 
           <strong
