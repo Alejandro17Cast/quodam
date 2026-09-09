@@ -1148,25 +1148,20 @@
 
 
 .book-reading__image-stage {
-  position:
-    relative;
+  position: relative;
 
-  display:
-    grid;
-
-  place-items:
-    center;
+  display: grid;
+  place-items: center;
 
   width:
     min(
-      88%,
-      340px
+      92%,
+      360px
     );
 
   aspect-ratio:
-    4 / 5;
+    4 / 3;
 }
-
 
 /*
  * Marco tipo ilustración de cuento,
