@@ -607,12 +607,29 @@ function renderReading(
       reading
     );
 
-    const session =
+const storedSession =
   getReadingSession();
 
 
+const sessionHasCurrentReading =
+  storedSession?.readings?.some(
+    (sessionReading) =>
+      normalizeReadingId(
+        sessionReading?.id
+      ) === readingId
+  ) ?? false;
+
+
+const session =
+  sessionHasCurrentReading
+    ? storedSession
+    : null;
+
+
 const nextReading =
-  getNextSessionReading();
+  session
+    ? getNextSessionReading()
+    : null;
 
 
 const isMixedSession =
