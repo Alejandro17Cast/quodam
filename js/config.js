@@ -2,18 +2,6 @@ export const CONFIG = {
 
   /*
    * =======================================================
-   * SISTEMA LEGACY
-   * =======================================================
-   *
-   * Se mantiene temporalmente mientras migramos Quodam v3
-   * hacia la nueva arquitectura bilingüe.
-   */
-  readingsIndexPath:
-    "./data/readings-index.json",
-
-
-  /*
-   * =======================================================
    * CATÁLOGOS DE LECTURA — QUODAM v4
    * =======================================================
    */

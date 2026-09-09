@@ -1,6 +1,3 @@
-import {
-  loadReadings
-} from "./readingSelector.js";
 
 
 import {
@@ -71,8 +68,7 @@ const readerState = {
    INICIALIZACIÓN
    ========================================================= */
 
-async function initializeReader() {
-  try {
+async function initializeReader() { try {
     validateRequiredElements();
 
 
@@ -91,6 +87,11 @@ async function initializeReader() {
       );
     }
 
+  } catch (error) {
+    console.error(
+      "Error al inicializar el lector:",
+      error
+    );}}
 
     /*
  * ===============================================
@@ -131,82 +132,6 @@ if (!reading) {
     );
 }
 
-
-/*
- * ===============================================
- * 3. LEGACY
- * ===============================================
- *
- * Compatibilidad temporal con URLs de Quodam v3.
- */
-if (!reading) {
-  const legacyReadings =
-    await loadReadings(
-      "../data/readings-index.json"
-    );
-
-
-  const legacyIndex =
-    buildReadingIndex(
-      legacyReadings
-    );
-
-
-  reading =
-    legacyIndex.get(
-      readingId
-    );
-}
-
-    console.log(
-      "READER:",
-      {
-        urlId:
-          readingId,
-
-        foundId:
-          reading?.id,
-
-        title:
-          reading?.title,
-
-        matches:
-          normalizeReadingId(
-            reading?.id
-          ) ===
-          readingId
-      }
-    );
-
-
-    if (!reading) {
-      throw new Error(
-        `No existe la lectura "${readingId}".`
-      );
-    }
-
-
-    renderReading(
-      reading
-    );
-
-  } catch (error) {
-    console.error(
-      "Error al abrir la lectura:",
-      error
-    );
-
-
-    showError(
-      error
-    );
-
-  } finally {
-    setLoadingState(
-      false
-    );
-  }
-}
 
 
 /* =========================================================
@@ -274,152 +199,8 @@ function normalizeReadingId(
 }
 
 
-/* =========================================================
-   CONSTRUIR ÍNDICE
-   ========================================================= */
-
-function buildReadingIndex(
-  readings
-) {
-  if (
-    !Array.isArray(
-      readings
-    )
-  ) {
-    throw new Error(
-      "El índice de lecturas no tiene un formato válido."
-    );
-  }
 
 
-  if (
-    readings.length ===
-    0
-  ) {
-    throw new Error(
-      "No hay lecturas disponibles."
-    );
-  }
-
-
-  const readingsById =
-    new Map();
-
-
-  for (
-    const reading
-    of readings
-  ) {
-    const id =
-      normalizeReadingId(
-        reading?.id
-      );
-
-
-    if (!id) {
-      console.warn(
-        "LECTURA IGNORADA: no tiene un ID válido.",
-        reading
-      );
-
-      continue;
-    }
-
-
-    if (
-      readingsById.has(
-        id
-      )
-    ) {
-      console.error(
-        "ID DUPLICADO:",
-        {
-          id,
-
-          first:
-            readingsById.get(
-              id
-            ),
-
-          duplicate:
-            reading
-        }
-      );
-
-
-      throw new Error(
-        `El ID "${id}" está duplicado en readings-index.json.`
-      );
-    }
-
-
-    readingsById.set(
-      id,
-      reading
-    );
-
-
-    validateReadingData(
-      reading,
-      id
-    );
-  }
-
-
-  if (
-    readingsById.size ===
-    0
-  ) {
-    throw new Error(
-      "No se encontró ninguna lectura válida."
-    );
-  }
-
-
-  return readingsById;
-}
-
-
-/* =========================================================
-   VALIDACIÓN NO BLOQUEANTE
-   ========================================================= */
-
-function validateReadingData(
-  reading,
-  id
-) {
-  if (
-    typeof reading?.title !==
-      "string" ||
-    !reading.title.trim()
-  ) {
-    console.warn(
-      `La lectura "${id}" no tiene un título válido.`
-    );
-  }
-
-
-  if (
-    !Array.isArray(
-      reading?.lines
-    )
-  ) {
-    console.warn(
-      `La lectura "${id}" no tiene un arreglo "lines" válido.`
-    );
-  }
-
-
-  if (
-    reading?.image !== undefined &&
-    typeof reading.image !==
-      "string"
-  ) {
-    console.warn(
-      `La lectura "${id}" tiene un valor "image" no válido.`
-    );
-  }
-}
 
 
 /* =========================================================
@@ -437,6 +218,14 @@ function getIllustrationPath(
   }
 
 
+  if (
+    reading.language !== "es" &&
+    reading.language !== "en"
+  ) {
+    return null;
+  }
+
+
   const image =
     reading.image.trim();
 
@@ -446,35 +235,13 @@ function getIllustrationPath(
   }
 
 
-  /*
-   * QUODAM v4
-   */
-  if (
-    reading.language ===
-      "es" ||
-    reading.language ===
-      "en"
-  ) {
-    return (
-      "../assets/images/readings/" +
-      reading.language +
-      "/" +
-      encodeURIComponent(
-        image
-      )
-    );
-  }
-
-
-  /*
-   * QUODAM v3
-   */
   return (
     "../assets/images/readings/" +
+    reading.language +
+    "/" +
     encodeURIComponent(
       image
-    ) +
-    "/illustration.png"
+    )
   );
 }
 
