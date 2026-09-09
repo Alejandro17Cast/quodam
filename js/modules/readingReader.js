@@ -478,7 +478,95 @@ function getIllustrationPath(
   );
 }
 
+/* =========================================================
+   TEXTOS DE INTERFAZ SEGÚN IDIOMA
+   ========================================================= */
 
+function getReaderUI({
+  language,
+  currentStep,
+  totalSteps,
+  isMixedSession,
+  nextReading
+}) {
+  const isEnglish =
+    language ===
+    "en";
+
+
+  const stepLabel =
+    totalSteps >
+      1
+      ? (
+          isEnglish
+            ? `Reading ${currentStep} of ${totalSteps}`
+            : `Lectura ${currentStep} de ${totalSteps}`
+        )
+      : (
+          isEnglish
+            ? "Your reading"
+            : "Tu lectura"
+        );
+
+
+  const nextLanguage =
+    nextReading?.language;
+
+
+  return {
+    adventureLabel:
+      isEnglish
+        ? "Your adventure"
+        : "Tu aventura",
+
+    starting:
+      isEnglish
+        ? "Starting"
+        : "Empezando",
+
+    languageLabel:
+      isEnglish
+        ? "English"
+        : "Español",
+
+    gradeLabel:
+      isEnglish
+        ? "First grade"
+        : "Primer grado",
+
+    stepLabel,
+
+    finished:
+      isMixedSession &&
+      nextReading
+        ? (
+            isEnglish
+              ? "Great job! First part complete."
+              : "¡Muy bien! Primera parte completada."
+          )
+        : (
+            isEnglish
+              ? "You did it!"
+              : "¡Lo lograste!"
+          ),
+
+    home:
+      isEnglish
+        ? "Back to home"
+        : "Volver al inicio",
+
+    rediscover:
+      isEnglish
+        ? "Discover another reading"
+        : "Descubrir otra lectura",
+
+    next:
+      nextLanguage ===
+        "en"
+        ? "Continue in English"
+        : "Continuar en Español"
+  };
+}
 /* =========================================================
    RENDERIZAR LECTURA
    ========================================================= */
@@ -538,6 +626,52 @@ const language =
     ? "en"
     : "es";
 
+    const currentStep =
+  (
+    Number.isInteger(
+      session?.currentIndex
+    )
+      ? session.currentIndex
+      : 0
+  ) + 1;
+
+
+const totalSteps =
+  Array.isArray(
+    session?.readings
+  )
+    ? session.readings.length
+    : 1;
+
+
+const ui =
+  getReaderUI({
+    language,
+    currentStep,
+    totalSteps,
+    isMixedSession,
+    nextReading
+  });
+
+
+document.documentElement.lang =
+  language;
+
+
+const readerShell =
+  document.querySelector(
+    ".reader"
+  );
+
+
+if (readerShell) {
+  readerShell.dataset.language =
+    language;
+
+  readerShell.dataset.mode =
+    session?.mode ??
+    language;
+}
 
   document.title =
     `${title} — Quodam`;
@@ -595,17 +729,35 @@ if (
       : "Continuar en Español →";
 
 
-  primaryActionHTML = `
-    <button
-      type="button"
-      class="button button--primary"
-      data-reader-action="next"
+ primaryActionHTML = `
+  <button
+    type="button"
+    class="button button--primary"
+    data-reader-action="next"
+  >
+    ${escapeHTML(
+      ui.next
+    )}
+    <span
+      aria-hidden="true"
     >
-      ${escapeHTML(
-        nextLabel
-      )}
-    </button>
-  `;
+      →
+    </span>
+  </button>
+`;
+
+primaryActionHTML = `
+  <a
+    href="${escapeHTML(
+      rediscoverURL
+    )}"
+    class="button button--primary"
+  >
+    ${escapeHTML(
+      ui.rediscover
+    )}
+  </a>
+`;
 
 } else {
 
@@ -642,21 +794,24 @@ if (
       aria-label="Progreso de lectura"
     >
 
-      <div
-        class="reading-progress__label"
-      >
-        <span>
-          Tu aventura
-        </span>
+     <div
+  class="reading-progress__label"
+>
+  <span>
+    ${escapeHTML(
+      ui.adventureLabel
+    )}
+  </span>
 
-        <span
-          data-reading-progress-label
-          aria-live="polite"
-        >
-          Empezando ✨
-        </span>
-      </div>
-
+  <span
+    data-reading-progress-label
+    aria-live="polite"
+  >
+    ${escapeHTML(
+      ui.starting
+    )}
+  </span>
+</div>
 
       <div
         class="reading-progress__track"
@@ -690,6 +845,9 @@ if (
       data-reading-id="${escapeHTML(
         readingId
       )}"
+      data-language="${escapeHTML(
+  language
+)}"
     >
 
       <!-- =====================================
@@ -700,15 +858,13 @@ if (
         class="reading-text__header"
       >
 
-        <p
-          class="reading-text__category"
-        >
-          ${escapeHTML(
-            getSafeCategory(
-              reading
-            )
-          )}
-        </p>
+     <p
+  class="reading-text__category"
+>
+  ${escapeHTML(
+    ui.languageLabel
+  )}
+</p>
 
 
         <h1
@@ -720,35 +876,31 @@ if (
         </h1>
 
 
-        <p
-          class="reading-text__meta"
-        >
+    <p
+  class="reading-text__meta"
+>
 
-          <span>
-            Nivel ${escapeHTML(
-              getSafeLevel(
-                reading
-              )
-            )}
-          </span>
+  <span>
+    ${escapeHTML(
+      ui.gradeLabel
+    )}
+  </span>
 
 
-          <span
-            aria-hidden="true"
-          >
-            ·
-          </span>
+  <span
+    aria-hidden="true"
+  >
+    ·
+  </span>
 
 
-          <span>
-            ${escapeHTML(
-              getSafeReadingTime(
-                reading
-              )
-            )} min
-          </span>
+  <span>
+    ${escapeHTML(
+      ui.stepLabel
+    )}
+  </span>
 
-        </p>
+</p>
 
       </header>
 
@@ -823,9 +975,11 @@ if (
           </span>
 
 
-          <p>
-            ¡Terminaste!
-          </p>
+         <p>
+  ${escapeHTML(
+    ui.finished
+  )}
+</p>
 
         </div>
 
@@ -837,12 +991,14 @@ if (
          ${primaryActionHTML}
 
 
-          <a
-            href="../index.html"
-            class="button button--reader-secondary"
-          >
-            Volver al inicio
-          </a>
+         <a
+  href="../index.html"
+  class="button button--reader-secondary"
+>
+  ${escapeHTML(
+    ui.home
+  )}
+</a>
 
         </div>
 
@@ -960,6 +1116,12 @@ function initializeReaderExperience() {
 function initializeReadingProgress(
   readingElement
 ) {
+  const language =
+  readingElement.dataset
+    .language ===
+      "en"
+      ? "en"
+      : "es";
   const fill =
     elements.container.querySelector(
       "[data-reading-progress-fill]"
@@ -1080,10 +1242,11 @@ function initializeReadingProgress(
       }
 
 
-      label.textContent =
-        getProgressMessage(
-          progress
-        );
+      llabel.textContent =
+  getProgressMessage(
+    progress,
+    language
+  );
 
 
       /*
@@ -1155,13 +1318,21 @@ function initializeReadingProgress(
    ========================================================= */
 
 function getProgressMessage(
-  progress
+  progress,
+  language = "es"
 ) {
+  const english =
+    language ===
+    "en";
+
+
   if (
     progress <
     12
   ) {
-    return "Empezando ✨";
+    return english
+      ? "Starting"
+      : "Empezando";
   }
 
 
@@ -1169,7 +1340,9 @@ function getProgressMessage(
     progress <
     38
   ) {
-    return "¡Muy bien! 🌟";
+    return english
+      ? "Great job!"
+      : "¡Muy bien!";
   }
 
 
@@ -1177,7 +1350,9 @@ function getProgressMessage(
     progress <
     68
   ) {
-    return "Vas genial 📖";
+    return english
+      ? "Keep going!"
+      : "¡Sigue así!";
   }
 
 
@@ -1185,11 +1360,15 @@ function getProgressMessage(
     progress <
     92
   ) {
-    return "¡Ya casi! 🚀";
+    return english
+      ? "Almost there!"
+      : "¡Ya casi!";
   }
 
 
-  return "¡Lo lograste! 🎉";
+  return english
+    ? "You did it!"
+    : "¡Lo lograste!";
 }
 
 

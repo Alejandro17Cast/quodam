@@ -2595,3 +2595,630 @@ span:first-child {
       none;
   }
 }
+/* =========================================================
+   QUODAM v4 — READER BILINGÜE
+   PRIMER GRADO
+   ========================================================= */
+
+
+/* =========================================================
+   TEMA ESPAÑOL
+   ========================================================= */
+
+.reader[data-language="es"] {
+  --reader-accent:
+    #f28b82;
+
+  --reader-accent-soft:
+    #fff0e9;
+
+  --reader-accent-dark:
+    #a94d49;
+}
+
+
+/* =========================================================
+   TEMA ENGLISH
+   ========================================================= */
+
+.reader[data-language="en"] {
+  --reader-accent:
+    #7cc7f2;
+
+  --reader-accent-soft:
+    #eaf7ff;
+
+  --reader-accent-dark:
+    #356f97;
+}
+
+
+/* =========================================================
+   MIXTO
+   ========================================================= */
+
+.reader[data-mode="mixed"] {
+  --reader-session-accent:
+    #b8a5eb;
+}
+
+
+/* =========================================================
+   PAPEL DE LECTURA
+   ========================================================= */
+
+.reader .reading-text {
+  width:
+    min(
+      100%,
+      760px
+    );
+
+  margin-inline:
+    auto;
+
+  overflow:
+    hidden;
+
+  border:
+    3px solid
+    rgb(
+      255 255 255 / 82%
+    );
+
+  border-radius:
+    clamp(
+      24px,
+      4vw,
+      36px
+    );
+
+  background:
+    rgb(
+      255 253 247 / 96%
+    );
+
+  box-shadow:
+    0 22px 55px
+    rgb(
+      85 61 40 / 14%
+    );
+}
+
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+
+.reader .reading-text__header {
+  position:
+    relative;
+
+  padding:
+    clamp(
+      1.5rem,
+      5vw,
+      2.5rem
+    )
+    clamp(
+      1.25rem,
+      5vw,
+      3rem
+    );
+
+  text-align:
+    center;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(
+        --reader-accent-soft,
+        #fff8ed
+      ),
+      transparent
+    );
+}
+
+
+.reader .reading-text__category {
+  display:
+    inline-flex;
+
+  min-height:
+    36px;
+
+  padding:
+    0.45rem
+    0.9rem;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  margin-bottom:
+    0.9rem;
+
+  border:
+    2px solid
+    color-mix(
+      in srgb,
+      var(--reader-accent)
+      35%,
+      white
+    );
+
+  border-radius:
+    999px;
+
+  color:
+    var(
+      --reader-accent-dark
+    );
+
+  background:
+    white;
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.78rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.09em;
+
+  text-transform:
+    uppercase;
+}
+
+
+.reader .reading-text__title {
+  max-width:
+    680px;
+
+  margin:
+    0
+    auto;
+
+  color:
+    var(--kid-ink);
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    clamp(
+      2rem,
+      6vw,
+      3.15rem
+    );
+
+  font-weight:
+    900;
+
+  line-height:
+    1.08;
+
+  letter-spacing:
+    -0.025em;
+}
+
+
+.reader .reading-text__meta {
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    0.45rem;
+
+  margin-top:
+    1rem;
+
+  color:
+    var(--kid-soft);
+
+  font-size:
+    clamp(
+      0.88rem,
+      2vw,
+      1rem
+    );
+
+  font-weight:
+    700;
+}
+
+
+/* =========================================================
+   TEXTO PARA PRIMER GRADO
+   ========================================================= */
+
+.reader .reading-text__body {
+  padding:
+    clamp(
+      1.6rem,
+      5vw,
+      3rem
+    );
+}
+
+
+.reader .reading-text__line {
+  max-width:
+    680px;
+
+  margin:
+    0
+    auto
+    1.15rem;
+
+  color:
+    #283247;
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    clamp(
+      1.2rem,
+      2.6vw,
+      1.48rem
+    );
+
+  font-weight:
+    600;
+
+  line-height:
+    1.75;
+
+  letter-spacing:
+    0.01em;
+}
+
+
+/* pregunta = pausa visual */
+
+.reader
+.reading-text__line--question {
+  margin-top:
+    1.5rem;
+
+  margin-bottom:
+    1.5rem;
+
+  padding:
+    1rem
+    1.2rem;
+
+  border:
+    2px solid
+    color-mix(
+      in srgb,
+      var(--reader-accent)
+      33%,
+      white
+    );
+
+  border-radius:
+    18px;
+
+  color:
+    var(
+      --reader-accent-dark
+    );
+
+  background:
+    var(
+      --reader-accent-soft
+    );
+
+  font-weight:
+    800;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.reader .reading-text__footer {
+  padding:
+    clamp(
+      1.5rem,
+      5vw,
+      2.5rem
+    );
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      var(
+        --reader-accent-soft,
+        #fff8ed
+      )
+    );
+}
+
+
+.reader .reading-text__ending {
+  text-align:
+    center;
+}
+
+
+.reader .reading-text__ending p {
+  font-size:
+    clamp(
+      1.25rem,
+      3vw,
+      1.6rem
+    );
+
+  font-weight:
+    900;
+}
+
+
+.reader .reading-text__actions {
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    0.8rem;
+
+  justify-content:
+    center;
+
+  margin-top:
+    1.4rem;
+}
+
+
+/* =========================================================
+   MIXTO — INDICADOR VISUAL
+   ========================================================= */
+
+.reader[data-mode="mixed"]
+.reading-text {
+  box-shadow:
+    0 22px 55px
+    rgb(
+      104 81 149 / 15%
+    );
+}
+
+
+.reader[data-mode="mixed"]
+.reading-text__meta
+span:last-child {
+  padding:
+    0.35rem
+    0.7rem;
+
+  border-radius:
+    999px;
+
+  color:
+    #685495;
+
+  background:
+    #f0eaff;
+
+  font-weight:
+    900;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (
+  max-width:
+  800px
+) {
+
+  #reading-container {
+    grid-template-columns:
+      70px
+      minmax(
+        0,
+        1fr
+      );
+
+    column-gap:
+      0.65rem;
+  }
+
+
+  .reading-progress {
+    width:
+      66px;
+  }
+
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (
+  max-width:
+  600px
+) {
+
+  .reader {
+    padding:
+      0.75rem
+      0.75rem
+      3rem;
+  }
+
+
+  .reader__header {
+    margin-bottom:
+      0.65rem;
+  }
+
+
+  #reading-container {
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    gap:
+      0.75rem;
+  }
+
+
+  .reading-progress {
+    position:
+      sticky;
+
+    top:
+      0.45rem;
+
+    z-index:
+      30;
+
+    display:
+      grid;
+
+    grid-template-columns:
+      auto
+      1fr;
+
+    width:
+      100%;
+
+    min-height:
+      auto;
+
+    padding:
+      0.5rem
+      0.65rem;
+
+    border-radius:
+      18px;
+  }
+
+
+  .reading-progress__label {
+    position:
+      static;
+
+    width:
+      auto;
+
+    margin:
+      0
+      0.65rem
+      0
+      0;
+
+    padding:
+      0.35rem
+      0.5rem;
+  }
+
+
+  .reading-progress__track {
+    width:
+      100%;
+
+    min-height:
+      14px;
+
+    height:
+      14px;
+
+    margin:
+      auto
+      0;
+  }
+
+
+  .reading-progress::after {
+    display:
+      none;
+  }
+
+
+  .reader .reading-text {
+    width:
+      100%;
+
+    border-radius:
+      24px;
+  }
+
+
+  .reader .reading-text__header {
+    padding:
+      1.5rem
+      1.15rem;
+  }
+
+
+  .reader .reading-text__body {
+    padding:
+      1.5rem
+      1.15rem;
+  }
+
+
+  .reader .reading-text__line {
+    margin-bottom:
+      1rem;
+
+    font-size:
+      clamp(
+        1.15rem,
+        5vw,
+        1.34rem
+      );
+
+    line-height:
+      1.7;
+  }
+
+
+  .reader .reading-text__actions {
+    flex-direction:
+      column;
+  }
+
+
+  .reader
+  .reading-text__actions
+  .button {
+    width:
+      100%;
+
+    min-height:
+      52px;
+  }
+
+}
