@@ -68,7 +68,8 @@ const readerState = {
    INICIALIZACIÓN
    ========================================================= */
 
-async function initializeReader() { try {
+async function initializeReader() {
+  try {
     validateRequiredElements();
 
 
@@ -87,53 +88,85 @@ async function initializeReader() { try {
       );
     }
 
+
+    /* =====================================================
+       1. SESIÓN
+       ===================================================== */
+
+    let reading =
+      getSessionReadingById(
+        readingId
+      );
+
+
+    if (reading) {
+      setSessionCurrentReadingById(
+        readingId
+      );
+    }
+
+
+    /* =====================================================
+       2. CATÁLOGO v4
+       ===================================================== */
+
+    if (!reading) {
+      reading =
+        await findReadingById(
+          readingId
+        );
+    }
+
+
+    console.log(
+      "READER:",
+      {
+        urlId:
+          readingId,
+
+        foundId:
+          reading?.id,
+
+        title:
+          reading?.title,
+
+        matches:
+          normalizeReadingId(
+            reading?.id
+          ) ===
+          readingId
+      }
+    );
+
+
+    if (!reading) {
+      throw new Error(
+        `No existe la lectura "${readingId}".`
+      );
+    }
+
+
+    renderReading(
+      reading
+    );
+
   } catch (error) {
     console.error(
-      "Error al inicializar el lector:",
+      "Error al abrir la lectura:",
       error
-    );}}
-
-    /*
- * ===============================================
- * 1. SESIÓN
- * ===============================================
- *
- * Es la ruta MÁS RÁPIDA.
- *
- * No requiere ningún fetch.
- */
-let reading =
-  getSessionReadingById(
-    readingId
-  );
-
-
-if (reading) {
-  setSessionCurrentReadingById(
-    readingId
-  );
-}
-
-
-/*
- * ===============================================
- * 2. CATÁLOGO v4
- * ===============================================
- *
- * Solo ocurre si:
- * - recargaron directamente la URL,
- * - abrieron un enlace en otra pestaña,
- * - sessionStorage no estaba disponible.
- */
-if (!reading) {
-  reading =
-    await findReadingById(
-      readingId
     );
+
+
+    showError(
+      error
+    );
+
+  } finally {
+    setLoadingState(
+      false
+    );
+  }
 }
-
-
-
 /* =========================================================
    VALIDAR INTERFAZ
    ========================================================= */
