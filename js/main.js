@@ -3,6 +3,10 @@ import {
 } from "./config.js";
 
 import {
+  preloadSessionImages
+} from "./modules/imageLoader.js";
+
+import {
   loadReadingsForMode
 } from "./modules/readingRepository.js";
 
@@ -333,6 +337,8 @@ async function selectReadingMode(
     return;
   }
 
+const performanceStart =
+  performance.now();
 
   const normalizedMode =
     normalizeReadingMode(
@@ -386,7 +392,26 @@ state.catalog =
 
     state.readings =
       catalog.all;
+const performanceEnd =
+  performance.now();
 
+
+console.info(
+  "RENDIMIENTO QUODAM:",
+  {
+    mode:
+      normalizedMode,
+
+    readings:
+      state.readings.length,
+
+    catalogLoadMs:
+      Math.round(
+        performanceEnd -
+        performanceStart
+      )
+  }
+);
 
     validateReadings(
       state.readings
@@ -851,7 +876,19 @@ async function runSelectionAnimation() {
    */
    prepareFinalSelection();
 
-
+/*
+ * La lectura ganadora ya se conoce.
+ *
+ * Empezamos a descargar su ilustración mientras
+ * la animación sigue ocurriendo.
+ *
+ * NO hacemos await todavía.
+ */
+const selectedImagesPromise =
+  preloadSessionImages(
+    state.selectedReadings
+  );
+  
   if (
     !state.selectedReading
   ) {
@@ -982,7 +1019,13 @@ async function runSelectionAnimation() {
       nextReading;
   }
 
-
+/*
+ * Normalmente estas imágenes ya habrán terminado
+ * durante las vueltas del libro.
+ *
+ * Si fallaron, la interfaz posee fallback.
+ */
+await selectedImagesPromise;
   await finalizeSelection();
 }
 
