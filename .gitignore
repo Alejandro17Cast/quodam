@@ -1,0 +1,8 @@
+# Archivos temporales de editores
+*.swp
+*.swo
+*~
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
