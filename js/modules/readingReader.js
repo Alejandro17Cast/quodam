@@ -722,52 +722,25 @@ if (
   isMixedSession &&
   nextReading
 ) {
-  const nextLabel =
-    nextReading.language ===
-      "en"
-      ? "Continue in English →"
-      : "Continuar en Español →";
-
-
- primaryActionHTML = `
-  <button
-    type="button"
-    class="button button--primary"
-    data-reader-action="next"
-  >
-    ${escapeHTML(
-      ui.next
-    )}
-    <span
-      aria-hidden="true"
+  primaryActionHTML = `
+    <button
+      type="button"
+      class="button button--primary"
+      data-reader-action="next"
     >
-      →
-    </span>
-  </button>
-`;
+      ${escapeHTML(
+        ui.next
+      )}
 
-primaryActionHTML = `
-  <a
-    href="${escapeHTML(
-      rediscoverURL
-    )}"
-    class="button button--primary"
-  >
-    ${escapeHTML(
-      ui.rediscover
-    )}
-  </a>
-`;
+      <span
+        aria-hidden="true"
+      >
+        →
+      </span>
+    </button>
+  `;
 
 } else {
-
-  const rediscoverLabel =
-    language ===
-      "en"
-      ? "Discover another reading"
-      : "Descubrir otra lectura";
-
-
   primaryActionHTML = `
     <a
       href="${escapeHTML(
@@ -776,11 +749,12 @@ primaryActionHTML = `
       class="button button--primary"
     >
       ${escapeHTML(
-        rediscoverLabel
+        ui.rediscover
       )}
     </a>
   `;
 }
+
 
   elements.container.innerHTML = `
 
@@ -1242,7 +1216,7 @@ function initializeReadingProgress(
       }
 
 
-      llabel.textContent =
+      label.textContent =
   getProgressMessage(
     progress,
     language

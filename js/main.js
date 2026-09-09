@@ -273,7 +273,14 @@ modeStatus:
         ) =>
           name
       );
-
+if (
+  elements.modeButtons.length ===
+  0
+) {
+  throw new Error(
+    "No existen botones de modo de lectura."
+  );
+}
 
   if (
     missing.length >
@@ -286,14 +293,8 @@ modeStatus:
     );
   }
 }
-if (
-  elements.modeButtons.length ===
-  0
-) {
-  throw new Error(
-    "No existen botones de modo de lectura."
-  );
-}
+
+
 
 
 /* =========================================================
@@ -474,29 +475,46 @@ function handleInitialNavigation() {
     );
 
 
- if (
-  !shouldDiscover ||
-  !state.mode
-) {
-  return;
-}
+  const shouldDiscover =
+    params.get(
+      "discover"
+    ) === "true";
 
 
-window.history.replaceState(
-  {},
-  "",
-  window.location.pathname
-);
+  const previousId =
+    normalizeReadingId(
+      params.get(
+        "previous"
+      )
+    );
 
 
-selectReadingMode(
-  state.mode
-);
+  if (
+    previousId
+  ) {
+    state.previousReadingId =
+      previousId;
+  }
 
 
- if (!shouldDiscover) {
-  return;
-}
+  if (
+    !shouldDiscover ||
+    !state.mode
+  ) {
+    return;
+  }
+
+
+  window.history.replaceState(
+    {},
+    "",
+    window.location.pathname
+  );
+
+
+  selectReadingMode(
+    state.mode
+  );
 }
 
 
@@ -884,10 +902,9 @@ async function runSelectionAnimation() {
  *
  * NO hacemos await todavía.
  */
-const selectedImagesPromise =
-  preloadSessionImages(
-    state.selectedReadings
-  );
+void preloadSessionImages(
+  state.selectedReadings
+);
   
   if (
     !state.selectedReading
@@ -1019,13 +1036,15 @@ const selectedImagesPromise =
       nextReading;
   }
 
-/*
- * Normalmente estas imágenes ya habrán terminado
- * durante las vueltas del libro.
- *
- * Si fallaron, la interfaz posee fallback.
- */
-await selectedImagesPromise;
+for (
+  let round = 0;
+  round < totalRounds;
+  round++
+) {
+  // animación
+}
+
+
   await finalizeSelection();
 }
 
@@ -1292,6 +1311,14 @@ async function showSelectionOracle(
     "polite"
   );
 
+const oracleMessage =
+  state.mode ===
+    "mixed"
+    ? "Tu aventura bilingüe comienza con"
+    : reading?.language ===
+        "en"
+      ? "This reading chose you"
+      : "La lectura te ha escogido";
 
   oracle.innerHTML = `
     <div
@@ -1352,11 +1379,9 @@ async function showSelectionOracle(
           class="book-oracle__speech"
         >
 
-          <p
-            class="book-oracle__message"
-          >
-            La lectura te ha escogido
-          </p>
+         ${escapeHTML(
+  oracleMessage
+)}
 
 
           <strong
