@@ -177,9 +177,13 @@ async function initialize() {
 
 
     if (savedMode) {
-      state.mode =
-        savedMode;
-    }
+  state.mode =
+    savedMode;
+}
+
+updateRitualText(
+  state.mode
+);
 
 
     setModeStatus(
@@ -324,6 +328,31 @@ function registerEvents() {
   );
 }
 
+function updateRitualText(
+  mode
+) {
+  const ritualText =
+    document.querySelector(
+      ".book__ritual-text"
+    );
+
+  if (!ritualText) {
+    return;
+  }
+
+  const isEnglish =
+    mode === "en";
+
+  ritualText.textContent =
+    isEnglish
+      ? "Every story awaits the right reader."
+      : "Toda lectura espera al lector correcto.";
+
+  ritualText.lang =
+    isEnglish
+      ? "en"
+      : "es";
+}
 /* =========================================================
    SELECCIONAR MODO
    ========================================================= */
@@ -386,9 +415,13 @@ state.catalog =
   catalog;
 
     state.mode =
-      saveReadingMode(
-        normalizedMode
-      );
+  saveReadingMode(
+    normalizedMode
+  );
+
+updateRitualText(
+  state.mode
+);
 
 
     state.readings =
