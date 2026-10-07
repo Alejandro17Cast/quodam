@@ -1,3 +1,6 @@
+import { preloadReadingImage } from "./modules/imageLoader.js";
+import { getReadingImagePath } from "./utils/helpers.js";
+
 import {
   CONFIG
 } from "./config.js";
@@ -2017,3 +2020,112 @@ function setModeStatus(
    ========================================================= */
 
 initialize();
+
+
+/* Vista independiente: únicamente ilustración y título. */
+const randomScene = document.querySelector("#random-scene");
+const randomEntry = document.querySelector("#random-button");
+const randomAgain = document.querySelector("#random-again");
+const randomBack = document.querySelector("#random-back");
+const randomResult = document.querySelector("#random-result");
+const randomImage = document.querySelector("#random-image");
+const randomTitle = document.querySelector("#random-title");
+const randomStatus = document.querySelector("#random-status");
+const randomLanguage = document.querySelector("#random-language");
+let randomBusy = false;
+let previousRandomId = null;
+
+async function showRandomReading() {
+  if (randomBusy || state.isLoadingMode || state.isSelecting) return;
+  randomBusy = true;
+  randomEntry.disabled = true;
+  randomAgain.disabled = true;
+  randomBack.disabled = true;
+  randomLanguage.disabled = true;
+  elements.welcome.classList.remove("scene--active");
+  randomScene.classList.add("scene--active");
+  randomScene.setAttribute("aria-busy", "true");
+  randomStatus.textContent = "Buscando una lectura...";
+  try {
+    const catalog = await loadReadingsForMode(randomLanguage.value);
+    const readings = catalog.all.filter(reading =>
+      typeof reading.image === "string" && reading.image.trim()
+    );
+    const reading = selectRandomReading(readings, previousRandomId);
+    // Precargar una muestra pequeña antes de hacerla pasar por la ruleta.
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reducedMotion && readings.length > 1) {
+      const pool = readings.filter(item => item.id !== reading.id);
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      const previews = pool.slice(0, 8);
+      const loaded = await Promise.all(
+        [...previews, reading].map(preloadReadingImage)
+      );
+      const frames = previews.filter((item, index) => loaded[index]);
+      // Las imágenes que fallan no aparecen como fotogramas vacíos.
+      if (frames.length) {
+        randomImage.onerror = null;
+        randomImage.hidden = false;
+        randomResult.hidden = false;
+        randomStatus.textContent = "";
+        randomResult.classList.add("is-shuffling");
+        for (let step = 0; step < 18; step++) {
+          const preview = frames[step % frames.length];
+          randomImage.src = getReadingImagePath(preview);
+          randomImage.alt = preview.title;
+          randomTitle.textContent = preview.title;
+          randomResult.lang = preview.language;
+          // Inicio rápido y una pausa creciente antes del resultado.
+          await wait(65 + Math.round(260 * (step / 17) ** 3));
+        }
+      }
+    }
+    randomResult.classList.remove("is-shuffling");
+    const source = getReadingImagePath(reading);
+    randomImage.hidden = false;
+    randomImage.onerror = () => {
+      randomImage.hidden = true;
+      randomStatus.textContent = "No pudimos cargar la imagen. Podés elegir otra lectura.";
+    };
+    randomImage.src = source;
+    randomImage.alt = reading.title;
+    randomTitle.textContent = reading.title;
+    randomResult.lang = reading.language;
+    randomResult.hidden = false;
+    previousRandomId = reading.id;
+    randomStatus.textContent = "";
+    randomTitle.focus();
+  } catch (error) {
+    console.error("No se pudo elegir una lectura al azar:", error);
+    randomStatus.textContent = "No pudimos cargar las lecturas. Intentá otra vez.";
+  } finally {
+    randomResult.classList.remove("is-shuffling");
+    randomBusy = false;
+    randomEntry.disabled = false;
+    randomAgain.disabled = false;
+    randomBack.disabled = false;
+    randomLanguage.disabled = false;
+    randomScene.setAttribute("aria-busy", "false");
+  }
+}
+
+randomEntry.addEventListener("click", () => {
+  if (randomBusy || state.isLoadingMode || state.isSelecting) return;
+  randomLanguage.value = "mixed";
+  randomResult.hidden = true;
+  showRandomReading();
+});
+randomLanguage.addEventListener("change", () => {
+  if (randomBusy) return;
+  randomResult.hidden = true;
+  showRandomReading();
+});
+randomAgain.addEventListener("click", showRandomReading);
+randomBack.addEventListener("click", () => {
+  randomScene.classList.remove("scene--active");
+  elements.welcome.classList.add("scene--active");
+  randomEntry.focus();
+});

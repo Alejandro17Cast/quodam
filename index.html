@@ -256,6 +256,8 @@
   </div>
 
 
+  <button id="random-button" class="button button--secondary random-entry" type="button">Al azar</button>
+
   <p
     id="mode-status"
     class="mode-selector__status"
@@ -645,6 +647,28 @@
     </section>
 
 
+
+    <section id="random-scene" class="scene" aria-label="Lectura al azar">
+      <div class="random-view">
+        <div class="random-view__language">
+          <label for="random-language">Idioma</label>
+          <select id="random-language">
+            <option value="mixed" selected>Inglés + Español</option>
+            <option value="en">Solo inglés</option>
+            <option value="es">Solo español</option>
+          </select>
+        </div>
+        <figure id="random-result" class="random-result" hidden>
+          <img id="random-image" class="random-result__image" alt="">
+          <figcaption id="random-title" class="random-result__title" tabindex="-1"></figcaption>
+        </figure>
+        <p id="random-status" role="status"></p>
+        <div class="random-view__actions">
+          <button id="random-again" class="button button--primary" type="button">Otra al azar</button>
+          <button id="random-back" class="button button--secondary" type="button">Volver al inicio</button>
+        </div>
+      </div>
+    </section>
 
     <!-- =====================================================
          REGIÓN ACCESIBLE
