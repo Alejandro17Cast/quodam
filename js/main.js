@@ -2051,7 +2051,7 @@ async function showRandomReading() {
     const readings = catalog.all.filter(reading =>
       typeof reading.image === "string" && reading.image.trim()
     );
-    const reading = selectRandomReading(readings, previousRandomId);
+    const reading = selectFinalReading(readings, previousRandomId);
     // Precargar una muestra pequeña antes de hacerla pasar por la ruleta.
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!reducedMotion && readings.length > 1) {
